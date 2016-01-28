@@ -8,5 +8,5 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/popeveryday/CommonLib.git", :tag => s.version.to_s }
   s.platform     = :ios, '7.1'
   s.requires_arc = true
-  s.source_files = 'Classes/*.{h,m}'
+  s.source_files = 'Pod/Classes/**/*.{h,m,c}'
 end

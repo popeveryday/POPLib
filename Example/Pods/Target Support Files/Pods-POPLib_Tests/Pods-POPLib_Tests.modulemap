@@ -1,0 +1,6 @@
+framework module Pods_POPLib_Tests {
+  umbrella header "Pods-POPLib_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

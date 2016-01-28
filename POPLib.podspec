@@ -1,0 +1,12 @@
+Pod::Spec.new do |s|
+  s.name             = "POPLib"
+  s.version          = "0.1.0"
+  s.summary          = "POPLib is list of common functions for Object-c project."
+  s.homepage         = "https://github.com/popeveryday/CommonLib"
+  s.license          = 'MIT'
+  s.author           = { "popeveryday" => "popeveryday@gmail.com" }
+  s.source           = { :git => "https://github.com/popeveryday/CommonLib.git", :tag => s.version.to_s }
+  s.platform     = :ios, '7.1'
+  s.requires_arc = true
+  s.source_files = 'Classes/*.{h,m}'
+end

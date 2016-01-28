@@ -1,0 +1,1 @@
+../../../../../Pod/Classes/Extend/ALAssetsLibrary+CustomPhotoAlbum.h

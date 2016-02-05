@@ -84,7 +84,6 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-POPLib_Tests/AHEasing.framework"
   install_framework "Pods-POPLib_Tests/MBProgressHUD.framework"
   install_framework "Pods-POPLib_Tests/POPLib.framework"
   install_framework "Pods-POPLib_Tests/Expecta.framework"
@@ -93,7 +92,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-POPLib_Tests/Specta.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-POPLib_Tests/AHEasing.framework"
   install_framework "Pods-POPLib_Tests/MBProgressHUD.framework"
   install_framework "Pods-POPLib_Tests/POPLib.framework"
   install_framework "Pods-POPLib_Tests/Expecta.framework"

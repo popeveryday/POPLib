@@ -11,6 +11,7 @@
 #import "FileLib.h"
 #import "ReturnSet.h"
 #import "Hashtable.h"
+#import "Reachability.h"
 @import MessageUI;
 
 @interface NetLib : NSObject

@@ -53,9 +53,6 @@
 +(NSArray*)sortArrayIndexPath:(NSArray*) arr ascending:(BOOL) ascending;
 +(NSString*)simulatorAppDirectoryPath;
 +(void)boldFontIOS7ForLabel:(UILabel *)label;
-+(void)displayPopoverController:(UIViewController*)view container:(UIViewController<UIPopoverControllerDelegate> *)container displayTarget:(id) displayTarget isIphonePushView:(BOOL) isIphonePushView;
-+(void)displayPopoverController:(UIViewController*)view container:(UIViewController<UIPopoverControllerDelegate> *)container displayTarget:(id) displayTarget isIphonePushView:(BOOL) isIphonePushView isEmbedNavigationController:(BOOL) isEmbedNavigationController;
-+(void)displayPopoverController:(UIViewController*)view container:(UIViewController<UIPopoverControllerDelegate> *)container displayTarget:(id) displayTarget isIphonePushView:(BOOL) isIphonePushView isEmbedNavigationController:(BOOL) isEmbedNavigationController customSize:(CGSize) customSize;
 +(NSString*)deviceModelType;
 +(NSString*)localizedText:(NSString*)text languageCode:(NSString*)code;
 +(void)localizedDefaulLanguageCode:(NSString*)code;

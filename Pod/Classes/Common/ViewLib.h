@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "StringLib.h"
-#import "MBProgressHUD.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "GlobalConfig.h"
 #import "CommonLib.h"
 

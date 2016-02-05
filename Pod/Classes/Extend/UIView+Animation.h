@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CAKeyframeAnimation+AHEasing.h"
+#import <AHEasing/CAKeyframeAnimation+AHEasing.h>
 #import <UIKit/UIKit.h>
 
 @interface UIView (Animation)

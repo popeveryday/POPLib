@@ -15,9 +15,9 @@ UIColor* _designCustomColor;
 
 -(void) updateViewNavigationDesignStyle{
     if (self.designStyle == ViewDesignStyleFlatBlue) {
-        [CommonLib SetNavigationBarColorHex:@"5cc2d2" viewController:self];
+        [ViewLib setNavigationBarColorHex:@"5cc2d2" viewController:self];
     }else if (self.designStyle == ViewDesignStyleFlatCustomColor) {
-        [CommonLib SetNavigationBarColor:self.designCustomColor viewController:self];
+        [ViewLib setNavigationBarColor:self.designCustomColor viewController:self];
     }
 }
 

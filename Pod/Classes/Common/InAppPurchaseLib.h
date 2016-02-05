@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
 #import "ReturnSet.h"
-#import "CommonLib.h"
+#import "ViewLib.h"
 
 enum InAppPurchaseReturnType
 {

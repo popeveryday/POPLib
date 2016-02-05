@@ -5,7 +5,6 @@
 #import "DateLib.h"
 #import "FileLib.h"
 #import "GameCenterLib2.h"
-#import "IAdBannerLib.h"
 #import "ImageLib.h"
 #import "InAppPurchaseLib.h"
 #import "NetLib.h"

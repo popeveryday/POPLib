@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "CommonLib.h"
+#import "ViewLib.h"
 
 @interface UIViewController (DesignStyle)
 

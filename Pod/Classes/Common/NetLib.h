@@ -11,6 +11,7 @@
 #import "FileLib.h"
 #import "ReturnSet.h"
 #import "Hashtable.h"
+@import MessageUI;
 
 @interface NetLib : NSObject
 +(void) DownloadAsyncFileToPath:(NSString*) toPath url:(NSString*) url delegate:(id<NSURLConnectionDelegate>)delegate;
@@ -24,4 +25,5 @@
 +(NSString *)URLEncoding:(NSString *)val;
 +(ReturnSet*)ReadTextFromUrl:(NSString*) url;
 +(ReturnSet*) GetFileNameSizeFromURL:(NSString*)url;
++(void) emailWithAttachments:(NSMutableArray*) attachments fromViewController:(UIViewController*)fromVC delegate:(id<MFMailComposeViewControllerDelegate>) delegate;
 @end

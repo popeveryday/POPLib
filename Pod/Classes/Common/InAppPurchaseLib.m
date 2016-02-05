@@ -35,7 +35,7 @@
     if (![self preparePayment]) {
         return NO;
     }
-    [CommonLib ShowLoading: _view];
+    [ViewLib showLoading: _view];
     [self requestProductID:identifier];
     return YES;
 }
@@ -46,7 +46,7 @@
         return NO;
     }
     
-    [CommonLib ShowLoading: _view];
+    [ViewLib showLoading: _view];
     
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
     
@@ -137,7 +137,7 @@
         [self.delegate inAppPurchaseDidRestoreCompleted:result productIdentifiers:purchasedItemIDs error:error];
         
         //hide loading
-        [CommonLib HideLoading: _view];
+        [ViewLib hideLoading: _view];
         
         //clear view reference
         _view = nil;
@@ -158,7 +158,7 @@
                            productIdentifier:transaction.payment.productIdentifier
                      inAppPurchaseReturnType: returnType];
         
-        [CommonLib HideLoading: _view];
+        [ViewLib hideLoading: _view];
         _view = nil;
     }
 }

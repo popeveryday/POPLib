@@ -266,4 +266,29 @@
     }
 }
 
++(void) emailWithAttachments:(NSMutableArray*) attachments fromViewController:(UIViewController*)fromVC delegate:(id<MFMailComposeViewControllerDelegate>) delegate
+{
+    
+    NSData *imageData;
+    MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
+    if(delegate != nil) [controller setMailComposeDelegate:delegate];
+    
+    NSInteger counter = 1;
+    if (attachments != nil) {
+        for (NSString* attachment in attachments) {
+            imageData = [NSData dataWithContentsOfFile:attachment];
+            [controller addAttachmentData:imageData
+                                 mimeType:[NSString stringWithFormat:@"image/%@", [attachment.pathExtension.lowercaseString stringByReplacingOccurrencesOfString:@"jpg" withString:@"jpeg"]]
+                                 fileName:[NSString stringWithFormat:@"Image_%ld.%@", (long)counter, attachment.pathExtension.lowercaseString]];
+            counter++;
+        }
+    }
+    
+    [controller setMessageBody:@"Image attached" isHTML:NO];
+    
+    if ([fromVC navigationController] != nil) {
+        [[fromVC navigationController] presentViewController:controller animated:YES completion:nil];
+    }
+}
+
 @end

@@ -324,7 +324,7 @@
     
     if(font == nil) font = [UIFont boldSystemFontOfSize:12];
     if(color == nil) color = [UIColor whiteColor];
-    CGRect rect = CGRectMake(point.x, point.y, image.size.width, image.size.height);
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
     
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
     [image drawInRect:rect];

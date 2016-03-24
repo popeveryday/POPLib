@@ -390,8 +390,10 @@
         prepareBlock(nextViewController);
     }
     
+    UIView* snapshot = viewController.navigationController != nil ? [viewController.navigationController.view snapshotViewAfterScreenUpdates:YES] : [viewController.view snapshotViewAfterScreenUpdates:YES];
+    
     switch (displayStyle) {
-        case DisplayStyleReplace:
+        case DisplayStyleReplaceNavigationRootVC:
             [nav setViewControllers:@[ nextViewController ]];
             [currentViewController.view removeFromSuperview];
             currentViewController = nil;
@@ -399,7 +401,6 @@
                 completeBlock();
             }
             break;
-            
         case DisplayStylePresent:
             [nav presentViewController:nextViewController animated:YES completion:completeBlock];
             break;
@@ -409,6 +410,19 @@
             if (completeBlock != nil) {
                 completeBlock();
             }
+            break;
+        case DisplayStyleReplaceWindowRootVC:
+            [nextViewController.view addSubview:snapshot];
+            [[UIApplication sharedApplication].keyWindow setRootViewController:nextViewController];
+            currentViewController = nil;
+            [UIView animateWithDuration:.25 delay:0.25 options:UIViewAnimationOptionCurveLinear animations:^{
+                snapshot.alpha = 0;
+            } completion:^(BOOL finished) {
+                [snapshot removeFromSuperview];
+                if (completeBlock != nil) {
+                    completeBlock();
+                }
+            }];
             break;
     }
 }

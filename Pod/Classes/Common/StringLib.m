@@ -139,7 +139,7 @@
 
 
 +(BOOL) IsValid:(NSString*)str{
-    if (str == nil || [str isKindOfClass:[NSNull class]]) return NO;
+    if (str == nil || [str isEqual:[NSNull null]] || [str isKindOfClass:[NSNull class]]) return NO;
     str = [self Trim:str];
     return str.length > 0;
 }

@@ -8,6 +8,8 @@
 
 #import "StringLib.h"
 #import "NSDate+NVTimeAgo.h"
+#import <Foundation/NSNull.h>
+
 
 @implementation StringLib
 
@@ -137,7 +139,7 @@
 
 
 +(BOOL) IsValid:(NSString*)str{
-    if (str == nil) return NO;
+    if (str == nil || [str isKindOfClass:[NSNull class]]) return NO;
     str = [self Trim:str];
     return str.length > 0;
 }

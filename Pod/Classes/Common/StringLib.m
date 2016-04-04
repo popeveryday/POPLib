@@ -25,7 +25,7 @@
     }
     
     Hashtable* result = [[Hashtable alloc] init];
-    result.AutoTrimKeyValue = isTrimContent;
+    result.autoTrimKeyValue = isTrimContent;
     
     NSArray* params = [content componentsSeparatedByString:@"&"];
     NSArray* parts = nil;

@@ -8,5 +8,11 @@ else
 	git push origin master
 	git tag $answer
 	git push --tag
-	pod trunk push POPLib.podspec
+	
+	folder=${PWD##*/} 
+	pod trunk push $folder.podspec
 fi
+
+
+
+

@@ -104,6 +104,18 @@
     [_values addObjectsFromArray:hash.values];
 }
 
+-(void) hashtable_RemoveObjectWithKey:(NSString*)key{
+    if (_AutoTrimKeyValue) {
+        key = [StringLib Trim: key];
+    }
+    
+    NSUInteger index = [_Keys indexOfObject:key];
+    if (index == NSNotFound) return;
+    
+    [_Values removeObjectAtIndex:index];
+    [_Keys removeObjectAtIndex:index];
+}
+
 
 @end
 

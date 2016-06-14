@@ -105,15 +105,15 @@
 }
 
 -(void) hashtable_RemoveObjectWithKey:(NSString*)key{
-    if (_AutoTrimKeyValue) {
-        key = [StringLib Trim: key];
+    if (_autoTrimKeyValue) {
+        key = [StringLib trim: key];
     }
     
-    NSUInteger index = [_Keys indexOfObject:key];
+    NSUInteger index = [_keys indexOfObject:key];
     if (index == NSNotFound) return;
     
-    [_Values removeObjectAtIndex:index];
-    [_Keys removeObjectAtIndex:index];
+    [_values removeObjectAtIndex:index];
+    [_keys removeObjectAtIndex:index];
 }
 
 

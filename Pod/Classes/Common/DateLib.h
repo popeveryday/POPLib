@@ -18,5 +18,5 @@
 +(BOOL)checkDate:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 +(BOOL)checkDateObject:(DateObject*)date isBetweenDate:(DateObject*)beginDate andDate:(DateObject*)endDate;
 +(NSDate*)convertToUTCDate:(NSDate*)date;
-
++(NSTimeInterval)toTimeStamp:(NSDate*)date;
 @end

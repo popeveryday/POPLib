@@ -70,6 +70,11 @@
     return [[DateObject initWithNSDate:date] toNSDateUTC];
 }
 
++(NSTimeInterval)toTimeStamp:(NSDate*)date
+{
+    return [date timeIntervalSince1970] * 1000;
+}
+
 @end
 
 

@@ -307,10 +307,11 @@
     return isIpad ? @"CommonLib.bundle/FileExplorerFileIpad" : @"CommonLib.bundle/FileExplorerFile";
 }
 
-+(UIImage*)createCanvasImageWithColor:(UIColor*)color size:(CGSize)size{
++(UIImage*)createCanvasImageWithColor:(UIColor*)color size:(CGSize)size isTransparent:(BOOL)isTransparent
+{
     CGSize imageSize = size;
     UIColor *fillColor = color == nil ? [UIColor clearColor] : color;
-    UIGraphicsBeginImageContextWithOptions(imageSize, YES, 0);
+    UIGraphicsBeginImageContextWithOptions(imageSize, !isTransparent , 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     [fillColor setFill];
     CGContextFillRect(context, CGRectMake(0, 0, imageSize.width, imageSize.height));

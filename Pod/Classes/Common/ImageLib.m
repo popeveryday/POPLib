@@ -478,4 +478,49 @@
     return img;
 }
 
++(UIImage *)blurImage:(UIImage *)sourceImage blurValue:(NSInteger)blurValue destinationSize:(CGSize)size
+{
+    CIImage *inputImage = [CIImage imageWithCGImage:sourceImage.CGImage];
+    
+    // Apply Affine-Clamp filter to stretch the image so that it does not
+    // look shrunken when gaussian blur is applied
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    CIFilter *clampFilter = [CIFilter filterWithName:@"CIAffineClamp"];
+    [clampFilter setValue:inputImage forKey:@"inputImage"];
+    [clampFilter setValue:[NSValue valueWithBytes:&transform objCType:@encode(CGAffineTransform)] forKey:@"inputTransform"];
+    
+    // Apply gaussian blur filter with radius of 30
+    CIFilter *gaussianBlurFilter = [CIFilter filterWithName: @"CIGaussianBlur"];
+    [gaussianBlurFilter setValue:clampFilter.outputImage forKey: @"inputImage"];
+    [gaussianBlurFilter setValue:[NSNumber numberWithInteger:blurValue] forKey:@"inputRadius"];
+    
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef cgImage = [context createCGImage:gaussianBlurFilter.outputImage fromRect:[inputImage extent]];
+    
+    // Set up output context.
+    UIGraphicsBeginImageContext(size);
+    CGContextRef outputContext = UIGraphicsGetCurrentContext();
+    
+    // Invert image coordinates
+    CGContextScaleCTM(outputContext, 1.0, -1.0);
+    CGContextTranslateCTM(outputContext, 0, -size.height);
+    
+    // Draw base image.
+    CGContextDrawImage(outputContext, CGRectMake(0, 0, size.width, size.height), cgImage);
+    
+    // Apply white tint
+    CGContextSaveGState(outputContext);
+    CGContextSetFillColorWithColor(outputContext, [UIColor colorWithWhite:1 alpha:0.2].CGColor);
+    CGContextFillRect(outputContext, CGRectMake(0, 0, size.width, size.height));
+    CGContextRestoreGState(outputContext);
+    
+    // Output image is ready.
+    UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return outputImage;
+}
+
+
+
 @end

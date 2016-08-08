@@ -44,4 +44,7 @@
 +(UIImage*)imageMaskedWithColor:(UIColor *)maskColor image:(UIImage*)image;
 
 +(UIImage*)fixOrientation:(UIImage*)image;
+
+//blur view bg for example
++(UIImage *)blurImage:(UIImage *)sourceImage blurValue:(NSInteger)blurValue destinationSize:(CGSize)size;
 @end

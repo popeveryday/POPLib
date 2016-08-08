@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "POPLib"
-  s.version          = "0.1.80"
+  s.version          = "0.1.81"
   s.summary          = "POPLib is list of common functions for Object-c project."
   s.homepage         = "https://github.com/popeveryday/POPLib"
   s.license          = 'MIT'

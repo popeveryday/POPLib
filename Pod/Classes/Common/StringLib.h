@@ -36,5 +36,6 @@
 
 +(NSDictionary*)deparseJson:(NSString*)jsonString;
 +(NSString*) convertUnicodeEncoding:(NSString*)string;
++(NSString*) convertUnicodeToASCII:(NSString*) string;
 
 @end

@@ -226,6 +226,13 @@
     return [decodevalue stringByRemovingPercentEncoding];
 }
 
++(NSString*) convertUnicodeToASCII:(NSString*) string
+{
+    NSString *standard = [string stringByReplacingOccurrencesOfString:@"đ" withString:@"d"];
+    standard = [standard stringByReplacingOccurrencesOfString:@"Đ" withString:@"D"];
+    NSData *decode = [standard dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    return [[NSString alloc] initWithData:decode encoding:NSASCIIStringEncoding];
+}
 
 @end
 

@@ -46,7 +46,7 @@
         }
         
         delegate.callback = ^(NSString* buttonTitle, NSString* alertTitle) {
-            callback(buttonTitle, alertTitle);
+            if(callback) callback(buttonTitle, alertTitle);
             alertView.delegate = nil;
             delegate = nil;
         };
@@ -56,7 +56,7 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
         
         void (^buttonHandler)(UIAlertAction *action) = ^void(UIAlertAction *action) {
-            callback(action.title, title);
+            if(callback) callback(action.title, title);
         };
         
         if (otherButtonTitles != nil)

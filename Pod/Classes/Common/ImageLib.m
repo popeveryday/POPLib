@@ -69,6 +69,17 @@
     }
 }
 
++(UIImage*)resizeImage:(UIImage*)image newSize:(CGSize)newSize
+{
+    CGRect rect = CGRectMake(0.0, 0.0, newSize.width, newSize.height);
+    UIGraphicsBeginImageContext(rect.size);
+    [image drawInRect:rect];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaledImage;
+}
+
+
 +(UIImage*)imageScaleAspectToMaxSize:(CGFloat)newSize image:(UIImage*) image {
     CGSize size = [image size];
     

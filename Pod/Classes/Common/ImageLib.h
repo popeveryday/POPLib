@@ -22,6 +22,7 @@
 +(BOOL)saveImageToPath:(NSString*) toPath image:(UIImage*) image qualityRatio:(CGFloat) ratio;
 +(UIImage*)imageScaleAspectToMaxSize:(CGFloat)newSize image:(UIImage*) image;
 +(UIImage*)imageScaleAndCropToMaxSize:(CGSize)newSize image:(UIImage*) image;
++(UIImage*)resizeImage:(UIImage*)image newSize:(CGSize)newSize;
 
 +(void)setImageScale:(UIImageView*) image scale:(float) scale;
 +(CGRect)calculateScaleImage: (UIImage*) sourceImage scaledToWidth: (float) width;

@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PureLayout.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Specta.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,27 +57,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1A81EDEA1AA6B9A324989A28FECF939F</key>
+		<key>28D253A24B1D1D55E147153F01103E3D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>79CC2D1D31A4ADAC2A61E8E6106AA095</key>
+		<key>2BC62A292341880787207FC59AA14411</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A995EC29DEE50DE4EBDAF9C82E412BB6</key>
+		<key>475124A9A2123F07897074A8EDB9E312</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C245C111C18A1682999533CABC181133</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>DD86ABD743B0605672C710ADC56EB9DA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E3C7F6166435A5664D9DBABC629597B7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -83,6 +88,11 @@
 			<true/>
 		</dict>
 		<key>ED4342E27597144E22BA4081D52F6DD1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F3AD68B2A7CCE63A4D62C091C56F6C62</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -476,4 +476,157 @@
     });
 }
 
+
+
++(id) initAutoLayoutWithType:(enum ALControlType)type viewContainer:(UIView*)viewContainer superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge
+{
+    id control;
+    
+    if (type == ALControlTypeLabel) {
+        control = [UILabel newAutoLayoutView];
+        [control setLineBreakMode:NSLineBreakByTruncatingTail];
+        [control setNumberOfLines:0];
+        [control setTextAlignment:NSTextAlignmentLeft];
+    }
+    else if (type == ALControlTypeImage)
+    {
+        control = [UIImageView newAutoLayoutView];
+        ((UIImageView*)control).contentMode = UIViewContentModeScaleAspectFit;
+        ((UIImageView*)control).backgroundColor = [UIColor colorWithRed:224 green:224 blue:224 alpha:1];
+    }
+    else if (type == ALControlTypeView)
+    {
+        control = [UIView newAutoLayoutView];
+    }
+    else if (type == ALControlTypeButton)
+    {
+        control = [UIButton buttonWithType:UIButtonTypeCustom];
+        [control configureForAutoLayout];
+    }
+    else if (type == ALControlTypeTextView)
+    {
+        control = [UITextView newAutoLayoutView];
+    }
+    else if (type == ALControlTypeTextField)
+    {
+        control = [UITextField newAutoLayoutView];
+    }
+    else if (type == ALControlTypeProgressView)
+    {
+        control = [UIProgressView newAutoLayoutView];
+    }
+    
+    
+    
+    [viewContainer addSubview:control];
+    
+    [self updateLayoutForView:control superEdge:superEdge otherEdge:otherEdge];
+    
+    return control;
+}
+
++(void) updateLayoutForView:(ALView*)view superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge
+{
+    NSMutableArray* addedEdge = [[NSMutableArray alloc] init];
+    if (otherEdge != nil) {
+        for (NSString* edge in otherEdge.allKeys) {
+            [addedEdge addObject:[self pinEdgeWithView:view edgeStr:edge otherView:[otherEdge objectForKey:edge]]];
+        }
+    }
+    
+    if (superEdge != nil)
+    {
+        for (NSString* letter in [@"T,R,L,B,C,H,V,W,E,S" componentsSeparatedByString:@","] ) {
+            superEdge = [superEdge stringByReplacingOccurrencesOfString:letter withString:[NSString stringWithFormat:@",%@",letter]];
+        }
+        
+        NSArray* superEdgeArray = [[superEdge stringByReplacingOccurrencesOfString:@",," withString:@","] componentsSeparatedByString:@","];
+        
+        for (NSString* edgeStr in superEdgeArray) {
+            if (![StringLib isValid:edgeStr]) continue;
+            if([addedEdge containsObject:[edgeStr substringToIndex:1]]) continue;
+            [self pinEdgeWithView:view edgeStr:edgeStr otherView:nil];
+        }
+    }
+}
+
++(NSString*) pinEdgeWithView:(UIView*)view edgeStr:(NSString*)edgeStr otherView:(UIView*)otherView
+{
+    NSString* direction = [edgeStr substringToIndex:1];
+    
+    if ([direction isEqualToString:@"C"]) {
+        [view autoCenterInSuperview];
+        return direction;
+    }
+    
+    if ([direction isEqualToString:@"H"]) {
+        [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        return direction;
+    }
+    
+    if ([direction isEqualToString:@"V"]) {
+        [view autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        return direction;
+    }
+    
+    enum NSLayoutRelation relation = [StringLib contains:@">" inString:edgeStr] ? NSLayoutRelationGreaterThanOrEqual : [StringLib contains:@"<" inString:edgeStr] ? NSLayoutRelationLessThanOrEqual : NSLayoutRelationEqual;
+    NSString* insetStr = [[[edgeStr substringFromIndex:1] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    
+    //Width: W100, Height: E100, Size: S100#100
+    if ( [StringLib contains:direction inString:@"WES"] ) {
+        if(![StringLib isValid:insetStr]) return direction;
+        
+        if([direction isEqualToString:@"S"])
+        {
+            NSArray* sizeParts = [insetStr componentsSeparatedByString:@"#"];
+            CGFloat width = [[sizeParts firstObject] floatValue];
+            CGFloat height = [[sizeParts objectAtIndex:1] floatValue];
+            [view autoSetDimensionsToSize:CGSizeMake(width, height)];
+        }
+        else if([direction isEqualToString:@"W"])
+        {
+            CGFloat width = [insetStr floatValue];
+            [view autoSetDimension:ALDimensionWidth toSize:width relation:relation];
+        }
+        else
+        {
+            CGFloat height = [insetStr floatValue];
+            [view autoSetDimension:ALDimensionHeight toSize:height relation:relation];
+        }
+        
+        return direction;
+    }
+    
+    
+    
+    CGFloat inset = [StringLib isValid:insetStr] ? [insetStr floatValue] : 10;
+    enum ALEdge edge = [StringLib indexOf:direction inString:@" LRTB"];
+    
+    if (otherView == nil) {
+        if(edge == ALEdgeLeft) edge = ALEdgeLeading;
+        else if(edge == ALEdgeRight) edge = ALEdgeTrailing;
+        [view autoPinEdgeToSuperviewEdge:edge withInset:inset relation:relation];
+    }else{
+        enum ALEdge otheredge = [[@"02143" substringWithRange: NSMakeRange(edge, 1)] integerValue];
+        [view autoPinEdge:edge toEdge:otheredge ofView:otherView withOffset:inset relation:relation];
+    }
+    
+    return direction;
+}
+
++(CGFloat)getCustomPaddingSuperEdge:(NSString*)key fullText:(NSString*)fullText
+{
+    key = [[key stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""];
+    NSInteger index = [StringLib indexOf:key inString:fullText];
+    NSString* customPaddingStr = @"";
+    NSString* nextLetter = @"";
+    for (NSInteger i = index+1; i < fullText.length ; i++) {
+        nextLetter = [fullText substringWithRange: NSMakeRange(i, 1) ];
+        if ( [StringLib contains:nextLetter inString:@"LTRBC"] ) break;
+        customPaddingStr = [customPaddingStr stringByAppendingString: nextLetter];
+    }
+    if ([customPaddingStr isEqualToString:@""]) return 10;
+    return [customPaddingStr floatValue];
+}
+
 @end

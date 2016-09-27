@@ -11,6 +11,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "GlobalConfig.h"
 #import "CommonLib.h"
+#import <PureLayout/PureLayout.h>
 
 enum DisplayStyle{
     DisplayStyleReplaceNavigationRootVC,
@@ -18,6 +19,17 @@ enum DisplayStyle{
     DisplayStylePresent,
     DisplayStyleReplaceWindowRootVC,
 };
+
+enum ALControlType{
+    ALControlTypeLabel,
+    ALControlTypeImage,
+    ALControlTypeView,
+    ALControlTypeButton,
+    ALControlTypeTextView,
+    ALControlTypeTextField,
+    ALControlTypeProgressView,
+};
+
 
 @interface ViewLib : NSObject
 
@@ -53,5 +65,8 @@ enum DisplayStyle{
 +(void)displayPopoverController:(UIViewController*)view container:(UIViewController<UIPopoverControllerDelegate> *)container displayTarget:(id) displayTarget isIphonePushView:(BOOL) isIphonePushView;
 +(void)displayPopoverController:(UIViewController*)view container:(UIViewController<UIPopoverControllerDelegate> *)container displayTarget:(id) displayTarget isIphonePushView:(BOOL) isIphonePushView isEmbedNavigationController:(BOOL) isEmbedNavigationController;
 +(void)displayPopoverController:(UIViewController*)view container:(UIViewController<UIPopoverControllerDelegate> *)container displayTarget:(id) displayTarget isIphonePushView:(BOOL) isIphonePushView isEmbedNavigationController:(BOOL) isEmbedNavigationController customSize:(CGSize) customSize;
+
++(id) initAutoLayoutWithType:(enum ALControlType)type viewContainer:(UIView*)viewContainer superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge;
++(void) updateLayoutForView:(ALView*)view superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge;
 
 @end

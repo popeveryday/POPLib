@@ -6,7 +6,7 @@
 //  Copyright (c) 2017 popeveryday@gmail.com. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 #import "POPAppDelegate.h"
 
 int main(int argc, char * argv[])

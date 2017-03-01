@@ -12,8 +12,8 @@
 #import "StringLib.h"
 #import "NetLib.h"
 #import "GlobalConfig.h"
-@import MessageUI;
-@import AssetsLibrary;
+#import <MessageUI/MessageUI.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 
 @protocol AppSettingsDelegate <NSObject>

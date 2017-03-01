@@ -12,7 +12,7 @@
 #import "ReturnSet.h"
 #import "Hashtable.h"
 #import "Reachability.h"
-@import MessageUI;
+#import <MessageUI/MessageUI.h>
 
 @interface NetLib : NSObject
 +(void)downloadAsyncFileToPath:(NSString*) toPath url:(NSString*) url delegate:(id<NSURLConnectionDelegate>)delegate;

@@ -1,6 +1,6 @@
 {
   "name": "POPLib",
-  "version": "0.1.87",
+  "version": "0.2.04",
   "summary": "POPLib is list of common functions for Object-c project.",
   "homepage": "https://github.com/popeveryday/POPLib",
   "license": "MIT",
@@ -9,10 +9,10 @@
   },
   "source": {
     "git": "https://github.com/popeveryday/POPLib.git",
-    "tag": "0.1.87"
+    "tag": "0.2.04"
   },
   "platforms": {
-    "ios": "7.1"
+    "ios": "8.0"
   },
   "requires_arc": true,
   "source_files": "POPLib/Classes/**/*.{h,m,c}",
@@ -21,7 +21,7 @@
 
     ],
     "MBProgressHUD": [
-      "~> 1.0.0"
+      "~> 0.9"
     ]
   }
 }

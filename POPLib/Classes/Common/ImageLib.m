@@ -8,7 +8,7 @@
 
 #import "ImageLib.h"
 #import <ImageIO/ImageIO.h>
-@import AVFoundation;
+#import <AVFoundation/AVFoundation.h>
 
 @implementation ImageLib
 

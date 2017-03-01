@@ -2,8 +2,8 @@
 //  main.m
 //  POPLib
 //
-//  Created by popeveryday on 01/28/2016.
-//  Copyright (c) 2016 popeveryday. All rights reserved.
+//  Created by popeveryday@gmail.com on 03/01/2017.
+//  Copyright (c) 2017 popeveryday@gmail.com. All rights reserved.
 //
 
 @import UIKit;

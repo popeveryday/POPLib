@@ -1,15 +1,11 @@
-source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-target 'POPLib_Example', :exclusive => true do
-  pod 'POPLib', :path => '../'
-end
-
-target 'POPLib_Tests', :exclusive => true do
+target 'POPLib_Example' do
   pod 'POPLib', :path => '../'
 
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
+  target 'POPLib_Tests' do
+    inherit! :search_paths
+
+    
+  end
 end

@@ -4,27 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Expecta+Snapshots.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Expecta.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FBSnapshotTestCase.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>MBProgressHUD.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>POPLib.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -44,55 +24,45 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Specta.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0D888F29E05E498D0CD91A51D28599A5</key>
+		<key>36F706990D78059FD249671BA3EA6AB8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>28D253A24B1D1D55E147153F01103E3D</key>
+		<key>39F3AC2C7143B0D1165029478421DC2E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2BC62A292341880787207FC59AA14411</key>
+		<key>41FA54D12162DAD51D02FC58A2CD5034</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>475124A9A2123F07897074A8EDB9E312</key>
+		<key>7E3FEA028EBCD087480F98BC6333EF9C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C245C111C18A1682999533CABC181133</key>
+		<key>8150EAA1EF895A3D03B26E99A901A22A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DD86ABD743B0605672C710ADC56EB9DA</key>
+		<key>D0D2D30109FE080363E26CCE9D056AF2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
+		<key>DC16DCB227FC191385FE191DB618FDC6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ED4342E27597144E22BA4081D52F6DD1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F3AD68B2A7CCE63A4D62C091C56F6C62</key>
+		<key>ED20BF7EE905077D3C267B32D2E12AAB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

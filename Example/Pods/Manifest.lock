@@ -1,38 +1,22 @@
 PODS:
-  - Expecta (1.0.5)
-  - Expecta+Snapshots (2.0.0):
-    - Expecta (~> 1.0)
-    - FBSnapshotTestCase/Core (~> 2.0.3)
-  - FBSnapshotTestCase (2.0.7):
-    - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
-  - FBSnapshotTestCase/Core (2.0.7)
-  - FBSnapshotTestCase/SwiftSupport (2.0.7):
-    - FBSnapshotTestCase/Core
-  - MBProgressHUD (0.9.2)
-  - POPLib (0.1.86):
-    - MBProgressHUD (~> 0.9)
+  - MBProgressHUD (1.0.0)
+  - POPLib (0.1.87):
+    - MBProgressHUD (~> 1.0.0)
     - PureLayout
   - PureLayout (3.0.2)
-  - Specta (1.0.5)
 
 DEPENDENCIES:
-  - Expecta
-  - Expecta+Snapshots
-  - FBSnapshotTestCase
   - POPLib (from `../`)
-  - Specta
 
 EXTERNAL SOURCES:
   POPLib:
     :path: ../
 
 SPEC CHECKSUMS:
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
-  FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
-  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
-  POPLib: c401962b3bcdf397497aed3657728ddaaba58a5f
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  POPLib: 8ef0f8cfdc0e11ad1619cf924e999202d01254b7
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: deb632e651a84cb4a46072a5a8439d2f917a718d
+
+COCOAPODS: 1.2.0

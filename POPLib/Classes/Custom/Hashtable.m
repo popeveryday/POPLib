@@ -15,7 +15,7 @@
 {
     Hashtable* hash = [[Hashtable alloc] init];
     for (NSString* key in dic.allKeys) {
-        [hash hashtable_AddValue:[dic valueForKey:key] forKey:key];
+        [hash hashtable_AddValue:[dic objectForKey:key] forKey:key];
     }
     return hash;
 }

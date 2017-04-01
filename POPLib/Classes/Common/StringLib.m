@@ -57,7 +57,7 @@
     NSString* result = @"[@]";
     
     for (NSString* key in dictionary.allKeys) {
-        result = [result stringByAppendingFormat:@"&%@=%@", [self parseStringValidate:key isParseString:YES], [self parseStringValidate:[dictionary valueForKey:key] isParseString:YES]];
+        result = [result stringByAppendingFormat:@"&%@=%@", [self parseStringValidate:key isParseString:YES], [self parseStringValidate:[dictionary objectForKey:key] isParseString:YES]];
     }
     
     return [[result stringByReplacingOccurrencesOfString:@"[@]&" withString:@""] stringByReplacingOccurrencesOfString:@"[@]" withString: @""];

@@ -75,7 +75,7 @@ static ObserverObject* shared = nil;
 {
     if(![[ObserverObject instance].messages.allKeys containsObject:@(key)]) return nil;
          
-    NSString* msg = [[ObserverObject instance].messages valueForKey:@(key)];
+    NSString* msg = [[ObserverObject instance].messages objectForKey:@(key)];
     if(cleanUpData) [[ObserverObject instance].messages removeObjectForKey:@(key)];
     return msg;
 }
@@ -89,7 +89,7 @@ static ObserverObject* shared = nil;
 +(id) objectForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
 {
     if(![[ObserverObject instance].objects.allKeys containsObject:@(key)]) return nil;
-    id obj = [[ObserverObject instance].objects valueForKey:@(key)];
+    id obj = [[ObserverObject instance].objects objectForKey:@(key)];
     if(cleanUpData) [[ObserverObject instance].objects removeObjectForKey:@(key)];
     return obj;
 }

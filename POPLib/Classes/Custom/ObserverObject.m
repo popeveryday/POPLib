@@ -56,8 +56,8 @@ static ObserverObject* shared = nil;
 
 +(void)sendObserver:(NSInteger) key message:(NSString*)message object:(id)object{
     [ObserverObject instance].key = key;
-    [[ObserverObject instance].messages setObject:message forKey:@(key)];
-    [[ObserverObject instance].objects setObject:object forKey:@(key)];
+    if(message) [[ObserverObject instance].messages setObject:message forKey:@(key)];
+    if(object) [[ObserverObject instance].objects setObject:object forKey:@(key)];
     [ObserverObject instance].counter = [ObserverObject instance].counter + 1;
 }
 
@@ -73,6 +73,8 @@ static ObserverObject* shared = nil;
 
 +(NSString*) messageForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
 {
+    if(![[ObserverObject instance].messages.allKeys containsObject:@(key)]) return nil;
+         
     NSString* msg = [[ObserverObject instance].messages valueForKey:@(key)];
     if(cleanUpData) [[ObserverObject instance].messages removeObjectForKey:@(key)];
     return msg;
@@ -86,6 +88,7 @@ static ObserverObject* shared = nil;
 
 +(id) objectForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
 {
+    if(![[ObserverObject instance].objects.allKeys containsObject:@(key)]) return nil;
     id obj = [[ObserverObject instance].objects valueForKey:@(key)];
     if(cleanUpData) [[ObserverObject instance].objects removeObjectForKey:@(key)];
     return obj;

@@ -21,6 +21,8 @@ static ObserverObject* shared = nil;
     
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ObserverObject alloc] init];
+        sharedInstance.objects = [NSMutableDictionary new];
+        sharedInstance.messages = [NSMutableDictionary new];
     });
     
     return sharedInstance;
@@ -54,23 +56,37 @@ static ObserverObject* shared = nil;
 
 +(void)sendObserver:(NSInteger) key message:(NSString*)message object:(id)object{
     [ObserverObject instance].key = key;
-    [ObserverObject instance].message = message;
-    [ObserverObject instance].object = object;
+    [[ObserverObject instance].messages setObject:message forKey:@(key)];
+    [[ObserverObject instance].objects setObject:object forKey:@(key)];
     [ObserverObject instance].counter = [ObserverObject instance].counter + 1;
 }
 
-+(NSInteger)key{
++(NSInteger)key
+{
     return [ObserverObject instance].key;
 }
 
-+(NSString*)message{
-    return [ObserverObject instance].message;
++(NSString*) messageForKey:(NSInteger)key
+{
+    return [[ObserverObject instance].messages valueForKey:@(key)];
 }
 
-+(id)object{
-    return [ObserverObject instance].object;
++(id) objectForKey:(NSInteger)key
+{
+    return [[ObserverObject instance].objects valueForKey:@(key)];
 }
 
++(id) removeObjectForKey:(NSInteger)key
+{
+    [[ObserverObject instance].objects removeObjectForKey:@(key)];
+}
+
+
++(void) cleanup
+{
+    [[ObserverObject instance].objects removeAllObjects];
+    [[ObserverObject instance].messages removeAllObjects];
+}
 
 
 @end

@@ -10,8 +10,8 @@
 
 @interface ObserverObject : NSObject
 
-@property (nonatomic) NSString *message;
-@property (nonatomic) id object;
+@property (nonatomic) NSMutableDictionary* messages;
+@property (nonatomic) NSMutableDictionary* objects;
 @property (nonatomic) NSInteger key;
 @property (nonatomic) NSInteger counter;
 
@@ -26,32 +26,34 @@
 +(void)sendObserver:(NSInteger) key message:(NSString*)message;
 +(void)sendObserver:(NSInteger) key message:(NSString*)message object:(id)object;
 
-+(NSInteger)key;
-+(NSString*)message;
-+(id)object;
++(NSInteger) key;
++(NSString*) messageForKey:(NSInteger)key;
++(id) objectForKey:(NSInteger)key;
++(id) removeObjectForKey:(NSInteger)key;
++(void) cleanup;
 @end
 
 /*
-//viewDidLoad
-[ObserverObject addObserverToTarget:self];
-
--(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    switch ([ObserverObject Key])
-    {
-        case OBS_FinishRoundDialog_NextRound:
-            NSLog(@"next");
-            break;
-        case OBS_FinishRoundDialog_ReplayRound:
-            NSLog(@"replay");
-            break;
-        case OBS_FinishRoundDialog_ReturnPackage:
-            NSLog(@"return");
-            break;
-    }
-}
-
--(void) dealloc{
-    [ObserverObject removeObserverToTarget:self];
-}
-*/
+ //viewDidLoad
+ [ObserverObject addObserverToTarget:self];
+ 
+ -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+ {
+ switch (ObserverObject.key)
+ {
+ case OBS_FinishRoundDialog_NextRound:
+ NSLog(@"next");
+ break;
+ case OBS_FinishRoundDialog_ReplayRound:
+ NSLog(@"replay");
+ break;
+ case OBS_FinishRoundDialog_ReturnPackage:
+ NSLog(@"return");
+ break;
+ }
+ }
+ 
+ -(void) dealloc{
+ [ObserverObject removeObserverToTarget:self];
+ }
+ */

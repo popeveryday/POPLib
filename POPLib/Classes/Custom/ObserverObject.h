@@ -26,11 +26,11 @@
 +(void)sendObserver:(NSInteger) key message:(NSString*)message;
 +(void)sendObserver:(NSInteger) key message:(NSString*)message object:(id)object;
 
-+(NSInteger) key;
++(NSInteger)key;
 +(NSString*) messageForKey:(NSInteger)key;
++(NSString*) messageForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData;
 +(id) objectForKey:(NSInteger)key;
-+(id) removeObjectForKey:(NSInteger)key;
-+(void) cleanup;
++(id) objectForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData;
 @end
 
 /*

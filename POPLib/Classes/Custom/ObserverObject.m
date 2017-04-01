@@ -68,21 +68,31 @@ static ObserverObject* shared = nil;
 
 +(NSString*) messageForKey:(NSInteger)key
 {
-    return [[ObserverObject instance].messages valueForKey:@(key)];
+    return [self messageForKey:key cleanUpData:YES];
 }
+
++(NSString*) messageForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
+{
+    NSString* msg = [[ObserverObject instance].messages valueForKey:@(key)];
+    if(cleanUpData) [[ObserverObject instance].messages removeObjectForKey:@(key)];
+    return msg;
+}
+
 
 +(id) objectForKey:(NSInteger)key
 {
-    return [[ObserverObject instance].objects valueForKey:@(key)];
+    return [self objectForKey:key cleanUpData:YES];
 }
 
-+(id) removeObjectForKey:(NSInteger)key
++(id) objectForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
 {
-    [[ObserverObject instance].objects removeObjectForKey:@(key)];
+    id obj = [[ObserverObject instance].objects valueForKey:@(key)];
+    if(cleanUpData) [[ObserverObject instance].objects removeObjectForKey:@(key)];
+    return obj;
 }
 
 
-+(void) cleanup
++(void) cleanUpAllData
 {
     [[ObserverObject instance].objects removeAllObjects];
     [[ObserverObject instance].messages removeAllObjects];

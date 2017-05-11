@@ -23,7 +23,7 @@ enum ViewDesignStyle
 #define GC_ScreenShort GC_ScreenWidth < GC_ScreenHeight ? GC_ScreenWidth : GC_ScreenHeight
 #define GC_ScreenCenter CGPointMake(GC_ScreenWidth/2, GC_ScreenHeight/2)
 #define GC_ScreenBound CGRectMake(0, 0, GC_ScreenWidth, GC_ScreenHeight)
-#define GC_Device_IsIpad     UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+#define GC_Device_IsIpad     UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"]
 
 #define IsDeviceLandscape(viewcontroller) UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
 #define GC_Device_Orientation [[UIDevice currentDevice] orientation]

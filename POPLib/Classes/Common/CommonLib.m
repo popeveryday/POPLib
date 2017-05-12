@@ -455,6 +455,26 @@
     [self setAppPreference:@"default_language_code" value:code];
 }
 
++(UIDeviceOrientation)deviceOrientation
+{
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    if( [[UIDevice currentDevice] orientation] == UIDeviceOrientationUnknown ){
+        if(orientation == 0) //Default orientation
+            return UIDeviceOrientationUnknown;
+        else if(orientation == UIInterfaceOrientationPortraitUpsideDown)
+            return UIDeviceOrientationPortraitUpsideDown;
+        else if(orientation == UIInterfaceOrientationPortrait)
+            return UIDeviceOrientationPortrait;
+        else if(orientation == UIInterfaceOrientationLandscapeLeft)
+            return UIDeviceOrientationLandscapeLeft;
+        else if(orientation == UIInterfaceOrientationLandscapeRight)
+            return UIDeviceOrientationLandscapeRight;
+    }else{
+        return [[UIDevice currentDevice] orientation];
+    }
+}
+
 @end
 
 

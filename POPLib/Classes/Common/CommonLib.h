@@ -56,4 +56,5 @@
 +(NSString*)deviceModelType;
 +(NSString*)localizedText:(NSString*)text languageCode:(NSString*)code;
 +(void)localizedDefaulLanguageCode:(NSString*)code;
++(UIDeviceOrientation)deviceOrientation;
 @end

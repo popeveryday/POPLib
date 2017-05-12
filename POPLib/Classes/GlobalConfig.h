@@ -26,7 +26,7 @@ enum ViewDesignStyle
 #define GC_Device_IsIpad     UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"]
 
 #define IsDeviceLandscape(viewcontroller) UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
-#define GC_Device_Orientation [[UIDevice currentDevice] orientation]
+#define GC_Device_Orientation [CommonLib deviceOrientation]
 #define GC_Device_IsLandscape GC_Device_Orientation == UIDeviceOrientationLandscapeLeft || GC_Device_Orientation == UIDeviceOrientationLandscapeRight
 
 

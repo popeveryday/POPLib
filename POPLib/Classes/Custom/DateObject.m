@@ -98,7 +98,7 @@
 
 
 -(NSString*)toDMYString{
-    return [self toDMYStringWithFormat:@"%02d/%02d/%d"];
+    return [self toDMYStringWithFormat:@"%02d/%02d/%02d"];
 }
 
 -(NSString*)toDMYStringWithFormat:(NSString*) format{
@@ -114,11 +114,11 @@
 }
 
 -(NSString*)toYMDHMSLogFormatString{
-    return [self toYMDHMSStringWithFormat:@"%d-%02d-%02d %d:%02d:%02d"];
+    return [self toYMDHMSStringWithFormat:@"%d-%02d-%02d %02d:%02d:%02d"];
 }
 
 -(NSString*)toYMDHMSFileFormatString{
-    return [self toYMDHMSStringWithFormat:@"%d%02d%02d_%d%02d%02d"];
+    return [self toYMDHMSStringWithFormat:@"%d%02d%02d_%02d%02d%02d"];
 }
 
 -(NSString*)toYMDHMSStringWithFormat:(NSString*) format{

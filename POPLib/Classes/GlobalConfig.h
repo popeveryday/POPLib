@@ -81,7 +81,7 @@ enum ViewDesignStyle
 
 #define IsSideOf(side) GC_ScreenWidth == side/2 || GC_ScreenHeight == side/2
 #define GC_MobileAds_Device GC_Device_IsIpad ? (GC_Device_IsRetina ? @"ipadhd" : @"ipad") : IsSideOf((2208/3)*2) ? @"iphonehd6p" : IsSideOf(1334) ? @"iphonehd6" : IsSideOf(1136) ? @"iphonehd5" : IsSideOf(960) ? @"iphonehd" : @"iphone"
-#define GC_MobileAds_Url [NSString stringWithFormat:@"http://services.poptato.com/mobileads/?device=%@&appleid=[appleid]", GC_MobileAds_Device]
+#define GC_MobileAds_Url [NSString stringWithFormat:@"http://mad.chuaphuocan.com/?device=%@&appleid=[appleid]", GC_MobileAds_Device]
 
 #define GC_Path_Inbox [FileLib getDocumentPath:@"Inbox"]
 

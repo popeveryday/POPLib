@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		11C89A5DFE22C2C597FF7D71 /* Pods-POPLib_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-POPLib_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-POPLib_Tests/Pods-POPLib_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2FCE9EFF1FF39CEFF2148097 /* Pods-POPLib_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-POPLib_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example.release.xcconfig"; sourceTree = "<group>"; };
-		33211567815896263B932A37 /* POPLib.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = POPLib.podspec; path = ../POPLib.podspec; sourceTree = "<group>"; };
+		33211567815896263B932A37 /* POPLib.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = POPLib.podspec; path = ../POPLib.podspec; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* POPLib_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = POPLib_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -59,10 +59,10 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		6C3E816365841DB9171EBA6A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		6C3E816365841DB9171EBA6A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B29E58A1A2092D3EACF350F8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		B29E58A1A2092D3EACF350F8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D7C44BA01E4E132F8D6C3534 /* Pods_POPLib_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POPLib_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF27F44F13A3293CE19D976C /* Pods-POPLib_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-POPLib_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E2722BACB05DA6EE566CC24C /* Pods_POPLib_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POPLib_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,6 +250,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "popeveryday@gmail.com";
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = K7DQ6P5BLD;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -524,6 +527,7 @@
 			baseConfigurationReference = DF27F44F13A3293CE19D976C /* Pods-POPLib_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = K7DQ6P5BLD;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "POPLib/POPLib-Prefix.pch";
 				INFOPLIST_FILE = "POPLib/POPLib-Info.plist";
@@ -539,6 +543,7 @@
 			baseConfigurationReference = 2FCE9EFF1FF39CEFF2148097 /* Pods-POPLib_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = K7DQ6P5BLD;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "POPLib/POPLib-Prefix.pch";
 				INFOPLIST_FILE = "POPLib/POPLib-Info.plist";

@@ -580,6 +580,30 @@
             }];
 }
 
++(NSDictionary*) breakDownPath:(NSString*)filePath
+{
+    NSString* path = filePath.stringByDeletingLastPathComponent;
+    NSString* filename = filePath.lastPathComponent;
+    NSString* filenameWithoutExtension = filename.stringByDeletingPathExtension;
+    NSString* extension =  [StringLib isValid:filename.pathExtension] ? filename.pathExtension : @"";
+    
+    return @{ @"path": path, @"filename": filename, @"filenameWithoutExtension": filenameWithoutExtension, @"extension": extension, @"P": path, @"F": filename, @"FWE": filenameWithoutExtension, @"E": extension };
+}
+
++(NSString*) updateFilename:(NSString*)filePath withPrefix:(NSString*)prefix suffix:(NSString*)suffix newExtension:(NSString*)newExtension
+{
+    NSDictionary* breakParts = [self breakDownPath:filePath];
+    
+    NSString* path = [breakParts objectForKey:@"P"];
+    NSString* fnwe = [breakParts objectForKey:@"FWE"];;
+    NSString* exte = newExtension ? [newExtension stringByReplacingOccurrencesOfString:@"." withString:@""] : [breakParts objectForKey:@"E"];
+    
+    NSString* filename = [NSString stringWithFormat:@"%@%@%@%@%@", prefix?prefix:@"", fnwe, suffix?suffix:@"", ([StringLib isValid:exte]?@".":@""), ([StringLib isValid:exte]?exte:@"") ];
+    
+    return [path stringByAppendingPathComponent:filename];
+    
+}
+
 @end
 
 

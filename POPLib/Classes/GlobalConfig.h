@@ -70,9 +70,15 @@ enum ViewDesignStyle
 
 #define IsOpenInAvailable(path) ( [StringLib contains:[NSString stringWithFormat:@"&%@=", [[path pathExtension] uppercaseString]] inString:[@"&" stringByAppendingString:GC_OpenIn_Identifiers]] )
 
+#define SubString(str,x,y) [[str substringToIndex:y] substringFromIndex:x]
+#define IndexOf(s, str) [StringLib indexOf:s inString:str]
+#define StringWithLiteral(literal) @#literal
+#define GetExecutionTime(s) [[NSDate date] timeIntervalSinceDate:s]
+#define Color(hex) [CommonLib colorFromHexString:hex alpha:1.0f]
+#define Color2(hex,opacity) [CommonLib colorFromHexString:hex alpha:opacity]
 
 
-#define randomf(minX,maxX) ((float)(arc4random() % (maxX - minX + 1)) + (float)minX)
+#define Randomf(minX,maxX) ((float)(arc4random() % (maxX - minX + 1)) + (float)minX)
 #define ResourcePath(path) [[NSBundle mainBundle] pathForResource:path ofType:nil]
 #define ImageWithPath(path) [UIImage imageWithContentsOfFile:path]
 #define ImageViewWithPath(path) [[UIImageView alloc] initWithImage: ImageWithPath(path)]

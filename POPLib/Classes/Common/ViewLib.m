@@ -386,14 +386,22 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     UIViewController* nextViewController = [storyboard instantiateViewControllerWithIdentifier: viewID];
     
+    [self presentViewController:nextViewController fromViewController:currentViewController displayStyle:displayStyle prepareBlock:prepareBlock completeBlock:completeBlock];
+}
+
++(void)presentViewController:(UIViewController*)nextViewController fromViewController:(UIViewController*)currentViewController displayStyle:(enum DisplayStyle) displayStyle prepareBlock:(void(^)(UIViewController* destinationVC))prepareBlock completeBlock:(void(^)())completeBlock
+{
     if (prepareBlock != nil) {
         prepareBlock(nextViewController);
     }
     
-    UIView* snapshot = viewController.navigationController != nil ? [viewController.navigationController.view snapshotViewAfterScreenUpdates:YES] : [viewController.view snapshotViewAfterScreenUpdates:YES];
+    UIView* snapshot = currentViewController.navigationController != nil ? [currentViewController.navigationController.view snapshotViewAfterScreenUpdates:YES] : [currentViewController.view snapshotViewAfterScreenUpdates:YES];
+    
+    UINavigationController* nav;
     
     switch (displayStyle) {
         case DisplayStyleReplaceNavigationRootVC:
+            nav = (UINavigationController*) [currentViewController parentViewController];
             [nav setViewControllers:@[ nextViewController ]];
             [currentViewController.view removeFromSuperview];
             currentViewController = nil;

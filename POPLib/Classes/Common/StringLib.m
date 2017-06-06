@@ -9,6 +9,7 @@
 #import "StringLib.h"
 #import "NSDate+NVTimeAgo.h"
 #import <Foundation/NSNull.h>
+#import "GlobalConfig.h"
 
 
 @implementation StringLib
@@ -232,6 +233,61 @@
     standard = [standard stringByReplacingOccurrencesOfString:@"Đ" withString:@"D"];
     NSData *decode = [standard dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     return [[NSString alloc] initWithData:decode encoding:NSASCIIStringEncoding];
+}
+
+
+//gen code base on dictionary of string ex: 0 -> AAAA, 1 -> AAAB
++(NSString*) genCodeFromNumber:(NSInteger)num maxLength:(NSInteger)maxLength dictionaryString:(NSString*) dictionaryString
+{
+    NSString* val = @"";
+    NSInteger stotal = dictionaryString.length;
+    
+    if (num < stotal) {
+        val = SubString(dictionaryString, num, num+1);
+    }else{
+        NSMutableArray* parts = [NSMutableArray new];
+        NSInteger time = 0, surplus = 0, tempNum = num;
+        
+        while (tempNum >= stotal) {
+            time = tempNum /stotal;
+            surplus = tempNum % stotal;
+            tempNum = time;
+            [parts addObject: @(surplus)];
+        }
+        
+        for (NSNumber* item in parts) {
+            val = [NSString stringWithFormat:@"%@%@", SubString(dictionaryString, item.integerValue, item.integerValue+1), val];
+        }
+        
+        val = [NSString stringWithFormat:@"%@%@", SubString( dictionaryString, time, time+1), val];
+    }
+    
+    for (int i = 0; i < maxLength - val.length; i++) {
+        val = [NSString stringWithFormat:@"%@%@", SubString(dictionaryString, 0, 1), val];
+    }
+    
+    return val;
+}
+//gen number from code: AAAA -> 0
++(NSInteger) genNumberFromCode:(NSString*)code dictionaryString:(NSString*) dictionaryString
+{
+    NSInteger num = 0, val = 0;
+    NSInteger total = dictionaryString.length;
+    
+    for (int i = 0; i < code.length; i++)
+    {
+        NSString* letter = SubString(code, (code.length - i - 1), (code.length - i - 1)+1);
+        NSInteger index = IndexOf( letter, dictionaryString );
+        
+        val = index;
+        for (int time = 0; time < i; time++) {
+            val *= total;
+        }
+        
+        num += val;
+    }
+    
+    return num;
 }
 
 @end

@@ -31,7 +31,6 @@ static ObserverObject* shared = nil;
 
 
 +(void)addObserverToTarget:(id)target{
-    [self removeObserverToTarget:target];
     [[ObserverObject instance] addObserver:target forKeyPath:@"counter" options:NSKeyValueObservingOptionNew context:NULL];
 }
 

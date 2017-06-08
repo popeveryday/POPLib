@@ -235,7 +235,7 @@
     return result;
 }
 
-+(UIImage*)createVideoSnapshootFromMP4File:(NSString*) mp4file atSecond:(Float64) second{
++(UIImage*)createVideoSnapshotFromMP4File:(NSString*) mp4file atSecond:(Float64) second{
     
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:mp4file] options:nil];
     AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
@@ -247,8 +247,34 @@
     CMTime time = CMTimeMakeWithSeconds(second, 60);
     CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
     
-    if(!err) return [[UIImage alloc] initWithCGImage:imgRef];
+    if(!err){
+        UIImage* image = [[UIImage alloc] initWithCGImage:imgRef];
+        CGImageRelease(imgRef);
+        return image;
+    }
+    
+    CGImageRelease(imgRef);
     return nil;
+}
+
++(NSMutableArray*)createVideoSnapshotsFromMP4File:(NSString*)mp4file
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSURL *url = [NSURL fileURLWithPath:mp4file];
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    //  imageGenerator.appliesPreferredTrackTransform = YES;
+    
+    NSInteger duration = CMTimeGetSeconds([asset duration]);
+    NSInteger range = duration<60?duration:60;
+    
+    for (int i=0; i<range; i = i+5) {
+        CGImageRef imgRef = [imageGenerator copyCGImageAtTime:CMTimeMake(i, 1) actualTime:NULL error:nil];
+        UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef scale:UIViewContentModeScaleAspectFit orientation:UIImageOrientationUp];
+        CGImageRelease(imgRef);
+        [array addObject:thumbnail];
+    }
+    return array;
 }
 
 +(Float64)getDurationFromMP4File:(NSString*) mp4file{
@@ -403,6 +429,8 @@
         CGContextFillRect(context, imageRect);
         
         newImage = UIGraphicsGetImageFromCurrentImageContext();
+        
+        CGContextRelease(context);
     }
     UIGraphicsEndImageContext();
     
@@ -530,8 +558,13 @@
     UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+    CGImageRelease(cgImage);
+    CGContextRelease(outputContext);
+    
     return outputImage;
 }
+
+
 
 
 

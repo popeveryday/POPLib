@@ -28,7 +28,8 @@
 +(CGRect)calculateScaleImage: (UIImage*) sourceImage scaledToWidth: (float) width;
 +(NSString*)getTypeFromImageData:(NSData *)data;
 +(Hashtable*)getImageMetadata:(NSString*) imagePath;
-+(UIImage*)createVideoSnapshootFromMP4File:(NSString*) mp4file atSecond:(Float64) second;
++(UIImage*)createVideoSnapshotFromMP4File:(NSString*) mp4file atSecond:(Float64) second;
++(NSMutableArray*)createVideoSnapshotsFromMP4File:(NSString*)mp4file;
 +(Float64)getDurationFromMP4File:(NSString*) mp4file;
 
 +(UIImage*)drawImage:(UIImage*) fgImage inImage:(UIImage*) bgImage atRect:(CGRect)rect;

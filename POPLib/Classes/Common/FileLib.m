@@ -120,65 +120,6 @@
     return [[NSBundle mainBundle] pathForResource:[[filename lastPathComponent] stringByDeletingPathExtension] ofType: [[filename lastPathComponent] pathExtension]];
 }
 
-//search like normal way: *abc* or prefix_* or *.txt
-//+(NSMutableArray*) GetFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType
-//{
-//    NSMutableArray* files = [[NSMutableArray alloc] init];
-//    NSError* error = nil;
-//    NSArray* dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
-//
-//    if (!error) {
-//        if ([StringLib isValid:searchString])
-//        {
-//            //SELF beginswith[c] 'a' SELF endswith[c] 'a' SELF contains[c] 'a'
-//            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF like[c] %@", searchString];
-//            NSArray *imagesOnly = [dirContents filteredArrayUsingPredicate:predicate];
-//            files = [NSMutableArray arrayWithArray:imagesOnly];
-//        }else{
-//            files = [NSMutableArray arrayWithArray:dirContents];
-//        }
-//    }else{
-//#ifdef DEBUG
-//        NSLog(@"[FileLib.GetFileList] error: %@", [error localizedDescription]);
-//#endif
-//    }
-//
-//    NSMutableArray* result = [[NSMutableArray alloc] init];
-//    NSMutableArray* resultSub = [[NSMutableArray alloc] init];
-//    BOOL isDirectory;
-//
-//    if (isFullPath || isIncludeSubFolder || filterListType != GetFileListTypeAll)
-//    {
-//        for (int i = 0; i < files.count; i++) {
-//            NSLog(@"--%@", files[i]);
-//            NSString* filePath = [path stringByAppendingPathComponent:files[i]];
-//            isDirectory = [self checkPathIsDirectory:filePath];
-//
-//            if (filterListType == GetFileListTypeAll
-//                || (filterListType == GetFileListTypeFileOnly && !isDirectory)
-//                || (filterListType == GetFileListTypeFolderOnly && isDirectory)
-//                || (filterListType == GetFileListTypeImageOnly && IsImageFile(filePath))
-//                || (filterListType == GetFileListTypeVideoOnly && IsVideoFile(filePath))
-//                || (filterListType == GetFileListTypeImageVideoOnly && IsSupportFileType(filePath))
-//                )
-//            {
-//                [result addObject: isFullPath ? filePath : files[i]];
-//            }
-//
-//            if (isIncludeSubFolder && isDirectory) {
-//                [resultSub addObjectsFromArray:[self getFileList:filePath searchString:searchString isFullPath:isFullPath isIncludeSubFolder:isIncludeSubFolder filterListType:filterListType]];
-//            }
-//        }
-//
-//        if (isIncludeSubFolder) {
-//            [result addObjectsFromArray:resultSub];
-//        }
-//
-//        return result;
-//    }
-//
-//    return files;
-//}
 
 +(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType
 {

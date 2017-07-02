@@ -72,11 +72,11 @@ enum SortFileListType{
 
 +(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType;
 
-+(NSMutableArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath;
++(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath;
 
-+(NSMutableArray*)getFileList:(NSString*) path fileType:(NSString*) fileType isFullPath:(BOOL)isFullPath;
++(NSArray*)getFileList:(NSString*) path fileType:(NSString*) fileType isFullPath:(BOOL)isFullPath;
 
-+(NSMutableArray*)getFileList:(NSString*) path fileType:(NSString*) fileType;
++(NSArray*)getFileList:(NSString*) path fileType:(NSString*) fileType;
 
 +(BOOL)createDirectory:(NSString*) path;
 

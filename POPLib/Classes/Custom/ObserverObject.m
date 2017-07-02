@@ -9,10 +9,10 @@
 #import "ObserverObject.h"
 
 @implementation ObserverObject
+{
+    NSMutableArray* managedObjects;
+}
 
-
-
-static ObserverObject* shared = nil;
 
 +(ObserverObject*)instance
 {
@@ -29,15 +29,38 @@ static ObserverObject* shared = nil;
 }
 
 
-
-+(void)addObserverToTarget:(id)target{
-    [[ObserverObject instance] addObserver:target forKeyPath:@"counter" options:NSKeyValueObservingOptionNew context:NULL];
++(void)addObserverToTarget:(id)target
+{
+    [[ObserverObject instance] addObserverToTarget:target];
 }
 
-+(void)removeObserverToTarget:(id)target{
-    @try{
-        [[ObserverObject instance] removeObserver:target forKeyPath:@"counter"];
-    }@catch (id exception) { }
+
+-(void)addObserverToTarget:(id)target
+{
+    if (!managedObjects) managedObjects = [NSMutableArray new];
+    
+    if ([managedObjects containsObject:target]) return;
+    
+    [self addObserver:target forKeyPath:@"counter" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    [managedObjects addObject:target];
+}
+
++(void)removeObserverToTarget:(id)target
+{
+    [[ObserverObject instance] removeObserverToTarget:target];
+}
+
+-(void)removeObserverToTarget:(id)target
+{
+    if (!managedObjects) managedObjects = [NSMutableArray new];
+    
+    if (![managedObjects containsObject:target]) return;
+    
+    [managedObjects removeObject:target];
+    
+    [self removeObserver:target forKeyPath:@"counter"];
+    
 }
 
 

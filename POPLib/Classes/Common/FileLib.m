@@ -173,15 +173,15 @@
     return result;
 }
 
-+(NSMutableArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath{
++(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath{
     return [self getFileList:path searchString:searchString isFullPath:isFullPath isIncludeSubFolder:NO filterListType:GetFileListTypeAll];
 }
 
-+(NSMutableArray*)getFileList:(NSString*) path fileType:(NSString*) fileType isFullPath:(BOOL)isFullPath{
++(NSArray*)getFileList:(NSString*) path fileType:(NSString*) fileType isFullPath:(BOOL)isFullPath{
     return [self getFileList:path searchString:fileType == nil ? nil : [NSString stringWithFormat:@"*.%@", fileType] isFullPath:isFullPath];
 }
 
-+(NSMutableArray*)getFileList:(NSString*) path fileType:(NSString*) fileType{
++(NSArray*)getFileList:(NSString*) path fileType:(NSString*) fileType{
     
     return [self getFileList:path searchString:fileType == nil ? nil : [NSString stringWithFormat:@"*.%@", fileType] isFullPath:NO];
 }

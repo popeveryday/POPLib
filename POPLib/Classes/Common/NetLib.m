@@ -55,7 +55,7 @@
         return [[ReturnSet alloc] initWithResult:NO];
     }
     
-    [FileLib writeFile:toPath content:content];
+    [FileLib writeContent:content toFile:toPath isAppend:NO];
     
     return [[ReturnSet alloc] init:YES message:toPath object:toPath];
 }

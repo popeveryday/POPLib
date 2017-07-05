@@ -88,9 +88,7 @@ enum SortFileListType{
 
 +(UIImagePickerController*)showPickerController: (id) container sourceType:(UIImagePickerControllerSourceType) sourceType;
 
-+(BOOL)writeFile: (NSString*) filePath content:(NSString*) content;
-
-+(BOOL)writeFileInDocument: (NSString*) fileName content:(NSString*) content;
++(void) writeContent:(NSString*)content toFile:(NSString*)fileName isAppend:(BOOL)isAppend;
 
 +(NSString*)readFile: (NSString*) filePath;
 
@@ -131,5 +129,9 @@ enum SortFileListType{
 +(NSDictionary*) breakDownPath:(NSString*)filePath;
 
 +(NSString*) updateFilename:(NSString*)filePath withPrefix:(NSString*)prefix suffix:(NSString*)suffix newExtension:(NSString*)newExtension;
+
++(NSString *)md5HashOfPath:(NSString *)path;
+
++(NSString *)shaHashOfPath:(NSString *)path;
 
 @end

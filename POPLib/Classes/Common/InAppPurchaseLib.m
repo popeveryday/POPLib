@@ -48,7 +48,12 @@
     
     [ViewLib showLoading: _view];
     
-    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    if (GC_Device_iOsVersion >= 9.0) {
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+        [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    }else{
+        [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    }
     
     return YES;
 }

@@ -91,6 +91,8 @@
     }
 }
 
+
+
 -(void)hashtable_AddValue:(id)value forKey:(NSString*) key{
     [self addValue:value forKey:key];
 }
@@ -114,6 +116,16 @@
     
     [_values removeObjectAtIndex:index];
     [_keys removeObjectAtIndex:index];
+}
+
+-(NSDictionary*) toDictionary
+{
+    NSMutableDictionary* dic = [NSMutableDictionary new];
+    for (int i = 0; i < _keys.count; i++) {
+        [dic setObject:_values[i] forKey:_keys[i]];
+    }
+    
+    return dic;
 }
 
 

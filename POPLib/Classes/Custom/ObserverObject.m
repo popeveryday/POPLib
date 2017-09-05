@@ -7,11 +7,54 @@
 //
 
 #import "ObserverObject.h"
+#define OBS_KEY @"ObserverObjectKey"
 
 @implementation ObserverObject
 {
-    NSMutableArray* managedObjects;
+    NSLock* targetLock;
 }
+
+-(instancetype)init{
+    self = [super init];
+    if (self) {
+        self.targetObjects = [NSMutableArray new];
+        targetLock = [NSLock new];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(actionObserver:) name:OBS_KEY object:nil];
+    }
+    return self;
+}
+
+-(void) actionObserver:(NSNotification*)sender
+{
+    NSDictionary* data = sender.object;
+    NSInteger key = [[data objectForKey:@"key"] integerValue];
+    NSObject* value = [data objectForKey:@"value"];
+    
+    for (id target in self.targetObjects) {
+        if(target && [target respondsToSelector:@selector(observerObjectDidCallWithKey:value:)]){
+            [target observerObjectDidCallWithKey:key value:value];
+        }
+    }
+}
+
+-(void)addObserverToTarget:(id<ObserverObjectDelegate>)target
+{
+    if ([self.targetObjects containsObject:target]) return;
+    [targetLock lock];
+    [self.targetObjects addObject:target];
+    [targetLock unlock];
+}
+
+-(void)removeObserverWithTarget:(id<ObserverObjectDelegate>)target
+{
+    if (![self.targetObjects containsObject:target]) return;
+    [targetLock lock];
+    [self.targetObjects removeObject:target];
+    [targetLock unlock];
+}
+
+
+
 
 
 +(ObserverObject*)instance
@@ -21,107 +64,23 @@
     
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ObserverObject alloc] init];
-        sharedInstance.objects = [NSMutableDictionary new];
-        sharedInstance.messages = [NSMutableDictionary new];
     });
     
     return sharedInstance;
 }
 
-
-+(void)addObserverToTarget:(id)target
++(void)addObserverToTarget:(id<ObserverObjectDelegate>)target
 {
     [[ObserverObject instance] addObserverToTarget:target];
 }
 
-
--(void)addObserverToTarget:(id)target
++(void)removeObserverWithTarget:(id<ObserverObjectDelegate>)target
 {
-    if (!managedObjects) managedObjects = [NSMutableArray new];
-    
-    if ([managedObjects containsObject:target]) return;
-    
-    [self addObserver:target forKeyPath:@"counter" options:NSKeyValueObservingOptionNew context:NULL];
-    
-    [managedObjects addObject:target];
+    [[ObserverObject instance] removeObserverWithTarget:target];
 }
 
-+(void)removeObserverToTarget:(id)target
++(void)sendObserver:(NSInteger)key object:(id)object
 {
-    [[ObserverObject instance] removeObserverToTarget:target];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OBS_KEY object: object ? @{ @"key":@(key), @"value": object } : @{ @"key":@(key) } ];
 }
-
--(void)removeObserverToTarget:(id)target
-{
-    if (!managedObjects) managedObjects = [NSMutableArray new];
-    
-    if (![managedObjects containsObject:target]) return;
-    
-    [managedObjects removeObject:target];
-    
-    [self removeObserver:target forKeyPath:@"counter"];
-    
-}
-
-
-+(void)sendObserver:(NSInteger) key{
-    [self sendObserver:key message:nil object:nil];
-}
-
-+(void)sendObserver:(NSInteger) key object:(id)object{
-    [self sendObserver:key message:nil object:object];
-}
-
-+(void)sendObserver:(NSInteger) key message:(NSString*)message{
-    [self sendObserver:key message:message object:nil];
-}
-
-+(void)sendObserver:(NSInteger) key message:(NSString*)message object:(id)object{
-    [ObserverObject instance].key = key;
-    if(message) [[ObserverObject instance].messages setObject:message forKey:@(key)];
-    if(object) [[ObserverObject instance].objects setObject:object forKey:@(key)];
-    [ObserverObject instance].counter = [ObserverObject instance].counter + 1;
-}
-
-+(NSInteger)key
-{
-    return [ObserverObject instance].key;
-}
-
-+(NSString*) messageForKey:(NSInteger)key
-{
-    return [self messageForKey:key cleanUpData:YES];
-}
-
-+(NSString*) messageForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
-{
-    if(![[ObserverObject instance].messages.allKeys containsObject:@(key)]) return nil;
-         
-    NSString* msg = [[ObserverObject instance].messages objectForKey:@(key)];
-    if(cleanUpData) [[ObserverObject instance].messages removeObjectForKey:@(key)];
-    return msg;
-}
-
-
-+(id) objectForKey:(NSInteger)key
-{
-    return [self objectForKey:key cleanUpData:YES];
-}
-
-+(id) objectForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData
-{
-    if(![[ObserverObject instance].objects.allKeys containsObject:@(key)]) return nil;
-    id obj = [[ObserverObject instance].objects objectForKey:@(key)];
-    if(cleanUpData) [[ObserverObject instance].objects removeObjectForKey:@(key)];
-    return obj;
-}
-
-
-+(void) cleanUpAllData
-{
-    [[ObserverObject instance].objects removeAllObjects];
-    [[ObserverObject instance].messages removeAllObjects];
-}
-
-
 @end

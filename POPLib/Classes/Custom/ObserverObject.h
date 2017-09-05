@@ -8,52 +8,68 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol ObserverObjectDelegate <NSObject>
+-(void) observerObjectDidCallWithKey:(NSInteger)key value:(id)value;
+@end
+
 @interface ObserverObject : NSObject
-
-@property (nonatomic) NSMutableDictionary* messages;
-@property (nonatomic) NSMutableDictionary* objects;
-@property (nonatomic) NSInteger key;
-@property (nonatomic) NSInteger counter;
-
+@property (nonatomic) NSMutableArray* targetObjects;
 
 +(ObserverObject*)instance;
 
-+(void)removeObserverToTarget:(id)target;
-+(void)addObserverToTarget:(id)target;
++(void)addObserverToTarget:(id<ObserverObjectDelegate>)target;
 
-+(void)sendObserver:(NSInteger) key;
-+(void)sendObserver:(NSInteger) key object:(id)object;
-+(void)sendObserver:(NSInteger) key message:(NSString*)message;
-+(void)sendObserver:(NSInteger) key message:(NSString*)message object:(id)object;
++(void)removeObserverWithTarget:(id<ObserverObjectDelegate>)target;
 
-+(NSInteger)key;
-+(NSString*) messageForKey:(NSInteger)key;
-+(NSString*) messageForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData;
-+(id) objectForKey:(NSInteger)key;
-+(id) objectForKey:(NSInteger)key cleanUpData:(BOOL)cleanUpData;
++(void)sendObserver:(NSInteger)key object:(id)object;
+
 @end
 
 /*
+ 
+ //implement delegate
+ <ObserverObjectDelegate>
+ 
+ 
  //viewDidLoad
  [ObserverObject addObserverToTarget:self];
  
- -(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+ -(void)observerObjectDidCallWithKey:(NSInteger)key value:(id)value
  {
- switch (ObserverObject.key)
- {
- case OBS_FinishRoundDialog_NextRound:
- NSLog(@"next");
- break;
- case OBS_FinishRoundDialog_ReplayRound:
- NSLog(@"replay");
- break;
- case OBS_FinishRoundDialog_ReturnPackage:
- NSLog(@"return");
- break;
- }
+    switch (key)
+    {
+    case OBS_FinishRoundDialog_NextRound:
+        NSLog(@"next");
+        break;
+    case OBS_FinishRoundDialog_ReplayRound:
+        NSLog(@"replay");
+        break;
+    case OBS_FinishRoundDialog_ReturnPackage:
+        NSLog(@"return");
+        break;
+    }
  }
  
  -(void) dealloc{
- [ObserverObject removeObserverToTarget:self];
+    [ObserverObject removeObserverToTarget:self];
+ }
+ */
+
+
+
+
+
+
+
+/*
+ FOR MANUAL OBSERVER =====================
+ 
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(actionObserver:) name:@"ANY_NAME_HERE" object:nil];
+ 
+ [[NSNotificationCenter defaultCenter] postNotificationName:OBS_KEY object: @{ @"key":@(key), @"value": object } ];
+ 
+ -(void) actionObserver:(NSNotification*)sender
+ {
+    NSDictionary* data = sender.object;
  }
  */

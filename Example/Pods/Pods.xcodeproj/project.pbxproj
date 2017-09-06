@@ -124,13 +124,13 @@
 		06A2D0A33851B470C47251873FBDDBF8 /* MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MBProgressHUD.xcconfig; sourceTree = "<group>"; };
 		08485A5697754E18ED0D8CD7F19F5C43 /* MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
 		08ABC28694FA8DDD26ED0DB52628C372 /* CommonLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CommonLib.m; sourceTree = "<group>"; };
-		0A461D7EC6F976497A061693A2D0DC1E /* POPLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = POPLib.framework; path = POPLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A461D7EC6F976497A061693A2D0DC1E /* POPLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = POPLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BFAE7219862D103FA2576EDC242FC38 /* PureLayoutDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PureLayoutDefines.h; path = PureLayout/PureLayout/PureLayoutDefines.h; sourceTree = "<group>"; };
 		0C0A883306125A65BA343E4A21305F7A /* GameCenterLib2.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GameCenterLib2.m; sourceTree = "<group>"; };
 		0FE682DAD027C638EDDCFACD35A8F0BA /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1393D668455397DB5394D762E6FD769C /* PureLayout.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PureLayout.modulemap; sourceTree = "<group>"; };
+		1393D668455397DB5394D762E6FD769C /* PureLayout.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = PureLayout.modulemap; sourceTree = "<group>"; };
 		1393E67458F267A12E78BF9EF8405BA2 /* PureLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PureLayout.h; path = PureLayout/PureLayout/PureLayout.h; sourceTree = "<group>"; };
-		1A1E91BA66C4E3877CC4476B017AE6BF /* Pods_POPLib_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_POPLib_Tests.framework; path = "Pods-POPLib_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A1E91BA66C4E3877CC4476B017AE6BF /* Pods_POPLib_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POPLib_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E42668B8D55F70E950B4F664441C68F /* Pods-POPLib_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-POPLib_Example-dummy.m"; sourceTree = "<group>"; };
 		27D3EA6983F310D7D06A9CCE06C18BE0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		2D4549A498F24C820829D5D3EE0076CD /* ImageLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ImageLib.m; sourceTree = "<group>"; };
@@ -156,12 +156,12 @@
 		647476343B3B354D1405579E887D3AF2 /* FileLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = FileLib.m; sourceTree = "<group>"; };
 		67FD9136796A0DFAD5546A6BBA2AF395 /* POPLib-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "POPLib-umbrella.h"; sourceTree = "<group>"; };
 		68463D3F2F7A40914C3557BC80CC74D3 /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		79B3FD3702AF697BC82702A55D222A8A /* POPLib.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = POPLib.modulemap; sourceTree = "<group>"; };
+		79B3FD3702AF697BC82702A55D222A8A /* POPLib.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = POPLib.modulemap; sourceTree = "<group>"; };
 		7BC5FC51DB33FD8CF2E9FC6823C5F0AE /* Pods-POPLib_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-POPLib_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		7D2AE8FB9B5CAF8B2ABF92199AB99347 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+PureLayout.m"; path = "PureLayout/PureLayout/NSArray+PureLayout.m"; sourceTree = "<group>"; };
 		7DB5974F192BB921B817574BA419822E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7F35F33CCDF7321FB8750F618DF560D7 /* ALAssetsLibrary+CustomPhotoAlbum.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+CustomPhotoAlbum.h"; sourceTree = "<group>"; };
-		80412F43592236B0700166A2B1E83D58 /* Pods_POPLib_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_POPLib_Example.framework; path = "Pods-POPLib_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80412F43592236B0700166A2B1E83D58 /* Pods_POPLib_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POPLib_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8656F4E9A873D490AE164EADD062EFE5 /* MBProgressHUD-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-umbrella.h"; sourceTree = "<group>"; };
 		88CEAA5208E3CBC6CE970725D241F617 /* Pods-POPLib_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-POPLib_Example-frameworks.sh"; sourceTree = "<group>"; };
 		8A4FAEA8BCD1362CC280D281F8097971 /* PureLayout+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "PureLayout+Internal.h"; path = "PureLayout/PureLayout/PureLayout+Internal.h"; sourceTree = "<group>"; };
@@ -170,16 +170,16 @@
 		8EF36EE3E1A6933BFD9BD5854B154CAF /* POPLib-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "POPLib-prefix.pch"; sourceTree = "<group>"; };
 		8F35919BEAA14743623074CF6CCCEC2D /* PureLayout-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PureLayout-prefix.pch"; sourceTree = "<group>"; };
 		903CD66F430EFACA9C3E48D66E8D0D57 /* ObserverObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ObserverObject.h; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		991A39975AC46A855E8C19B5FA601055 /* ALView+PureLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "ALView+PureLayout.h"; path = "PureLayout/PureLayout/ALView+PureLayout.h"; sourceTree = "<group>"; };
 		9B5F4471EB27424B36FEAF747A081D77 /* Pods-POPLib_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-POPLib_Tests-resources.sh"; sourceTree = "<group>"; };
 		9B9808C31A5DE260A72ACE9FD48EDC7D /* POPLib.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = POPLib.xcconfig; sourceTree = "<group>"; };
 		9D33CEC611AD041624FA96111792D9B1 /* StringLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = StringLib.m; sourceTree = "<group>"; };
 		A1182C57E70E8D773290D12DC21D7282 /* GlobalConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GlobalConfig.h; sourceTree = "<group>"; };
 		A3EF9AF6E8810B0EA022DCE5D1C5B9BB /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A5554BB57DC3084F7DC9639558DE2561 /* MBProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MBProgressHUD.framework; path = MBProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5554BB57DC3084F7DC9639558DE2561 /* MBProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MBProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7A0430494C279C9FA88CA395A83EA03 /* ViewLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ViewLib.h; sourceTree = "<group>"; };
-		A974A85B70CAFEA7151CDD495BB32DC4 /* PureLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PureLayout.framework; path = PureLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A974A85B70CAFEA7151CDD495BB32DC4 /* PureLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA19421E66AB5BBA7199A41BEE34B0EB /* FileLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FileLib.h; sourceTree = "<group>"; };
 		AF8F90B594B3F118955133D7F08F509E /* NetLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = NetLib.h; sourceTree = "<group>"; };
 		AF9B966A3FAA0381D1FE86B620B4823F /* Hashtable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Hashtable.h; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 		C285AE0F003DB06B6A466C6CA6D309FA /* ObserverObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ObserverObject.m; sourceTree = "<group>"; };
 		C30389FACEADF8D5D307AA2BEBB00A50 /* POPLib-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "POPLib-dummy.m"; sourceTree = "<group>"; };
 		C41B94276B4BC92751D314086978D3FE /* NSDate+NVTimeAgo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NVTimeAgo.m"; sourceTree = "<group>"; };
-		C60DEE344A3E9F31695DD2C26438AB27 /* Pods-POPLib_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-POPLib_Example.modulemap"; sourceTree = "<group>"; };
+		C60DEE344A3E9F31695DD2C26438AB27 /* Pods-POPLib_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-POPLib_Example.modulemap"; sourceTree = "<group>"; };
 		C7A3916B7EF1D95F4A0C174DCBC8BEE1 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C99682550A38106B20F1D2D5B1FDC2C0 /* Pods-POPLib_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-POPLib_Example-resources.sh"; sourceTree = "<group>"; };
 		CB7892A7DDE9C3F72A0D06835EB4017C /* Pods-POPLib_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-POPLib_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 		ECEA0663FC285635D73C2E587AB577AB /* PureLayout-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PureLayout-dummy.m"; sourceTree = "<group>"; };
 		EE6C0E88CC67F3F4AFEFA870E180C3BB /* ViewLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ViewLib.m; sourceTree = "<group>"; };
 		EEA3D2F65A276856364376477408AEBE /* Pods-POPLib_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-POPLib_Tests-umbrella.h"; sourceTree = "<group>"; };
-		F1B57E83ADFF5F1ACF824E454D56EAE0 /* Pods-POPLib_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-POPLib_Tests.modulemap"; sourceTree = "<group>"; };
-		F4FD6147B0A82500104A6ECE94C72D6A /* MBProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = MBProgressHUD.modulemap; sourceTree = "<group>"; };
+		F1B57E83ADFF5F1ACF824E454D56EAE0 /* Pods-POPLib_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-POPLib_Tests.modulemap"; sourceTree = "<group>"; };
+		F4FD6147B0A82500104A6ECE94C72D6A /* MBProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = MBProgressHUD.modulemap; sourceTree = "<group>"; };
 		F72D9503213B257661272F76BA705173 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+PureLayout.h"; path = "PureLayout/PureLayout/NSArray+PureLayout.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -278,7 +278,6 @@
 				0BFAE7219862D103FA2576EDC242FC38 /* PureLayoutDefines.h */,
 				988DF94EFE90EA8086AE5EC6FA79497B /* Support Files */,
 			);
-			name = PureLayout;
 			path = PureLayout;
 			sourceTree = "<group>";
 		};
@@ -297,7 +296,6 @@
 				B8DAABCAD5B0AA05D56E9E5B702510B2 /* MBProgressHUD.m */,
 				895381F764BCF617FF809306E6959A61 /* Support Files */,
 			);
-			name = MBProgressHUD;
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
@@ -408,7 +406,6 @@
 				A7A0430494C279C9FA88CA395A83EA03 /* ViewLib.h */,
 				EE6C0E88CC67F3F4AFEFA870E180C3BB /* ViewLib.m */,
 			);
-			name = Common;
 			path = Common;
 			sourceTree = "<group>";
 		};
@@ -487,7 +484,6 @@
 				617BD8FD2607D41284A8A2031F8C4792 /* NSDate+NVTimeAgo.h */,
 				C41B94276B4BC92751D314086978D3FE /* NSDate+NVTimeAgo.m */,
 			);
-			name = Extend;
 			path = Extend;
 			sourceTree = "<group>";
 		};
@@ -507,7 +503,6 @@
 				E293BB362EE1A2FAA71FC5132332EB1B /* ReturnSet.h */,
 				05FCADFC4911EB10E38CBF5D2F970F2B /* ReturnSet.m */,
 			);
-			name = Custom;
 			path = Custom;
 			sourceTree = "<group>";
 		};
@@ -520,7 +515,6 @@
 				D4FA2A9E908C2C3F027EDE39D548292C /* Custom */,
 				C1F6174AF97BC709861007156F95155C /* Extend */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -529,7 +523,6 @@
 			children = (
 				F55A3F53E87F003E3C32EE7A13C0E23C /* Classes */,
 			);
-			name = POPLib;
 			path = POPLib;
 			sourceTree = "<group>";
 		};

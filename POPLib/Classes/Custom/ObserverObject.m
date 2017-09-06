@@ -83,4 +83,12 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:OBS_KEY object: object ? @{ @"key":@(key), @"value": object } : @{ @"key":@(key) } ];
 }
+
++(void)sendObserver:(NSInteger)key
+{
+    [self sendObserver:key object:nil];
+}
+
+
+
 @end

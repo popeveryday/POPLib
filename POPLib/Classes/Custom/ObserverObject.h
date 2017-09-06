@@ -23,6 +23,8 @@
 
 +(void)sendObserver:(NSInteger)key object:(id)object;
 
++(void)sendObserver:(NSInteger)key;
+
 @end
 
 /*

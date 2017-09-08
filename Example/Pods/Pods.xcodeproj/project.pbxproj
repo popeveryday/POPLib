@@ -24,6 +24,8 @@
 		44CB314F064559683229CD6B9EDD2D30 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 574FFF12910001050319CA3AD050DB6B /* NSLayoutConstraint+PureLayout.m */; };
 		466CB02469D2B983E1E978BB9569F621 /* StringLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BF32E29AD3F31F81EA2E2F88CACE69BE /* StringLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C6821D2C157B9F5394150FE99FA53D6 /* ALAssetsLibrary+CustomPhotoAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F35F33CCDF7321FB8750F618DF560D7 /* ALAssetsLibrary+CustomPhotoAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EBA51C11F62959C0027EDE2 /* NetServiceHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EBA51BF1F62959C0027EDE2 /* NetServiceHelper.h */; };
+		4EBA51C21F62959C0027EDE2 /* NetServiceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EBA51C01F62959C0027EDE2 /* NetServiceHelper.m */; };
 		4F0E05B13C7B785A50B2AD4B07C25A62 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE57439694F46500071525BD048159 /* Reachability.m */; };
 		524978D495775A1143B032B349B49822 /* Hashtable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D209FD420B5EECDFC2F7B04AD940348 /* Hashtable.m */; };
 		56AD4B562CFA4850DB8F9F339201E9B0 /* NSDate+NVTimeAgo.h in Headers */ = {isa = PBXBuildFile; fileRef = 617BD8FD2607D41284A8A2031F8C4792 /* NSDate+NVTimeAgo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -142,6 +144,8 @@
 		48EFB3D6CA07A645DE33EAD4A8868AE8 /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		4B3E64EFC4615E393B6821CF2FC990DE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		4D041FCD70F307B49890B768178B370F /* CoreData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
+		4EBA51BF1F62959C0027EDE2 /* NetServiceHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetServiceHelper.h; sourceTree = "<group>"; };
+		4EBA51C01F62959C0027EDE2 /* NetServiceHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetServiceHelper.m; sourceTree = "<group>"; };
 		503B61E3C4FBFD01DD2C48801FB59BFF /* POPLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = POPLib.h; sourceTree = "<group>"; };
 		5191448D8206919E8680DA2BB5E42189 /* Pods-POPLib_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-POPLib_Tests-dummy.m"; sourceTree = "<group>"; };
 		574FFF12910001050319CA3AD050DB6B /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+PureLayout.m"; path = "PureLayout/PureLayout/NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
@@ -490,6 +494,8 @@
 		D4FA2A9E908C2C3F027EDE39D548292C /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				4EBA51BF1F62959C0027EDE2 /* NetServiceHelper.h */,
+				4EBA51C01F62959C0027EDE2 /* NetServiceHelper.m */,
 				BD2A07A56E62FDCE92279509D67BA1EC /* AlertObject.h */,
 				3638D96B3ACF5F7F3E0E9407DA3AC2D2 /* AlertObject.m */,
 				D3B9D70D8F002477BA93C7E6288A2BB0 /* DateObject.h */,
@@ -574,6 +580,7 @@
 				654C5030919B2EFE44576536FDEF20AD /* GameCenterLib2.h in Headers */,
 				91BD4F38049BC09FEAF5FC2AE2BD31DD /* GlobalConfig.h in Headers */,
 				D563BECEB18A74519829856B15344CAA /* Hashtable.h in Headers */,
+				4EBA51C11F62959C0027EDE2 /* NetServiceHelper.h in Headers */,
 				B970E5C094A075143236AE144BF65C03 /* ImageLib.h in Headers */,
 				B9E5C0AB09D50D711DEEF9E04543F5BF /* InAppPurchaseLib.h in Headers */,
 				751A0EB1614B17E7E3A747B3F160D69D /* NetLib.h in Headers */,
@@ -752,6 +759,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4C11BD5F376C894AFD077A3B7455C99 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
+				4EBA51C21F62959C0027EDE2 /* NetServiceHelper.m in Sources */,
 				12F5D081CA4020A95C5C0152D8EA76AB /* AlertObject.m in Sources */,
 				984DF5D2F2AEDD98BB1D3ED0DBFA6940 /* CommonLib.m in Sources */,
 				2CAFB122E679B34893FD9EF69C728C4A /* CoreData.m in Sources */,

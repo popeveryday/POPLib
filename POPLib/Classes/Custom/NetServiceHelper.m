@@ -115,7 +115,7 @@
 - (void) sendMessage:(NSString*)message
 {
     if(!_outputStream) return;
-    NSData *data = [[NSData alloc] initWithData:[message dataUsingEncoding:NSASCIIStringEncoding]];
+    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
     [_outputStream write:[data bytes] maxLength:[data length]];
     NSLog(@"Send: %@", message);
 }
@@ -221,16 +221,19 @@
                 uint8_t buffer[1024];
                 long len;
                 
+                NSString* content = @"";
+                
                 while ([_inputStream hasBytesAvailable]) {
                     len = [_inputStream read:buffer maxLength:sizeof(buffer)];
                     if (len > 0) {
-                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSUTF8StringEncoding];
                         if (nil != output) {
-                            NSLog(@"\nreciving data------%s",buffer);
-                            [self messageReceived:output];
+                            content = [content stringByAppendingString:output];
                         }
                     }
                 }
+                
+                [self messageReceived:content];
             }
             break;
             

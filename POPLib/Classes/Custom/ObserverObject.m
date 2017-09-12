@@ -30,7 +30,9 @@
     NSInteger key = [[data objectForKey:@"key"] integerValue];
     NSObject* value = [data objectForKey:@"value"];
     
-    for (id target in self.targetObjects) {
+    NSMutableArray* copiedTargets = [self.targetObjects mutableCopy];
+    
+    for (id target in copiedTargets) {
         if(target && [target respondsToSelector:@selector(observerObjectDidCallWithKey:value:)]){
             [target observerObjectDidCallWithKey:key value:value];
         }

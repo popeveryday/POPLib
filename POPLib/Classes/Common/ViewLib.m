@@ -523,7 +523,11 @@
     {
         control = [UIProgressView newAutoLayoutView];
     }
-    
+    else if (type == ALControlTypeVisualEffectView)
+    {
+        control = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+        [control configureForAutoLayout];
+    }
     
     
     [viewContainer addSubview:control];

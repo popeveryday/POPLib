@@ -7,10 +7,16 @@
 //
 
 #import "NetServiceHelper.h"
+#import "StringLib.h"
 
+#define SEND_START @"[[[BeGiN>>>"
+#define SEND_END @"<<<EnD]]]"
 
 
 @implementation NetServiceHelper
+{
+    NSString* loadedStr;
+}
 
 -(instancetype)initWithDomain:(NSString*)domain bonjourName:(NSString*)bonjourName
 {
@@ -115,8 +121,30 @@
 - (void) sendMessage:(NSString*)message
 {
     if(!_outputStream) return;
-    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSData *data = [SEND_START dataUsingEncoding:NSUTF8StringEncoding];
     [_outputStream write:[data bytes] maxLength:[data length]];
+    
+    data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    //    [_outputStream write:[data bytes] maxLength:[data length]];
+    
+    NSUInteger length = [data length];
+    NSUInteger chunkSize = 50 * 1024;
+    NSUInteger offset = 0;
+    do {
+        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+        NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[data bytes] + offset
+                                             length:thisChunkSize
+                                       freeWhenDone:NO];
+        [_outputStream write:[chunk bytes] maxLength:[chunk length]];
+        offset += thisChunkSize;
+        // do something with chunk
+    } while (offset < length);
+    
+    
+    data = [SEND_END dataUsingEncoding:NSUTF8StringEncoding];
+    [_outputStream write:[data bytes] maxLength:[data length]];
+    
     NSLog(@"Send: %@", message);
 }
 
@@ -221,19 +249,29 @@
                 uint8_t buffer[1024];
                 long len;
                 
-                NSString* content = @"";
                 
+                NSString* content = @"";
                 while ([_inputStream hasBytesAvailable]) {
                     len = [_inputStream read:buffer maxLength:sizeof(buffer)];
                     if (len > 0) {
                         NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSUTF8StringEncoding];
                         if (nil != output) {
+                            NSLog(@"%@", output);
                             content = [content stringByAppendingString:output];
                         }
                     }
                 }
                 
-                [self messageReceived:content];
+                if(!loadedStr) loadedStr = @"";
+                loadedStr = [loadedStr stringByAppendingString:content];
+                
+                NSString* item;
+                while (YES) {
+                    item = [StringLib subStringBetween:loadedStr startStr:SEND_START endStr:SEND_END];
+                    if(![StringLib contains:SEND_END inString:loadedStr]) break;
+                    [self messageReceived:item];
+                    loadedStr = [loadedStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@%@%@",SEND_START,item,SEND_END] withString:@""];
+                }
             }
             break;
             

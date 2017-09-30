@@ -23,6 +23,7 @@
 #import "AlertObject.h"
 #import "DateObject.h"
 #import "Hashtable.h"
+#import "NetServiceHelper.h"
 #import "ObserverObject.h"
 #import "Reachability.h"
 #import "ReturnSet.h"

@@ -1,6 +1,6 @@
 PODS:
   - MBProgressHUD (1.0.0)
-  - POPLib (0.2.21):
+  - POPLib (0.2.33):
     - MBProgressHUD (~> 1.0)
     - PureLayout
   - PureLayout (3.0.2)
@@ -14,9 +14,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  POPLib: 49dba855e1aa9106c6d3d9812d0bd89e320afaf8
+  POPLib: 84ed8f30f76f3bd2aa0b985bf878bb8bd6306c49
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
 
 PODFILE CHECKSUM: deb632e651a84cb4a46072a5a8439d2f917a718d
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1

@@ -608,6 +608,20 @@
     }
 }
 
++ (NSString *) base64StringFromFileAtPath: (NSString*) filePath
+{
+    NSData * dataFromFile = [NSData dataWithContentsOfFile:filePath];
+    return [dataFromFile base64EncodedStringWithOptions:0];
+}
+
+
++ (NSData*) dataFrom64String : (NSString*) stringEncodedWithBase64
+{
+    NSData *dataFromBase64 = [[NSData alloc] initWithBase64EncodedString:stringEncodedWithBase64 options:0];
+    return dataFromBase64;
+}
+
+
 
 @end
 

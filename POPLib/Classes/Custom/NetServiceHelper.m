@@ -35,8 +35,13 @@
     _services = [NSMutableDictionary new];
     
     NSString* bonjourNameType = [NSString stringWithFormat:@"_%@._tcp.", bonjourName];
-    
+
+#if TARGET_OS_IPHONE
     _server = [[NSNetService alloc] initWithDomain:[NSString stringWithFormat:@"%@.",domain] type:bonjourNameType name:[UIDevice currentDevice].name port:0];
+#elif TARGET_OS_MAC
+    _server = [[NSNetService alloc] initWithDomain:[NSString stringWithFormat:@"%@.",domain] type:bonjourNameType name:[[NSHost currentHost] localizedName] port:0];
+#endif
+    
     _server.includesPeerToPeer = YES;
     _server.delegate = self;
     [_server publishWithOptions:NSNetServiceListenForConnections];
@@ -45,6 +50,8 @@
     _browser.includesPeerToPeer = YES;
     _browser.delegate = self;
     [_browser searchForServicesOfType:bonjourNameType inDomain:_domain];
+    
+    loadedStr = @"";
     
     self.netServiceState = NetServiceStateWaiting;
 }
@@ -262,15 +269,16 @@
                     }
                 }
                 
-                if(!loadedStr) loadedStr = @"";
                 loadedStr = [loadedStr stringByAppendingString:content];
                 
-                NSString* item;
-                while (YES) {
-                    item = [StringLib subStringBetween:loadedStr startStr:SEND_START endStr:SEND_END];
-                    if(![StringLib contains:SEND_END inString:loadedStr]) break;
-                    [self messageReceived:item];
-                    loadedStr = [loadedStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@%@%@",SEND_START,item,SEND_END] withString:@""];
+                if([StringLib contains:SEND_END inString:loadedStr]){
+                    NSString* item;
+                    while (YES) {
+                        item = [StringLib subStringBetween:loadedStr startStr:SEND_START endStr:SEND_END];
+                        if(![StringLib contains:SEND_END inString:loadedStr]) break;
+                        [self messageReceived:item];
+                        loadedStr = [loadedStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@%@%@",SEND_START,item,SEND_END] withString:@""];
+                    }
                 }
             }
             break;
@@ -303,3 +311,4 @@
 
 
 @end
+

@@ -11,13 +11,13 @@
 #import <POPLib/POPLib.h>
 
 #define CONTROL_TYPES  @{@"label": @(ALControlTypeLabel),\
-                        @"image": @(ALControlTypeImage), \
-                        @"view": @(ALControlTypeView), \
-                        @"button": @(ALControlTypeButton), \
-                        @"textview": @(ALControlTypeTextView), \
-                        @"textfield": @(ALControlTypeTextField), \
-                        @"progressview": @(ALControlTypeProgressView), \
-                        @"blurview": @(ALControlTypeVisualEffectView)}
+@"image": @(ALControlTypeImage), \
+@"view": @(ALControlTypeView), \
+@"button": @(ALControlTypeButton), \
+@"textview": @(ALControlTypeTextView), \
+@"textfield": @(ALControlTypeTextField), \
+@"progressview": @(ALControlTypeProgressView), \
+@"blurview": @(ALControlTypeVisualEffectView)}
 
 #define CONTROL_BREAK @"<<BrEak>>"
 
@@ -50,9 +50,9 @@
             
             propKey = @"type";
             if(![allKeys containsObject:propKey]) continue;
-            propValue = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] lowercaseString];
+            propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
             
-            if(![CONTROL_TYPES.allKeys containsObject:propValue])
+            if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
             {
                 NSArray* temp = [self typeFromObjectName:propValue currentObjectStr:item arrayItems:items];
                 allKeys = temp[0];
@@ -324,6 +324,7 @@
 {
     objectName = [objectName stringByReplacingOccurrencesOfString:@"[" withString:@""];
     objectName = [objectName stringByReplacingOccurrencesOfString:@"]" withString:@""];
+    objectName = [[StringLib trim:objectName] lowercaseString];
     
     NSArray* temp = [self extractKeyValueFromItemString:currentItem];
     NSArray* allKeys = [temp objectAtIndex:0];
@@ -343,6 +344,8 @@
         propKey = @"name";
         if(![keys containsObject:propKey]) continue;
         name = [values objectAtIndex:[keys indexOfObject:propKey]];
+        name = [[StringLib trim:name] lowercaseString];
+        
         
         if ([name isEqualToString:objectName]) {
             
@@ -412,7 +415,7 @@
         [button setTitle:[self textObj:arr[1]] forState:UIControlStateHighlighted];
         return;
     }
-
+    
     
     [button setTitle:[self textObj:value] forState:UIControlStateNormal];
 }
@@ -675,11 +678,12 @@
 
 -(void) netServiceHelperDidReceivedMessage:(NSString*)message
 {
-    [self handleFileStr:message];
+    if(message) [self handleFileStr:message];
 }
 
 
--(void) handleFileStr:(NSString*)fileStr{
+-(void) handleFileStr:(NSString*)fileStr
+{
     NSError *jsonError;
     NSData *objectData = [fileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:objectData
@@ -753,3 +757,4 @@
 }
 
 @end
+

@@ -192,10 +192,10 @@ static CoreData* instance;
     if (error){
         NSString* message = [NSString stringWithFormat:@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]];
         NSLog(@"%@", message);
-        return [[ReturnSet alloc] initWithMessage:NO message:message];
+        return [ReturnSet initWithMessage:NO message:message];
     }
     
-    return [[ReturnSet alloc] initWithObject:YES object:result ];
+    return [ReturnSet initWithObject:YES object:result ];
 }
 
 -(ReturnSet*)searchTable:(NSString*) table sortField:(NSString*)sortField sortAscending:(BOOL) asc{
@@ -230,10 +230,10 @@ static CoreData* instance;
     if (error){
         NSString* message = [NSString stringWithFormat:@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]];
         NSLog(@"%@", message);
-        return [[ReturnSet alloc] initWithMessage:NO message:message];
+        return [ReturnSet initWithMessage:NO message:message];
     }
     
-    return [[ReturnSet alloc] initWithResult:YES];
+    return [ReturnSet initWithResult:YES];
 }
 
 -(NSManagedObjectContext*)getEntity

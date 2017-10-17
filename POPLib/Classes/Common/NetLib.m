@@ -22,7 +22,7 @@
     NSData *urlData = [NSData dataWithContentsOfURL:nsurl];
     
     if ([urlData length] == 0) {
-        return [[ReturnSet alloc] initWithResult:NO];
+        return [ReturnSet initWithResult:NO];
     }
     
     //[urlData writeToFile:toPath atomically:YES];
@@ -32,7 +32,7 @@
     
     if(error) NSLog(@"Error: %@", error);
     
-    return [[ReturnSet alloc] initWithMessage:YES message:toPath];
+    return [ReturnSet initWithMessage:YES message:toPath];
 }
 
 +(ReturnSet*)downloadFileToDocument:(NSString*) destinationFile url:(NSString*) url{
@@ -52,12 +52,12 @@
     }
     
     if (content == nil) {
-        return [[ReturnSet alloc] initWithResult:NO];
+        return [ReturnSet initWithResult:NO];
     }
     
     [FileLib writeContent:content toFile:toPath isAppend:NO];
     
-    return [[ReturnSet alloc] init:YES message:toPath object:toPath];
+    return [ReturnSet init:YES message:toPath object:toPath];
 }
 
 +(ReturnSet*)downloadTextFileToDocument:(NSString*) destinationFile url:(NSString*) url{
@@ -124,10 +124,10 @@
                                                returningResponse:&theResponse
                                                            error:&theError];
     if (!reqResults) {
-        return [[ReturnSet alloc] initWithMessage:NO message:[NSString stringWithFormat:@"Connection error for URL: %@", [url description]]];
+        return [ReturnSet initWithMessage:NO message:[NSString stringWithFormat:@"Connection error for URL: %@", [url description]]];
     }else{
         NSString *returnString = [[NSString alloc] initWithData:reqResults encoding:NSUTF8StringEncoding];
-        return [[ReturnSet alloc] init:YES message:[NSString stringWithFormat:@"%@", returnString] object:returnString];
+        return [ReturnSet init:YES message:[NSString stringWithFormat:@"%@", returnString] object:returnString];
     }
 }
 
@@ -198,10 +198,10 @@
                                                returningResponse:&theResponse
                                                            error:&theError];
     if (!reqResults) {
-        return [[ReturnSet alloc] initWithMessage:NO message:[NSString stringWithFormat:@"Connection error for URL: %@", [url description]]];
+        return [ReturnSet initWithMessage:NO message:[NSString stringWithFormat:@"Connection error for URL: %@", [url description]]];
     }else{
         NSString *returnString = [[NSString alloc] initWithData:reqResults encoding:NSUTF8StringEncoding];
-        return [[ReturnSet alloc] init:YES message:[NSString stringWithFormat:@"%@", returnString] object:returnString];
+        return [ReturnSet init:YES message:[NSString stringWithFormat:@"%@", returnString] object:returnString];
     }
 }
 
@@ -232,14 +232,14 @@
     NSString* content = [[NSString alloc] initWithContentsOfURL:nsurl encoding:NSUTF8StringEncoding error:&error];
     
     if (error) {
-        return [[ReturnSet alloc] initWithMessage:NO message:[NSString stringWithFormat:@"ReadTextFromUrl error:: %@", error]];
+        return [ReturnSet initWithMessage:NO message:[NSString stringWithFormat:@"ReadTextFromUrl error:: %@", error]];
     }
     
     if (content == nil) {
-        return [[ReturnSet alloc] initWithMessage:NO message:@"No content returned"];
+        return [ReturnSet initWithMessage:NO message:@"No content returned"];
     }
     
-    return [[ReturnSet alloc] initWithObject:YES object:[NSString stringWithFormat:@"%@", content]];
+    return [ReturnSet initWithObject:YES object:[NSString stringWithFormat:@"%@", content]];
 }
 
 +(ReturnSet*)getFileNameSizeFromURL:(NSString*)url{
@@ -255,13 +255,13 @@
     NSString* size = [NSString stringWithFormat:@"%lld", [response expectedContentLength]];
     
     if (error != nil) {
-        return [[ReturnSet alloc] initWithMessage:NO message:[NSString stringWithFormat:@"Error: %@", error]];
+        return [ReturnSet initWithMessage:NO message:[NSString stringWithFormat:@"Error: %@", error]];
     }
     
     if (response.statusCode /100 != 2) {
-        return [[ReturnSet alloc] initWithMessage:NO message:@"Wrong return code"];
+        return [ReturnSet initWithMessage:NO message:@"Wrong return code"];
     }else{
-        return [[ReturnSet alloc] initWithObject:YES object:[NSString stringWithFormat:@"%@",response.suggestedFilename] extraObject: size ];
+        return [ReturnSet initWithObject:YES object:[NSString stringWithFormat:@"%@",response.suggestedFilename] extraObject: size ];
     }
 }
 

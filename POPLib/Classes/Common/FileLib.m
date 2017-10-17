@@ -358,19 +358,19 @@
     NSFileManager* filemgr = [NSFileManager defaultManager];
     
     if ([filemgr fileExistsAtPath:fromPath] == NO) {
-        return [[ReturnSet alloc] initWithMessage:NO message:@"Source folder is not existed."];
+        return [ReturnSet initWithMessage:NO message:@"Source folder is not existed."];
     }
     
     if ([filemgr fileExistsAtPath:toPath] == YES) {
         if (mergeFolderData == NO) {
-            return [[ReturnSet alloc] initWithMessage:NO message:@"Destination folder is existed."];
+            return [ReturnSet initWithMessage:NO message:@"Destination folder is existed."];
         }
     }else{//create folder if is not existed
         [self createDirectory:toPath];
     }
     
     //move file to new folder
-    NSMutableArray* files = [self getFileList:fromPath fileType:nil];
+    NSMutableArray* files = (NSMutableArray*)[self getFileList:fromPath fileType:nil];
     for (NSString* file in files) {
         oldFile = [fromPath stringByAppendingPathComponent:file];
         newFile = [toPath stringByAppendingPathComponent:file];
@@ -382,7 +382,7 @@
         [self removeFileOrDirectory:fromPath];
     }
     
-    return [[ReturnSet alloc] initWithResult:YES];
+    return [ReturnSet initWithResult:YES];
 }
 
 
@@ -460,7 +460,7 @@
 +(double)getFolderSizeWithPath:(NSString*) path includeSubFolder:(BOOL)includeSubFolder{
     double totalSize = 0;
     
-    NSMutableArray* files = [self getFileList:path fileType:nil isFullPath:YES];
+    NSMutableArray* files = (NSMutableArray*)[self getFileList:path fileType:nil isFullPath:YES];
     
     for (NSString* file in files) {
         if ([self checkPathIsDirectory:file] && includeSubFolder) {

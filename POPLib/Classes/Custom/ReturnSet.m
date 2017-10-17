@@ -10,44 +10,45 @@
 
 @implementation ReturnSet
 
--(ReturnSet*)initWithResult:(BOOL) result{
-    self.result = result;
-    return self;
++(ReturnSet*) initWithResult:(BOOL) result
+{
+    return [self initWithResult:result message:nil object:nil extraObject:nil];
 }
 
--(ReturnSet*)initWithMessage:(BOOL) result message:(NSString*) message{
-    self.result = result;
-    self.message = message;
-    return self;
++(ReturnSet*)initWithMessage:(BOOL) result message:(NSString*) message
+{
+    return [self initWithResult:result message:message object:nil extraObject:nil];
 }
 
--(ReturnSet*)initWithObject:(BOOL) result object:(id) object{
-    self.result = result;
-    self.object = object;
-    return self;
++(ReturnSet*)initWithObject:(BOOL) result object:(id) object
+{
+    return [self initWithResult:result message:nil object:object extraObject:nil];
 }
 
--(ReturnSet*)initWithObject:(BOOL) result object:(id) object extraObject:(id)extraObject{
-    self.result = result;
-    self.object = object;
-    self.extraObject = extraObject;
-    return self;
++(ReturnSet*)initWithObject:(BOOL) result object:(id)object extraObject:(id)extraObject{
+    return [self initWithResult:result message:nil object:object extraObject:extraObject];
 }
 
--(ReturnSet*)init:(BOOL) result message:(NSString*) message object:(id) object{
-    self.result = result;
-    self.message = message;
-    self.object = object;
-    return self;
++(ReturnSet*)init:(BOOL) result message:(NSString*) message object:(id) object{
+    return [self initWithResult:result message:message object:object extraObject:nil];
 }
 
--(ReturnSet*)init:(BOOL) result message:(NSString*) message object:(id) object extraObject:(id)extraObject{
-    self.result = result;
-    self.message = message;
-    self.object = object;
-    self.extraObject = extraObject;
++(ReturnSet*) initWithResult:(BOOL) result message:(NSString*) message object:(id) object extraObject:(id)extraObject
+{
+    ReturnSet* obj = [[ReturnSet alloc] initWithResult:result message:message object:object extraObject:extraObject];
+    return obj;
+}
+
+-(instancetype)initWithResult:(BOOL) result message:(NSString*) message object:(id) object extraObject:(id)extraObject
+{
+    self = [super init];
+    if (self) {
+        self.result = result;
+        if(message) self.message = message;
+        if(object) self.object = object;
+        if(extraObject) self.extraObject = extraObject;
+    }
     return self;
-    
 }
 
 @end

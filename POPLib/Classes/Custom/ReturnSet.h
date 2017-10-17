@@ -13,9 +13,9 @@
 @interface ReturnSet : NSObject
 
 @property (nonatomic) BOOL result;
-@property (nonatomic, assign) id object;
-@property (nonatomic, assign) id extraObject;
-@property (nonatomic, assign) NSString* message;
+@property (nonatomic, strong) id object;
+@property (nonatomic, strong) id extraObject;
+@property (nonatomic, strong) NSString* message;
 
 
 -(instancetype)initWithResult:(BOOL) result message:(NSString*) message object:(id) object extraObject:(id)extraObject;

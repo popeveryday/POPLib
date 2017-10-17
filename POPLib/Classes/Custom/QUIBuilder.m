@@ -50,9 +50,9 @@
             
             propKey = @"type";
             if(![allKeys containsObject:propKey]) continue;
-            propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+            propValue = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] lowercaseString];
             
-            if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
+            if(![CONTROL_TYPES.allKeys containsObject:propValue])
             {
                 NSArray* temp = [self typeFromObjectName:propValue currentObjectStr:item arrayItems:items];
                 allKeys = temp[0];
@@ -324,7 +324,6 @@
 {
     objectName = [objectName stringByReplacingOccurrencesOfString:@"[" withString:@""];
     objectName = [objectName stringByReplacingOccurrencesOfString:@"]" withString:@""];
-    objectName = [[StringLib trim:objectName] lowercaseString];
     
     NSArray* temp = [self extractKeyValueFromItemString:currentItem];
     NSArray* allKeys = [temp objectAtIndex:0];
@@ -344,8 +343,6 @@
         propKey = @"name";
         if(![keys containsObject:propKey]) continue;
         name = [values objectAtIndex:[keys indexOfObject:propKey]];
-        name = [[StringLib trim:name] lowercaseString];
-        
         
         if ([name isEqualToString:objectName]) {
             
@@ -678,12 +675,11 @@
 
 -(void) netServiceHelperDidReceivedMessage:(NSString*)message
 {
-    if(message) [self handleFileStr:message];
+    [self handleFileStr:message];
 }
 
 
--(void) handleFileStr:(NSString*)fileStr
-{
+-(void) handleFileStr:(NSString*)fileStr{
     NSError *jsonError;
     NSData *objectData = [fileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:objectData
@@ -757,4 +753,3 @@
 }
 
 @end
-

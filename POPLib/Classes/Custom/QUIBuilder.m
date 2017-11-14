@@ -50,9 +50,9 @@
             
             propKey = @"type";
             if(![allKeys containsObject:propKey]) continue;
-            propValue = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] lowercaseString];
+            propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
             
-            if(![CONTROL_TYPES.allKeys containsObject:propValue])
+            if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
             {
                 NSArray* temp = [self typeFromObjectName:propValue currentObjectStr:item arrayItems:items];
                 allKeys = temp[0];
@@ -324,6 +324,7 @@
 {
     objectName = [objectName stringByReplacingOccurrencesOfString:@"[" withString:@""];
     objectName = [objectName stringByReplacingOccurrencesOfString:@"]" withString:@""];
+    objectName = [[StringLib trim:objectName] lowercaseString];
     
     NSArray* temp = [self extractKeyValueFromItemString:currentItem];
     NSArray* allKeys = [temp objectAtIndex:0];
@@ -343,6 +344,8 @@
         propKey = @"name";
         if(![keys containsObject:propKey]) continue;
         name = [values objectAtIndex:[keys indexOfObject:propKey]];
+        name = [[StringLib trim:name] lowercaseString];
+        
         
         if ([name isEqualToString:objectName]) {
             
@@ -675,11 +678,12 @@
 
 -(void) netServiceHelperDidReceivedMessage:(NSString*)message
 {
-    [self handleFileStr:message];
+    if(message) [self handleFileStr:message];
 }
 
 
--(void) handleFileStr:(NSString*)fileStr{
+-(void) handleFileStr:(NSString*)fileStr
+{
     NSError *jsonError;
     NSData *objectData = [fileStr dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:objectData
@@ -709,6 +713,9 @@
         uiElements = [QUIBuilder rebuildUIWithContent:content containerView:self.view errorBlock:^(NSString *msg, NSException *exception) {
             [CommonLib alert: [NSString stringWithFormat:@"%@\n%@", msg, exception]];
         }];
+        
+        NSString* code = [QUIBuilder genCode:uiElements];
+        [netService sendMessage:code];
     }
     else
     {
@@ -753,3 +760,4 @@
 }
 
 @end
+

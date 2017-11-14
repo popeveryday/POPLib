@@ -662,8 +662,16 @@
         safeFile = [filePath.stringByDeletingLastPathComponent stringByAppendingPathComponent:safeFile];
         if([StringLib isValid:filePath.pathExtension]) safeFile = [NSString stringWithFormat:@"%@.%@", safeFile, filePath.pathExtension];
         
-        if ([FileLib checkPathExisted:filePath]) return [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-        if ([FileLib checkPathExisted:safeFile]) return [NSKeyedUnarchiver unarchiveObjectWithFile:safeFile];
+        if ([FileLib checkPathExisted:filePath])
+        {
+            id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+            if(obj) return obj;
+        }
+        
+        if ([FileLib checkPathExisted:safeFile]){
+            id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:safeFile];
+            if(obj) return obj;
+        }
         return nil;
     }
     else
@@ -672,7 +680,6 @@
         return [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
     }
 }
-
 
 @end
 

@@ -82,7 +82,7 @@
                 for (NSString* oneEdge in otherEdgeArr) {
                     if(![oneEdge containsString:@":"]) continue;
                     NSArray* arr = [oneEdge componentsSeparatedByString:@":"];
-                    NSString* edgeValue = arr[0];
+                    NSString* edgeValue = [StringLib trim:arr[0]];
                     NSString* otherViewName = [StringLib trim:arr[1]];
                     UIView* otherView = [uiElements objectForKey:otherViewName];
                     if(!otherView) continue;
@@ -276,6 +276,14 @@
                 if([view isKindOfClass:[UIButton class]]) [self bgImageObj:propValue button:(UIButton*)view];
             }
             
+            propKey = @"titleImg";
+            if([allKeys containsObject:propKey])
+            {
+                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                if([view isKindOfClass:[UIButton class]]) [self titleImageObj:propValue button:(UIButton*)view];
+            }
+            
+            
         }
     }@catch(NSException* exception)
     {
@@ -384,6 +392,21 @@
 }
 
 
+//abc > [button setTitle:@"abc" forState:UIControlStateNormal]
+//abc;def > [button setTitle:@"abc" forState:UIControlStateNormal]
+//          [button setTitle:@"def" forState:UIControlStateHighlighted]
++(void)titleImageObj:(NSString*)value button:(UIButton*)button
+{
+    if([value containsString:@";"])
+    {
+        NSArray* arr = [value componentsSeparatedByString:@";"];
+        [button setImage:[self imageObj:arr[0]] forState:UIControlStateNormal];
+        [button setImage:[self imageObj:arr[1]] forState:UIControlStateHighlighted];
+        return;
+    }
+    
+    [button setImage:[self imageObj:value] forState:UIControlStateNormal];
+}
 
 //abc > [button setTitle:@"abc" forState:UIControlStateNormal]
 //abc;def > [button setTitle:@"abc" forState:UIControlStateNormal]
@@ -760,4 +783,3 @@
 }
 
 @end
-

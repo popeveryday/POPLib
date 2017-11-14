@@ -276,7 +276,7 @@
                 if([view isKindOfClass:[UIButton class]]) [self bgImageObj:propValue button:(UIButton*)view];
             }
             
-            propKey = @"titleImg";
+            propKey = @"titleimage";
             if([allKeys containsObject:propKey])
             {
                 propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];

@@ -589,8 +589,8 @@
 {
     NSString* value1 = [value lowercaseString];
     if([value1 isEqualToString:@"black"]) return [UIColor blackColor];
-    if([value1 isEqualToString:@"darkGray"]) return [UIColor darkGrayColor];
-    if([value1 isEqualToString:@"lightGray"]) return [UIColor lightGrayColor];
+    if([value1 isEqualToString:@"darkgray"]) return [UIColor darkGrayColor];
+    if([value1 isEqualToString:@"lightgray"]) return [UIColor lightGrayColor];
     if([value1 isEqualToString:@"white"]) return [UIColor whiteColor];
     if([value1 isEqualToString:@"gray"]) return [UIColor grayColor];
     if([value1 isEqualToString:@"red"]) return [UIColor redColor];
@@ -620,7 +620,6 @@
     }
     
     return Color(value);
-    
 }
 
 //abc > [UIImage imageNamed:@"abc"]

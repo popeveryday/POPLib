@@ -10,18 +10,31 @@
 
 @protocol ObserverObjectDelegate <NSObject>
 -(void) observerObjectDidCallWithKey:(NSInteger)key value:(id)value;
+
+@optional
+-(void) observerObjectDidCallWithKey:(NSInteger)key value:(id)value notificationKey:(NSString*)notificationKey;
 @end
 
 @interface ObserverObject : NSObject
-@property (nonatomic) NSMutableArray* targetObjects;
+@property (nonatomic) NSMutableDictionary* targetObjects;
 
 +(ObserverObject*)instance;
 
++(void)registerForNotificationKey:(NSString*)notificationKey;
+
 +(void)addObserverToTarget:(id<ObserverObjectDelegate>)target;
+
++(void)addObserverToTarget:(id<ObserverObjectDelegate>)target notificationKey:(NSString*)notificationKey;
 
 +(void)removeObserverWithTarget:(id<ObserverObjectDelegate>)target;
 
++(void)removeObserverWithTarget:(id<ObserverObjectDelegate>)target notificationKey:(NSString*)notificationKey;
+
++(void)sendObserver:(NSInteger)key object:(id)object notificationKey:(NSString*)notificationKey;
+
 +(void)sendObserver:(NSInteger)key object:(id)object;
+
++(void)sendObserver:(NSInteger)key notificationKey:(NSString*)notificationKey;
 
 +(void)sendObserver:(NSInteger)key;
 
@@ -38,22 +51,22 @@
  
  -(void)observerObjectDidCallWithKey:(NSInteger)key value:(id)value
  {
-    switch (key)
-    {
-    case OBS_FinishRoundDialog_NextRound:
-        NSLog(@"next");
-        break;
-    case OBS_FinishRoundDialog_ReplayRound:
-        NSLog(@"replay");
-        break;
-    case OBS_FinishRoundDialog_ReturnPackage:
-        NSLog(@"return");
-        break;
-    }
+ switch (key)
+ {
+ case OBS_FinishRoundDialog_NextRound:
+ NSLog(@"next");
+ break;
+ case OBS_FinishRoundDialog_ReplayRound:
+ NSLog(@"replay");
+ break;
+ case OBS_FinishRoundDialog_ReturnPackage:
+ NSLog(@"return");
+ break;
+ }
  }
  
  -(void) dealloc{
-    [ObserverObject removeObserverToTarget:self];
+ [ObserverObject removeObserverToTarget:self];
  }
  */
 
@@ -72,6 +85,7 @@
  
  -(void) actionObserver:(NSNotification*)sender
  {
-    NSDictionary* data = sender.object;
+ NSDictionary* data = sender.object;
  }
  */
+

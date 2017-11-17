@@ -62,5 +62,10 @@
 
 +(NSInteger) genNumberFromCode:(NSString*)code dictionaryString:(NSString*) dictionaryString;
 
++(NSString*) md5:(NSString*)str;
+
++(NSString*) md5_2:(NSString*)str;
+
++ (NSString*)sha256:(NSString*)input;
 
 @end

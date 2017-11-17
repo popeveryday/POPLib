@@ -93,10 +93,6 @@
 
 +(NSDictionary*) serializationDictionaryFromObject:(id) obj;
 
-+(NSString*) md5:(NSString*)str;
-
-+(NSString*) md5_2:(NSString*)str;
-
 +(BOOL) saveObject:(id)obj toFilePath:(NSString*)filePath allowSafeBackup:(BOOL)allowSafeBackup;
 
 +(id) loadObjectFromFile:(NSString*) filePath allowSafeBackup:(BOOL)allowSafeBackup;

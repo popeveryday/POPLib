@@ -10,7 +10,8 @@
 #import "NSDate+NVTimeAgo.h"
 #import <Foundation/NSNull.h>
 #import "GlobalConfig.h"
-
+#import <objc/runtime.h>
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation StringLib
 

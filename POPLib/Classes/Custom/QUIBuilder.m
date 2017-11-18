@@ -64,9 +64,7 @@
                 if(![CONTROL_TYPES.allKeys containsObject:propValue]) continue;
             }
             
-            
-            
-            enum ALControlType controlType = (enum ALControlType) [[CONTROL_TYPES objectForKey:propValue] integerValue];
+            enum ALControlType controlType = (enum ALControlType) [[CONTROL_TYPES objectForKey:propValue.lowercaseString] integerValue];
             
             propKey = [@"superEdge" lowercaseString];
             NSString* superEdge = nil;

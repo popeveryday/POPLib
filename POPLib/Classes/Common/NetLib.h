@@ -23,6 +23,8 @@
 +(ReturnSet*)uploadFileWithPath:(NSString *)filePath toUrl:(NSString *)url uploadTagName:(NSString *)uploadTagName requestData:(Hashtable *)requestData;
 +(ReturnSet*)uploadFileToUrl:(NSString *)url withTagNameFilePaths:(Hashtable*)files requestData:(Hashtable *)requestData;
 +(BOOL)isInternetAvailable;
++(BOOL)isNetworkConnectionReady;
++(BOOL)isReachableURL:(NSString*)url;
 +(NSString*)uRLEncoding:(NSString *)val;
 +(ReturnSet*)readTextFromUrl:(NSString*) url;
 +(ReturnSet*)getFileNameSizeFromURL:(NSString*)url;

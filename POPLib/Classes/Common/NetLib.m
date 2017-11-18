@@ -205,17 +205,41 @@
     }
 }
 
-+(BOOL)isInternetAvailable{
++(BOOL)isInternetAvailable
+{
+    if ([self isNetworkConnectionReady]) {
+        return [self isReachableURL:@"http://www.google.com"];
+    }
+    return NO;
+}
+
++(BOOL)isNetworkConnectionReady
+{
     Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
     
-    if (networkStatus == NotReachable) {
-        NSLog(@"Checking Internet: NO");
-        return NO;
-    } else {
-        NSLog(@"Checking Internet: YES - READY");
-        return YES;
-    }
+    NSLog(@"Checking Internet: %@", @(networkStatus == NotReachable));
+    return !(networkStatus == NotReachable);
+}
+
++(BOOL) isReachableURL:(NSString*)url
+{
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    
+    [[NSData alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]];
+    
+    if(!response) return NO;
+    
+    NSLog(@"isReachableURL: %@", response.URL.absoluteString);
+    
+    if(![response.URL.absoluteString containsString:url]) return NO;
+    
+    NSInteger statusCode = [((NSHTTPURLResponse *)response) statusCode];
+    
+    return statusCode >= 200 && statusCode < 300;
 }
 
 +(NSString*)uRLEncoding:(NSString *)val

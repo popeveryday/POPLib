@@ -22,7 +22,7 @@
 +(ReturnSet*)downloadTextFileToDocument:(NSString*) destinationFile url:(NSString*) url;
 +(ReturnSet*)uploadFileWithPath:(NSString *)filePath toUrl:(NSString *)url uploadTagName:(NSString *)uploadTagName requestData:(Hashtable *)requestData;
 +(ReturnSet*)uploadFileToUrl:(NSString *)url withTagNameFilePaths:(Hashtable*)files requestData:(Hashtable *)requestData;
-+(BOOL)isInternetAvailable;
++(void)checkInternetWithCompletedBlock:(void (^)(BOOL isOnline, NSError* error))completeBlock;
 +(BOOL)isNetworkConnectionReady;
 +(BOOL)isReachableURL:(NSString*)url;
 +(NSString*)uRLEncoding:(NSString *)val;

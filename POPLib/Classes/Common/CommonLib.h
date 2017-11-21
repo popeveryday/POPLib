@@ -63,9 +63,9 @@
 
 +(void)addObserverBecomeActiveForObject:(id) container activeSelector:(SEL)activeSelector;
 
-+(BOOL)alertInternetConnectionStatusWithTitle:(NSString*) title message:(NSString*)message;
++(BOOL)alertNetworkConnectionStatusWithTitle:(NSString*) title message:(NSString*)message;
 
-+(BOOL)alertInternetConnectionStatus;
++(BOOL)alertNetworkConnectionStatus;
 
 +(NSArray*)alertUpgrageFeaturesWithContainer:(id)container isIncludeRestoreButton:(BOOL)isIncludeRestoreButton;
 

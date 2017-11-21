@@ -290,16 +290,16 @@
                                                object:Nil];
 }
 
-+(BOOL)alertInternetConnectionStatusWithTitle:(NSString*) title message:(NSString*)message{
-    if (![NetLib isInternetAvailable]) {
++(BOOL)alertNetworkConnectionStatusWithTitle:(NSString*) title message:(NSString*)message{
+    if (![NetLib isNetworkConnectionReady]) {
         [self alertWithTitle: title == nil ? LocalizedText(@"Connection error",nil) : title message: message == nil ? LocalizedText(@"Unable to connect with the server.\nCheck your internet connection and try again.",nil) : message ];
         return NO;
     }
     return YES;
 }
 
-+(BOOL)alertInternetConnectionStatus{
-    return [self alertInternetConnectionStatusWithTitle:nil message:nil];
++(BOOL)alertNetworkConnectionStatus{
+    return [self alertNetworkConnectionStatusWithTitle:nil message:nil];
 }
 
 +(NSArray*)alertUpgrageFeaturesWithContainer:(id)container isIncludeRestoreButton:(BOOL)isIncludeRestoreButton{

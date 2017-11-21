@@ -30,6 +30,7 @@
 		45640F3F903A85DE16CFA2FEBD3B1F11 /* ImageLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 594B6A5C1594844CB820F16C32B58A9B /* ImageLib.m */; };
 		49715CF477F5CE8189F97BB13E96DBBA /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 693E33B5A50FEE5938344B67CA9D5CCE /* Reachability.m */; };
 		5426709A1F7F572F0020C36A /* QUIBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 542670981F7F572F0020C36A /* QUIBuilder.m */; };
+		5427723F1FC41B7900BD3AB6 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5427723E1FC41B7800BD3AB6 /* SimplePing.m */; };
 		56C733EE233BE000A912FE576B40774D /* NSDate+NVTimeAgo.h in Headers */ = {isa = PBXBuildFile; fileRef = F367461379EC206064BE407805439B97 /* NSDate+NVTimeAgo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5AE0A525A430D512328930A6A1A9AA8C /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 05896C4B701FF3B0FC0B3349AD2BB038 /* ALView+PureLayout.m */; };
 		5AEE3F20204FC822FA89E1E28ADC774B /* GameCenterLib2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A34B3A55FBE87C3816DF91BBDE1CBCB /* GameCenterLib2.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -160,6 +161,8 @@
 		53F6327DDA577A92079DC991B468CD8F /* InAppPurchaseLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseLib.m; sourceTree = "<group>"; };
 		542670981F7F572F0020C36A /* QUIBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QUIBuilder.m; sourceTree = "<group>"; };
 		542670991F7F572F0020C36A /* QUIBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QUIBuilder.h; sourceTree = "<group>"; };
+		5427723D1FC41B7800BD3AB6 /* SimplePing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
+		5427723E1FC41B7800BD3AB6 /* SimplePing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
 		574FFF12910001050319CA3AD050DB6B /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+PureLayout.m"; path = "PureLayout/PureLayout/NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
 		594B6A5C1594844CB820F16C32B58A9B /* ImageLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ImageLib.m; sourceTree = "<group>"; };
 		5ADDEEA3B3D9ECA35D101921DBF8A6CA /* Pods-POPLib_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-POPLib_Example-umbrella.h"; sourceTree = "<group>"; };
@@ -494,6 +497,8 @@
 		BA38A9EF817973724E18B3582B075843 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				5427723D1FC41B7800BD3AB6 /* SimplePing.h */,
+				5427723E1FC41B7800BD3AB6 /* SimplePing.m */,
 				D1841A9A64615BDA6E0CAD6632CDE0F5 /* AlertObject.h */,
 				64C3D5FC006D6EDED175E8875CC8630F /* AlertObject.m */,
 				67E93E2DB5384C6216890D060BE49B76 /* DateObject.h */,
@@ -757,6 +762,7 @@
 				DB9D84F49EA2AA0B78DF3E06E0AC0566 /* DateLib.m in Sources */,
 				A4F3ED50B982C93B40F7DF1C6027E19A /* DateObject.m in Sources */,
 				DD034C4B776AC3EF8C94231475ACED68 /* FileLib.m in Sources */,
+				5427723F1FC41B7900BD3AB6 /* SimplePing.m in Sources */,
 				66BF88CE87661F590AFF61FFAE4AA599 /* GameCenterLib2.m in Sources */,
 				F74CA1CE6D96A51382EC217361656164 /* Hashtable.m in Sources */,
 				45640F3F903A85DE16CFA2FEBD3B1F11 /* ImageLib.m in Sources */,

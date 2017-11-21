@@ -7,6 +7,7 @@
 //
 
 #import "NetLib.h"
+#import "SimplePing.h"
 
 @implementation NetLib
 
@@ -205,12 +206,24 @@
     }
 }
 
-+(BOOL)isInternetAvailable
+
+
++(void)checkInternetWithCompletedBlock:(void (^)(BOOL isOnline, NSError* error))completeBlock
 {
-    if ([self isNetworkConnectionReady]) {
-        return [self isReachableURL:@"http://www.google.com"];
-    }
-    return NO;
+    if(!completeBlock) return;
+    if (![self isNetworkConnectionReady]) completeBlock(NO, nil);
+    
+    NetworkChecker* network = [[NetworkChecker alloc] initWithHostName:@"8.8.8.8"];
+    network.isAutoRetryPing = NO;
+    [network setNetworkInitFail:^(NSError *error) {
+        completeBlock(NO, error);
+    }];
+    
+    [network setNetworkStatusChangedBlock:^(BOOL isOnline) {
+        completeBlock(isOnline, nil);
+    }];
+    
+    [network startPinger];
 }
 
 +(BOOL)isNetworkConnectionReady
@@ -218,7 +231,7 @@
     Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
     
-    NSLog(@"Checking Internet: %@", @(!(networkStatus == NotReachable)));
+    NSLog(@"Checking network connection: %@", @(!(networkStatus == NotReachable)));
     return !(networkStatus == NotReachable);
 }
 

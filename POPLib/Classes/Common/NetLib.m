@@ -208,22 +208,9 @@
 
 
 
-+(void)checkInternetWithCompletedBlock:(void (^)(BOOL isOnline, NSError* error))completeBlock
++(BOOL)isInternetAvailable
 {
-    if(!completeBlock) return;
-    if (![self isNetworkConnectionReady]) completeBlock(NO, nil);
-    
-    NetworkChecker* network = [[NetworkChecker alloc] initWithHostName:@"8.8.8.8"];
-    network.isAutoRetryPing = NO;
-    [network setNetworkInitFail:^(NSError *error) {
-        completeBlock(NO, error);
-    }];
-    
-    [network setNetworkStatusChangedBlock:^(BOOL isOnline) {
-        completeBlock(isOnline, nil);
-    }];
-    
-    [network startPinger];
+    return [NetworkChecker instance].isPingSuccess;
 }
 
 +(BOOL)isNetworkConnectionReady
@@ -326,5 +313,162 @@
         [[fromVC navigationController] presentViewController:controller animated:YES completion:nil];
     }
 }
+
+@end
+
+
+
+
+
+
+
+
+
+@interface NetworkChecker()<SimplePingDelegate>
+@property (nonatomic) SimplePing* pinger;
+@property (nonatomic) NSTimer* sendTimer;
+@property (nonatomic) void(^networkStatusChangedBlock)(BOOL isOnline);
+@property (nonatomic) void(^networkInitFail)(NSError *error);
+@end
+
+@implementation NetworkChecker
+
++ (instancetype)instance
+{
+    static NetworkChecker *sharedGameKitHelper;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedGameKitHelper = [[NetworkChecker alloc] init];
+    });
+    
+    return sharedGameKitHelper;
+}
+
+-(instancetype) initDefaultAuto
+{
+    self = [super init];
+    if (self) {
+        self.pinger = [[SimplePing alloc] initWithHostName:@"8.8.8.8"];
+        self.pinger.delegate = self;
+        self.isAutoRetryPing = YES;
+        _isInitSuccess = YES;
+        [self.pinger start];
+    }
+    return self;
+}
+
+-(instancetype) initWithHostName:(NSString*)hostName
+{
+    self = [super init];
+    if (self) {
+        self.pinger = [[SimplePing alloc] initWithHostName:hostName];
+        self.pinger.delegate = self;
+        self.isAutoRetryPing = YES;
+        _isInitSuccess = YES;
+    }
+    return self;
+}
+
+-(void) startPinger
+{
+    [self.pinger start];
+}
+
+
+-(void)setNetworkStatusChangedBlock:(void (^)(BOOL isOnline))networkStatusChangedBlock
+{
+    _networkStatusChangedBlock = networkStatusChangedBlock;
+}
+
+-(void)setNetworkInitFail:(void (^)(NSError *error))networkInitFail
+{
+    _networkInitFail = networkInitFail;
+}
+
+- (void)sendPing
+{
+    if(!self.pinger) return;
+    [self.pinger sendPingWithData:nil];
+    
+    if(!self.isAutoRetryPing) return;
+    
+    if(self.sendTimer){
+        [self.sendTimer invalidate];
+        self.sendTimer = nil;
+    }
+    
+    self.sendTimer = [NSTimer scheduledTimerWithTimeInterval:(self.pingDelay == 0 ? 1 : self.pingDelay) target:self selector:@selector(sendPing) userInfo:nil repeats:NO];
+}
+
+- (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData *)address
+{
+    assert(pinger == self.pinger);
+    assert(address != nil);
+    
+    NSLog(@"pinging %@", address);
+    
+    [self sendPing];
+}
+
+- (void)simplePing:(SimplePing *)pinger didFailWithError:(NSError *)error
+{
+    assert(pinger == self.pinger);
+    NSLog(@"failed: %@", error);
+    
+    if (_networkInitFail) {
+        _networkInitFail(error);
+    }
+    
+    _isPingSuccess = NO;
+    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    
+    
+    _isInitSuccess = NO;
+    [self.sendTimer invalidate];
+    self.sendTimer = nil;
+    self.pinger = nil;
+}
+
+- (void)simplePing:(SimplePing *)pinger didSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber
+{
+    assert(pinger == self.pinger);
+    NSLog(@"#%u sent", (unsigned int) sequenceNumber);
+}
+
+- (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber error:(NSError *)error
+{
+    _isPingSuccess = NO;
+    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    assert(pinger == self.pinger);
+    NSLog(@"#%u send failed: %@", (unsigned int) sequenceNumber, error);
+}
+
+- (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber
+{
+    _isPingSuccess = YES;
+    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    assert(pinger == self.pinger);
+    NSLog(@"#%u received, size=%zu", (unsigned int) sequenceNumber, (size_t) packet.length);
+}
+
+- (void)simplePing:(SimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet
+{
+    _isPingSuccess = NO;
+    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    assert(pinger == self.pinger);
+    NSLog(@"unexpected packet, size=%zu", (size_t) packet.length);
+}
+
+-(void) dealloc
+{
+    if(self.sendTimer){
+        [self.sendTimer invalidate];
+        self.sendTimer = nil;
+    }
+    
+    _pinger = nil;
+    _networkStatusChangedBlock = nil;
+}
+
 
 @end

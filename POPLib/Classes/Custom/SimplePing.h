@@ -276,22 +276,7 @@ NS_ASSUME_NONNULL_END
 
 
 
-@interface NetworkChecker : NSObject
-@property (nonatomic, readonly) BOOL isPingSuccess;
-@property (nonatomic, readonly) BOOL isInitSuccess;
-@property (nonatomic) BOOL isAutoRetryPing;
-@property (nonatomic) CGFloat pingDelay;
 
-
-+ (instancetype)instance;
--(instancetype) initDefaultAuto;
--(instancetype) initWithHostName:(NSString*)hostName;
--(void)startPinger;
--(void)setNetworkStatusChangedBlock:(void (^)(BOOL isOnline))networkStatusChangedBlock;
--(void)setNetworkInitFail:(void (^)(NSError *error))networkInitFail;
--(void)sendPing;
-
-@end
 
 
 

@@ -669,18 +669,26 @@
 
 
 
-
-
+enum QUIBuilderPreviewDevice
+{
+    QUIBuilderPreviewDeviceDefault,
+    QUIBuilderPreviewDevice_iPhone5SE,
+    QUIBuilderPreviewDevice_iPhone68,
+    QUIBuilderPreviewDevice_iPhone68plus,
+    QUIBuilderPreviewDevice_iPhoneX,
+};
 
 @interface QUIBuilderPreview ()<NetServiceHelperDelegate>
-
+@property (nonatomic) enum QUIBuilderPreviewDevice deviceType;
 @end
 
 @implementation QUIBuilderPreview
 {
     NetServiceHelper* netService;
     NSDictionary* uiElements;
-    NSString* loadedStr;
+    NSString* loadedStr, *quiContent, *tempPath, *lastestFile;
+    UIView* contentPane;
+    BOOL isContentPaneClipsToBounds;
 }
 
 - (void)viewDidLoad {
@@ -689,6 +697,142 @@
     netService = [[NetServiceHelper alloc] initWithDomain:@"local" bonjourName:@"builder"];
     netService.delegate = self;
     loadedStr = @"";
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(menuTapGesture:)];
+    tapGesture.numberOfTouchesRequired = 3;
+    [self.view addGestureRecognizer:tapGesture];
+    
+    tempPath = [FileLib getDocumentPath:@"lasted.qui"];
+    
+    self.deviceType = (enum QUIBuilderPreviewDevice) [[CommonLib getAppPreference:@"QUIBuilderPreviewDevice" defaultValue:@(QUIBuilderPreviewDeviceDefault)] integerValue];
+    
+    if([FileLib checkPathExisted:tempPath]){
+        quiContent = [FileLib readFile:tempPath];
+        lastestFile = [tempPath lastPathComponent];
+    }
+    
+    [self refreshUI];
+}
+
+-(void)setDeviceType:(enum QUIBuilderPreviewDevice)deviceType{
+    _deviceType = deviceType;
+    [CommonLib setAppPreference:@"QUIBuilderPreviewDevice" value:@(deviceType)];
+}
+
+- (void) menuTapGesture: (UITapGestureRecognizer *)recognizer{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Menu" message:[NSString stringWithFormat:@"%@ - %@", netService.netServiceState == NetServiceStateConnected ? @"Connected" : @"Waiting" , lastestFile] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    
+    
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Load QUI Files" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController* alert2 = [UIAlertController alertControllerWithTitle:@"Select one file to preview" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert2 addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+        
+        NSArray* files = [FileLib getFileList:[FileLib getDocumentPath] searchString:@"*.qui" isFullPath:YES isIncludeSubFolder:YES filterListType:(GetFileListTypeFileOnly)];
+        
+        NSString* rootPath = [FileLib getDocumentPath], *filename;
+        for (int i = 0 ; i < files.count; i++)
+        {
+            filename = files[i];
+            if([filename isEqualToString:lastestFile]) continue;
+            filename = [filename stringByReplacingOccurrencesOfString:rootPath withString:@""];
+            [alert2 addAction:[UIAlertAction actionWithTitle:filename style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self drawUIWithContent:[FileLib readFile:files[i]]];
+                lastestFile = filename;
+            }]];
+        }
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"[Reload]" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self refreshUI];
+    }]];
+    
+    
+    NSArray* names = [@"Default,iPhone5SE,iPhone68,iPhone68plus,iPhoneX" componentsSeparatedByString:@","];
+    [alert addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:@"[Switch Device - %@]",names[_deviceType]] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController* alert2 = [UIAlertController alertControllerWithTitle:@"Device Settings" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert2 addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+        
+        for (int i = 0 ; i < names.count; i++) {
+            
+            [alert2 addAction:[UIAlertAction actionWithTitle:[names[i] stringByAppendingString: _deviceType == i ? @"(*)" : @"" ] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                self.deviceType = (enum QUIBuilderPreviewDevice)i;
+                [self refreshUI];
+            }]];
+        }
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }]];
+    
+    
+    [alert addAction:[UIAlertAction actionWithTitle:(isContentPaneClipsToBounds ? @"[ClipsToBounds > NO]" : @"[ClipsToBounds > YES]" ) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isContentPaneClipsToBounds = !isContentPaneClipsToBounds;
+        contentPane.clipsToBounds = isContentPaneClipsToBounds;
+    }]];
+    
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"[CLEAR ALL CONTENT]" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController* alert2 = [UIAlertController alertControllerWithTitle:@"Clear All Contents" message:@"Are you sure you want to remove all files?" preferredStyle:UIAlertControllerStyleAlert];
+        [alert2 addAction:[UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleCancel handler:nil]];
+        
+        [alert2 addAction:[UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSArray* files = [FileLib getFileList:[FileLib getDocumentPath] searchString:nil isFullPath:YES isIncludeSubFolder:YES filterListType:(GetFileListTypeAll)];
+            for (NSString* file in files)
+            {
+                [FileLib removeFileOrDirectory:file];
+            }
+            
+            quiContent = nil;
+            lastestFile = nil;
+            [self refreshUI];
+            
+            [CommonLib alert:@"Clear All Contents Done."];
+        }]];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void) refreshUI
+{
+    [QUIBuilder clearQUIViewWithUIElement:uiElements];
+    [contentPane removeFromSuperview];
+    contentPane = nil;
+    
+    NSArray* edges = [@"L0R0T0B0,VHS320#568,VHS375#667,VHS414#736,VHS375#812" componentsSeparatedByString:@","];
+    
+    contentPane = [ViewLib initAutoLayoutWithType:ALControlTypeView viewContainer:self.view superEdge:edges[_deviceType] otherEdge:nil];
+    contentPane.backgroundColor = [UIColor whiteColor];
+    contentPane.layer.borderColor = [Color2(@"c9c9c9", 0.3f) CGColor];
+    contentPane.layer.borderWidth = 1.0f;
+    contentPane.clipsToBounds = isContentPaneClipsToBounds;
+    
+    if (![StringLib isValid:quiContent]) return;
+    
+    [self drawUIWithContent:quiContent];
+}
+
+-(void) drawUIWithContent:(NSString*)content
+{
+    if (uiElements) {
+        [QUIBuilder clearQUIViewWithUIElement:uiElements];
+        uiElements = nil;
+    }
+    
+    uiElements = [QUIBuilder rebuildUIWithContent:content containerView:contentPane errorBlock:^(NSString *msg, NSException *exception) {
+        [CommonLib alert: [NSString stringWithFormat:@"%@\n%@", msg, exception]];
+    }];
+    
+    quiContent = content;
+    [FileLib writeContent:content toFile:tempPath isAppend:NO];
+    
+    NSString* code = [QUIBuilder genCode:uiElements];
+    [netService sendMessage:code];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -725,17 +869,8 @@
     NSString* content = [dic objectForKey:@"content"];
     
     if ([type isEqualToString:@"design"]) {
-        if (uiElements) {
-            [QUIBuilder clearQUIViewWithUIElement:uiElements];
-            uiElements = nil;
-        }
-        
-        uiElements = [QUIBuilder rebuildUIWithContent:content containerView:self.view errorBlock:^(NSString *msg, NSException *exception) {
-            [CommonLib alert: [NSString stringWithFormat:@"%@\n%@", msg, exception]];
-        }];
-        
-        NSString* code = [QUIBuilder genCode:uiElements];
-        [netService sendMessage:code];
+        [self drawUIWithContent:content];
+        lastestFile = @".:: Live ::.";
     }
     else
     {
@@ -776,7 +911,8 @@
 }
 
 -(void) netServiceHelperStateChanged:(enum NetServiceState)state{
-    //    [self validateButton];
+    
 }
 
 @end
+

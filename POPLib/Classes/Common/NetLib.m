@@ -338,7 +338,7 @@
     static NetworkChecker *sharedGameKitHelper;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedGameKitHelper = [[NetworkChecker alloc] init];
+        sharedGameKitHelper = [[NetworkChecker alloc] initDefaultAuto];
     });
     
     return sharedGameKitHelper;

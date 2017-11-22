@@ -229,7 +229,7 @@
     NSURLResponse *response = nil;
     NSError *error = nil;
     
-    [[NSData alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]];
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
     if(!response) return NO;
     
@@ -419,8 +419,13 @@
         _networkInitFail(error);
     }
     
-    _isPingSuccess = NO;
-    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    if (_isPingSuccess)
+    {
+        _isPingSuccess = NO;
+        if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    }
+    
+    
     
     
     _isInitSuccess = NO;
@@ -437,24 +442,35 @@
 
 - (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber error:(NSError *)error
 {
-    _isPingSuccess = NO;
-    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    if (_isPingSuccess)
+    {
+        _isPingSuccess = NO;
+        if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    }
+    
     assert(pinger == self.pinger);
     NSLog(@"#%u send failed: %@", (unsigned int) sequenceNumber, error);
 }
 
 - (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber
 {
-    _isPingSuccess = YES;
-    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    if (!_isPingSuccess)
+    {
+        _isPingSuccess = YES;
+        if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    }
+    
     assert(pinger == self.pinger);
     NSLog(@"#%u received, size=%zu", (unsigned int) sequenceNumber, (size_t) packet.length);
 }
 
 - (void)simplePing:(SimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet
 {
-    _isPingSuccess = NO;
-    if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    if (_isPingSuccess)
+    {
+        _isPingSuccess = NO;
+        if (_networkStatusChangedBlock) _networkStatusChangedBlock(_isPingSuccess);
+    }
     assert(pinger == self.pinger);
     NSLog(@"unexpected packet, size=%zu", (size_t) packet.length);
 }
@@ -472,3 +488,4 @@
 
 
 @end
+

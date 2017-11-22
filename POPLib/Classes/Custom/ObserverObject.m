@@ -69,6 +69,8 @@
 {
     NSString* notiKey = notificationKey ? notificationKey : OBS_KEY;
     
+    if(![self.targetObjects.allKeys containsObject:notiKey]) [self registerForNotificationKey:notiKey];
+    
     [targetLock lock];
     NSMutableArray* groupTargets = [self.targetObjects objectForKey: notiKey];
     
@@ -90,6 +92,9 @@
 -(void)removeObserverWithTarget:(id<ObserverObjectDelegate>)target notificationKey:(NSString*)notificationKey
 {
     NSString* notiKey = notificationKey ? notificationKey : OBS_KEY;
+    
+    if(![self.targetObjects.allKeys containsObject:notiKey]) [self registerForNotificationKey:notiKey];
+    
     [targetLock lock];
     NSMutableArray* groupTargets = [self.targetObjects objectForKey: notiKey];
     

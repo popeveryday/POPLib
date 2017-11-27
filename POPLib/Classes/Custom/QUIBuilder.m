@@ -341,8 +341,6 @@
     NSMutableDictionary* resultDict = [NSMutableDictionary new];
     for (NSString* item in allItems)
     {
-        if([item isEqualToString:currentItem]) continue;
-        
         temp = [self extractKeyValueFromItemString:item];
         keys = [temp objectAtIndex:0];
         values = [temp objectAtIndex:1];
@@ -367,6 +365,12 @@
             
             break;
         }
+    }
+    
+    NSString* propValue = [resultDict objectForKey:@"type"];
+    if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
+    {
+        return [self typeFromObjectName:propValue currentObjectStr:[StringLib parseStringFromDictionary:resultDict] arrayItems:allItems];
     }
     
     return [self extractKeyValueFromItemString:[StringLib parseStringFromDictionary:resultDict]];
@@ -915,4 +919,3 @@ enum QUIBuilderPreviewDevice
 }
 
 @end
-

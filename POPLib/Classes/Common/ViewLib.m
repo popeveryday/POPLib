@@ -530,7 +530,13 @@
     }
     
     
-    [viewContainer addSubview:control];
+    //fix bug UIVisualEffectView add subview
+    if (GC_Device_iOsVersion >= 11 && [viewContainer isKindOfClass:[UIVisualEffectView class]]) {
+        [((UIVisualEffectView*)viewContainer).contentView addSubview:control];
+    }else{
+        [viewContainer addSubview:control];
+    }
+    
     
     [self updateLayoutForView:control superEdge:superEdge otherEdge:otherEdge];
     

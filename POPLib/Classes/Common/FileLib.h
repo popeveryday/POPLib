@@ -70,6 +70,8 @@ enum SortFileListType{
 
 +(NSString*) getEmbedResourcePathWithFilename:(NSString*) filename;
 
++(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType limit:(NSInteger) limit;
+
 +(NSArray*) getFileList:(NSString*) path searchString:(NSString*) searchString isFullPath:(BOOL) isFullPath isIncludeSubFolder:(BOOL) isIncludeSubFolder filterListType:(enum GetFileListType) filterListType;
 
 +(NSArray*) getFileList:(NSString*) path searchString:(NSString*) searchString isFullPath:(BOOL) isFullPath;
@@ -139,3 +141,4 @@ enum SortFileListType{
 +(NSData*) dataFrom64String:(NSString*) stringEncodedWithBase64;
 
 @end
+

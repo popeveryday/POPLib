@@ -122,10 +122,13 @@
 }
 
 
-+(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType
++(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType{
+    return [self getFileList:path searchString:searchString isFullPath:isFullPath isIncludeSubFolder:isIncludeSubFolder filterListType:filterListType limit:0];
+}
+
++(NSArray*)getFileList:(NSString*) path searchString:(NSString*)searchString isFullPath:(BOOL)isFullPath isIncludeSubFolder:(BOOL)isIncludeSubFolder filterListType:(enum GetFileListType) filterListType limit:(NSInteger) limit
 {
-    
-    NSMutableArray* result;
+    NSMutableArray* result = [NSMutableArray new];
     NSError* error = nil;
     NSArray* dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
     
@@ -133,10 +136,9 @@
         NSLog(@"[FileLib.GetFileList] error: %@", [error localizedDescription]);
     }
     
-    if (!isIncludeSubFolder && !isFullPath && filterListType == GetFileListTypeAll) {
-        result = [NSMutableArray arrayWithArray: dirContents];
+    if (!isIncludeSubFolder && filterListType == GetFileListTypeAll) {
+        [result addObjectsFromArray:dirContents];
     }else{
-        NSMutableArray* acceptFiles = [NSMutableArray new];
         BOOL isDirectory;
         NSString* filePath;
         for (NSString* file in dirContents) {
@@ -151,16 +153,16 @@
                 || (filterListType == GetFileListTypeImageVideoOnly && IsSupportFileType(filePath))
                 )
             {
-                [acceptFiles addObject: isFullPath ? filePath : file];
+                [result addObject: file];
             }
+            
+            if(limit > 0 && limit - result.count <= 0) break;
             
             if (isIncludeSubFolder && isDirectory)
             {
-                [acceptFiles addObjectsFromArray:[self getFileList:filePath searchString:searchString isFullPath:isFullPath isIncludeSubFolder:isIncludeSubFolder filterListType:filterListType]];
+                [result addObjectsFromArray:[self getFileList:filePath searchString:searchString isFullPath:isFullPath isIncludeSubFolder:isIncludeSubFolder filterListType:filterListType limit: limit > 0 ? limit-result.count : 0 ]];
             }
         }
-        
-        result = [NSMutableArray arrayWithArray:acceptFiles];
     }
     
     //filter result
@@ -169,6 +171,13 @@
         //SELF beginswith[c] 'a' SELF endswith[c] 'a' SELF contains[c] 'a'
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF like[c] %@", searchString];
         result = [NSMutableArray arrayWithArray: [result filteredArrayUsingPredicate:predicate]];
+    }
+    
+    if (isFullPath)
+    {
+        for (int i = 0; i < result.count; i++) {
+            result[i] = [path stringByAppendingPathComponent:result[i]];
+        }
     }
     
     return result;

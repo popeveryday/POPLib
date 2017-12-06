@@ -245,7 +245,8 @@
     [UIView commitAnimations];
 }
 
-+(void)createSnowInView:(UIView*)view{
++(void)createSnowInView:(UIView*)view withImage:(UIImage*)snowImage
+{
     //snow builder
     CAEmitterLayer *emitterLayer = [CAEmitterLayer layer]; // 1
     emitterLayer.emitterPosition = CGPointMake(view.bounds.size.width / 2, view.bounds.origin.y - 300); // 2
@@ -263,7 +264,7 @@
     emitterCell.velocityRange = 300; // 13
     emitterCell.yAcceleration = 1; // 14
     
-    emitterCell.contents = (id)[[UIImage imageNamed:@"CommonLib.bundle/snow"] CGImage]; // 15
+    emitterCell.contents = (id)[snowImage CGImage]; // 15
     emitterLayer.emitterCells = [NSArray arrayWithObject:emitterCell]; // 16
     [view.layer addSublayer:emitterLayer]; // 17
 }

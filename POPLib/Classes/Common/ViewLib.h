@@ -68,7 +68,7 @@ enum ALControlType{
 
 +(void)slideViewUpForTextfield:(UITextField*) textField viewContainer:(UIView*)view isOn:(BOOL)isOn;
 
-+(void)createSnowInView:(UIView*)view;
++(void)createSnowInView:(UIView*)view withImage:(UIImage*)snowImage;
 
 +(UIDocumentInteractionController*)showOpenInWithFile:(NSString*)filePath container:(UIView*)container delegate:(id<UIDocumentInteractionControllerDelegate>)delegate;
 

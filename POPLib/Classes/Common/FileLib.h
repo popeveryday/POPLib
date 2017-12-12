@@ -140,5 +140,7 @@ enum SortFileListType{
 
 +(NSData*) dataFrom64String:(NSString*) stringEncodedWithBase64;
 
++(NSString*) getFullPathFromParam:(NSString*)param defaultPath:(NSString*)defaultPath;
+
 @end
 

@@ -631,7 +631,53 @@
     return dataFromBase64;
 }
 
-
+//doc[a/b/c] or doc:a/b/c => [FileLib getDocumentPath:@"a/b/c"]
+//doc or lib or tem/temp => document library temp
++(NSString*) getFullPathFromParam:(NSString*)param defaultPath:(NSString*)defaultPath
+{
+    NSString* param2 = [StringLib trim:[param lowercaseString]];
+    
+    if ([param2 isEqualToString:@"doc[]"] || [param2 isEqualToString:@"doc:"]) {
+        return [FileLib getDocumentPath];
+    }
+    
+    if ([param2 isEqualToString:@"lib[]"] || [param2 isEqualToString:@"lib:"]) {
+        return [FileLib getLibraryPath];
+    }
+    
+    if ([param2 isEqualToString:@"tem[]"] || [param2 isEqualToString:@"tem:"]) {
+        return [FileLib getTempPath];
+    }
+    
+    if ([param2 isEqualToString:@"temp[]"] || [param2 isEqualToString:@"temp:"]) {
+        return [FileLib getTempPath];
+    }
+    
+    NSString* value;
+    if ([param containsString:@"["] && [param containsString:@"]"]) {
+        value = [StringLib subStringBetween:param startStr:@"[" endStr:@"]"];
+        if (value){
+            if ([param2 hasPrefix:@"doc["]) return [FileLib getDocumentPath:value];
+            if ([param2 hasPrefix:@"lib["]) return [FileLib getLibraryPath:value];
+            if ([param2 hasPrefix:@"tem["]) return [FileLib getTempPath:value];
+            if ([param2 hasPrefix:@"temp["]) return [FileLib getTempPath:value];
+        }
+    }
+    
+    if ([param containsString:@":"])
+    {
+        value = [[param componentsSeparatedByString:@":"] objectAtIndex:1];
+        value = [StringLib trim:value];
+        if([param2 hasPrefix:@"doc:"]) return [FileLib getDocumentPath:value];
+        if([param2 hasPrefix:@"lib:"]) return [FileLib getLibraryPath:value];
+        if([param2 hasPrefix:@"tem:"]) return [FileLib getTempPath:value];
+        if([param2 hasPrefix:@"temp:"]) return [FileLib getTempPath:value];
+    }
+    
+    if([StringLib isValid:defaultPath]) return [defaultPath stringByAppendingPathComponent:param];
+    
+    return param;
+}
 
 @end
 

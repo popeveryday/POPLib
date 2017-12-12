@@ -245,7 +245,7 @@
     [UIView commitAnimations];
 }
 
-+(void)createSnowInView:(UIView*)view withImage:(UIImage*)snowImage
++(CAEmitterLayer*) createSnowInView:(UIView*)view withImage:(UIImage*)snowImage
 {
     //snow builder
     CAEmitterLayer *emitterLayer = [CAEmitterLayer layer]; // 1
@@ -267,6 +267,8 @@
     emitterCell.contents = (id)[snowImage CGImage]; // 15
     emitterLayer.emitterCells = [NSArray arrayWithObject:emitterCell]; // 16
     [view.layer addSublayer:emitterLayer]; // 17
+    
+    return emitterLayer;
 }
 
 +(UIDocumentInteractionController*)showOpenInWithFile:(NSString*)filePath container:(UIView*)container delegate:(id<UIDocumentInteractionControllerDelegate>)delegate

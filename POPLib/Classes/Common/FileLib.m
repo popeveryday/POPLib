@@ -176,6 +176,7 @@
     if (isFullPath)
     {
         for (int i = 0; i < result.count; i++) {
+            if([FileLib checkPathExisted:result[i]]) continue;
             result[i] = [path stringByAppendingPathComponent:result[i]];
         }
     }

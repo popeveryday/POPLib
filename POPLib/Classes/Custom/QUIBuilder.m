@@ -24,9 +24,12 @@
 #define DEVICE_BREAK @"<<DeViCe"
 
 
+
+
 @implementation QUIBuilder
 
-+(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
++(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
+{
     return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_Default errorBlock:errorBlock];
 }
 
@@ -43,8 +46,11 @@
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    NSDictionary* breakData = [self handleContent:content];
-    content = [breakData objectForKey:@"content"];
+    
+    
+    NSDictionary* tempdir = [self handleContent:content withDevice:device];
+    content = [tempdir objectForKey:@"content"];
+    NSDictionary* updateDic = [tempdir objectForKey:@"updateDic"];
     
     NSString* propKey = @"starting", *propValue;
     NSMutableDictionary* uiElements = [NSMutableDictionary new];
@@ -53,68 +59,86 @@
         
         NSArray* items = [content componentsSeparatedByString:CONTROL_BREAK];
         
-        
+        NSArray* allValues, *allKeys;
         for (NSString* item in items) {
             
-            NSArray* allValues = [StringLib deparseString:item].values;
-            NSArray* allKeys = [StringLib deparseString:item.lowercaseString].keys;
+            NSDictionary* temp = [self extractKeyValueFromItemString:item];
+            allValues = [temp objectForKey:@"allValues"];
+            allKeys = [temp objectForKey:@"allKeys"];
             
-            
-            propKey = @"type";
-            if(![allKeys containsObject:propKey]) continue;
-            propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
-            
-            if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
-            {
-                NSArray* temp = [self typeFromObjectName:propValue currentObjectStr:item arrayItems:items];
-                allKeys = temp[0];
-                allValues = temp[1];
-                
-                if(![allKeys containsObject:propKey]) continue;
-                propValue = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] lowercaseString];
-                
-                if(![CONTROL_TYPES.allKeys containsObject:propValue]) continue;
-            }
-            
-            enum ALControlType controlType = (enum ALControlType) [[CONTROL_TYPES objectForKey:propValue.lowercaseString] integerValue];
-            
-            propKey = [@"superEdge" lowercaseString];
-            NSString* superEdge = nil;
-            if([allKeys containsObject:propKey]){
-                superEdge = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
-            }
-            
-            //otherEdge = B-10:tf, T10:abc
-            propKey = [@"otherEdge" lowercaseString];
-            NSMutableDictionary* otherEdge = [NSMutableDictionary new];
-            if([allKeys containsObject:propKey]){
-                NSArray* otherEdgeArr = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] componentsSeparatedByString:@","];
-                for (NSString* oneEdge in otherEdgeArr) {
-                    if(![oneEdge containsString:@":"]) continue;
-                    NSArray* arr = [oneEdge componentsSeparatedByString:@":"];
-                    NSString* edgeValue = [StringLib trim:arr[0]];
-                    NSString* otherViewName = [StringLib trim:arr[1]];
-                    UIView* otherView = [uiElements objectForKey:otherViewName];
-                    if(!otherView) continue;
-                    [otherEdge setObject:otherView forKey:edgeValue];
-                }
-            }
-            
-            UIView* containerView = container;
-            propKey = [@"container" lowercaseString];
-            if([allKeys containsObject:propKey])
-            {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
-                if([uiElements.allKeys containsObject:propValue])
-                    containerView = [uiElements objectForKey:propValue];
-            }
-            
-            UIView* view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
             
             propKey = @"name";
             NSString* name = [allKeys containsObject:propKey] ? [allValues objectAtIndex:[allKeys indexOfObject:propKey]] : [NSString stringWithFormat:@"view%@", @(uiElements.count)];
-            [uiElements setObject:view forKey:name];
             
+            UIView* view;
+            
+            if (![uiElements.allKeys containsObject:name])
+            {
+                NSArray* _allValues, *_allKeys;
+                if(updateDic && [updateDic.allKeys containsObject:name])
+                {
+                    NSDictionary* _temp = [self extractKeyValueFromItemString: [updateDic objectForKey:name]];
+                    _allValues = [_temp objectForKey:@"allValues"];
+                    _allKeys = [_temp objectForKey:@"allKeys"];
+                }
+                
+                propKey = @"type";
+                if(![allKeys containsObject:propKey]) continue;
+                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                if([_allKeys containsObject:propKey]) propValue = [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]];
+                
+                if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
+                {
+                    NSDictionary* temp2 = [self typeFromObjectName:propValue currentObjectStr:item arrayItems:items];
+                    allKeys = [temp2 objectForKey:@"allKeys"];
+                    allValues = [temp2 objectForKey:@"allValues"];
+                    
+                    if(![allKeys containsObject:propKey]) continue;
+                    propValue = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] lowercaseString];
+                    
+                    if(![CONTROL_TYPES.allKeys containsObject:propValue]) continue;
+                }
+                
+                enum ALControlType controlType = (enum ALControlType) [[CONTROL_TYPES objectForKey:propValue.lowercaseString] integerValue];
+                
+                propKey = [@"superEdge" lowercaseString];
+                NSString* superEdge = nil;
+                if([allKeys containsObject:propKey]) superEdge = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                if([_allKeys containsObject:propKey]) superEdge = [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]];
+                
+                
+                //otherEdge = B-10:tf, T10:abc
+                propKey = [@"otherEdge" lowercaseString];
+                NSMutableDictionary* otherEdge = [NSMutableDictionary new];
+                if([allKeys containsObject:propKey] || [_allKeys containsObject:propKey])
+                {
+                    NSArray* otherEdgeArr = [( [_allKeys containsObject:propKey] ? [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]] : [allValues objectAtIndex:[allKeys indexOfObject:propKey]]) componentsSeparatedByString:@","];
+                    
+                    for (NSString* oneEdge in otherEdgeArr) {
+                        if(![oneEdge containsString:@":"]) continue;
+                        NSArray* arr = [oneEdge componentsSeparatedByString:@":"];
+                        NSString* edgeValue = [StringLib trim:arr[0]];
+                        NSString* otherViewName = [StringLib trim:arr[1]];
+                        UIView* otherView = [uiElements objectForKey:otherViewName];
+                        if(!otherView) continue;
+                        [otherEdge setObject:otherView forKey:edgeValue];
+                    }
+                }
+                
+                UIView* containerView = container;
+                propKey = [@"container" lowercaseString];
+                if([allKeys containsObject:propKey] || [_allKeys containsObject:propKey])
+                {
+                    propValue = [_allKeys containsObject:propKey] ? [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]] : [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                    if([uiElements.allKeys containsObject:propValue])
+                        containerView = [uiElements objectForKey:propValue];
+                }
+                
+                view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
+                [uiElements setObject:view forKey:name];
+            }else{
+                view = [uiElements objectForKey:name];
+            }
             
             
             //UIView
@@ -327,26 +351,26 @@
 }
 
 #pragma builder functions
-+(NSArray*) extractKeyValueFromItemString:(NSString*)item
++(NSDictionary*) extractKeyValueFromItemString:(NSString*)item
 {
     NSArray* allValues = [StringLib deparseString:item].values;
     NSArray* allKeys = [StringLib deparseString:item.lowercaseString].keys;
-    return @[allKeys, allValues];
+    return @{ @"allKeys": allKeys, @"allValues": allValues };
 }
 
 //type = view & name = abc & title = hello & bgColor = red
 //CONTROL_BREAK
 //type = [abc] & name = copy_of_abc & bgColor = blue
 // => type = view & name = copy_of_abc & bgColor = blue & title = hello
-+(NSArray*) typeFromObjectName:(NSString*)objectName currentObjectStr:(NSString*)currentItem arrayItems:(NSArray*)allItems
++(NSDictionary*) typeFromObjectName:(NSString*)objectName currentObjectStr:(NSString*)currentItem arrayItems:(NSArray*)allItems
 {
     objectName = [objectName stringByReplacingOccurrencesOfString:@"[" withString:@""];
     objectName = [objectName stringByReplacingOccurrencesOfString:@"]" withString:@""];
     objectName = [[StringLib trim:objectName] lowercaseString];
     
-    NSArray* temp = [self extractKeyValueFromItemString:currentItem];
-    NSArray* allKeys = [temp objectAtIndex:0];
-    NSArray* allValues = [temp objectAtIndex:1];
+    NSDictionary* temp = [self extractKeyValueFromItemString:currentItem];
+    NSArray* allValues = [temp objectForKey:@"allValues"];
+    NSArray* allKeys = [temp objectForKey:@"allKeys"];
     
     NSString* propKey, *name;
     NSArray* keys, *values;
@@ -354,8 +378,8 @@
     for (NSString* item in allItems)
     {
         temp = [self extractKeyValueFromItemString:item];
-        keys = [temp objectAtIndex:0];
-        values = [temp objectAtIndex:1];
+        keys = [temp objectForKey:@"allKeys"];
+        values = [temp objectForKey:@"allValues"];
         
         propKey = @"name";
         if(![keys containsObject:propKey]) continue;
@@ -586,7 +610,6 @@
     if([value isEqualToString:@"done"]) return UIReturnKeyDone;
     if([value isEqualToString:@"emergencycall"]) return UIReturnKeyEmergencyCall;
     if([value isEqualToString:@"continue"]) return UIReturnKeyContinue;
-    
     return UIReturnKeyDefault;
 }
 
@@ -663,29 +686,32 @@
 }
 
 
-+(NSDictionary*) handleContent:(NSString*)content
++(NSDictionary*) handleContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
-    NSMutableDictionary* data = [NSMutableDictionary new];
+    
     if([content containsString:AUTOTEXT_BREAK]){
         NSString* defaultValue = [StringLib subStringBetween:content startStr:AUTOTEXT_BREAK endStr:@">>"];
         if([StringLib isValid:defaultValue])
         {
             content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@%@>>", AUTOTEXT_BREAK, defaultValue] withString:@""];
+            
             defaultValue = [defaultValue stringByReplacingOccurrencesOfString:@"=" withString:@""];
             defaultValue = [StringLib trim:defaultValue];
-            [data setObject:defaultValue forKey:@"autotext"];
+            
+            content = [self fillAutoTextWithContent:content autoTextFile:defaultValue];
         }
     }
     
     if(![content containsString:DEVICE_BREAK]){
-        [data setObject:content forKey:@"content"];
-        return data;
+        return @{ @"content": content };
     }
     
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
     content = arr[0];
-    [data setObject:content forKey:@"content"];
     
+    NSArray* deviceList = [[@"Default,iPhone5,iPhone6,iPhone6plus,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
+    
+    NSMutableDictionary* updateDic;
     NSString* device, *devContent;
     for (int i = 1; i < arr.count; i++)
     {
@@ -693,12 +719,44 @@
         device = [StringLib subStringBetween:devContent startStr:@"=" endStr:@">>"];
         devContent = [devContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"=%@>>", device] withString:@""];
         device = [[StringLib trim:device] lowercaseString];
-        [data setObject:devContent forKey:device];
+        
+        if(![deviceList containsObject:device]) continue;
+        
+        updateDic = [NSMutableDictionary new];
+        content = [content stringByAppendingFormat:@"%@\n%@", CONTROL_BREAK, devContent];
+        
+        NSArray* allValues, *allKeys;
+        NSDictionary *temp;
+        NSArray* items = [devContent componentsSeparatedByString:CONTROL_BREAK];
+        for (NSString* item in items) {
+            temp = [self extractKeyValueFromItemString:item];
+            allValues = [temp objectForKey:@"allValues"];
+            allKeys = [temp objectForKey:@"allKeys"];
+            
+            if(![allKeys containsObject:@"name"]) continue;
+            [updateDic setObject:item forKey:[allValues objectAtIndex:[allKeys indexOfObject:@"name"]]];
+        }
+        break;
     }
-    return data;
+    
+    if(updateDic) return @{ @"content": content, @"updateDic": updateDic};
+    return @{ @"content": content };
 }
 
-//+(void) handle
++(NSString*) fillAutoTextWithContent:(NSString*)content autoTextFile:(NSString*)autoTextFile
+{
+    NSString* realFile = [FileLib getFullPathFromParam:autoTextFile defaultPath:nil];
+    if(![FileLib checkPathExisted:realFile]) return content;
+    
+    NSString* replaceContent = [FileLib readFile:realFile];
+    NSDictionary* data = [[StringLib deparseString:replaceContent] toDictionary];
+    NSString* value;
+    for (NSString* key in data.allKeys) {
+        value = [data objectForKey:key];
+        content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"#%@#",key] withString:value];
+    }
+    return content;
+}
 
 @end
 

@@ -30,7 +30,7 @@
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_Default errorBlock:errorBlock];
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
@@ -41,7 +41,7 @@
 }
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
-    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_Default errorBlock:errorBlock];
+    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
@@ -709,7 +709,15 @@
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
     content = arr[0];
     
-    NSArray* deviceList = [[@"Default,iPhone5,iPhone6,iPhone6plus,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
+    NSString* deviceCode;
+    if (deviceType != QUIBuilderDeviceType_AutoDetect) {
+        NSArray* deviceList = [[@"iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
+        if(deviceList.count > deviceType) deviceCode = [deviceList objectAtIndex:deviceType];
+    }
+    
+    if (!deviceCode) {
+        deviceCode = [CommonLib getDeviceByResolution];
+    }
     
     NSMutableDictionary* updateDic;
     NSString* device, *devContent;
@@ -720,7 +728,7 @@
         devContent = [devContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"=%@>>", device] withString:@""];
         device = [[StringLib trim:device] lowercaseString];
         
-        if(![deviceList containsObject:device]) continue;
+        if(![deviceCode isEqualToString:device]) continue;
         
         updateDic = [NSMutableDictionary new];
         content = [content stringByAppendingFormat:@"%@\n%@", CONTROL_BREAK, devContent];

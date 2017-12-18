@@ -11,11 +11,11 @@
 
 enum QUIBuilderDeviceType
 {
-    QUIBuilderDeviceType_Default,
-    QUIBuilderDeviceType_iPhone5SE,
-    QUIBuilderDeviceType_iPhone68,
-    QUIBuilderDeviceType_iPhone68plus,
-    QUIBuilderDeviceType_iPhoneX
+    QUIBuilderDeviceType_iPhone5,
+    QUIBuilderDeviceType_iPhone6,
+    QUIBuilderDeviceType_iPhone6p,
+    QUIBuilderDeviceType_iPhoneX,
+    QUIBuilderDeviceType_AutoDetect
 };
 
 @interface QUIBuilder : NSObject

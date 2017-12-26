@@ -541,27 +541,34 @@
                 data = [NSString stringWithFormat:@"%@%@%@",data, data.length > 0 ? @":": @"", arr[i] ];
             }
             
-            return LocalizedText( [self spaceTextObj:data], langCode);
+            return LocalizedText( [self spaceAndNewLineTextObj:data], langCode);
         }
         
     }
     
-    return LocalizedText([self spaceTextObj: value], nil);
+    return LocalizedText([self spaceAndNewLineTextObj: value], nil);
 }
 
-
-+(NSString*) spaceTextObj:(NSString*)value
+//replace " -> '
+//replace \\n -> \n (line break)
++(NSString*) spaceAndNewLineTextObj:(NSString*)value
 {
     value = [StringLib trim:value];
+    
+    
     for (NSString* letter in @[@"\"", @"'"])
     {
         if([value hasPrefix:letter] && [value hasSuffix:letter]){
-            return [[value substringToIndex:value.length-1] substringFromIndex:1];
+            value = [[value substringToIndex:value.length-1] substringFromIndex:1];
         }
     }
     
+    value = [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+    
     return value;
 }
+
+
 
 +(NSTextAlignment) textAlignObj:(NSString*)value
 {

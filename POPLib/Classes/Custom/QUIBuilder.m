@@ -718,7 +718,7 @@
     
     NSString* deviceCode;
     if (deviceType != QUIBuilderDeviceType_AutoDetect) {
-        NSArray* deviceList = [[@"iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
+        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
         if(deviceList.count > deviceType) deviceCode = [deviceList objectAtIndex:deviceType];
     }
     

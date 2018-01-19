@@ -568,7 +568,7 @@ NSString* equalStr = @"[EqL]";
                     break;
                 }
             }
-            return resultText;
+            return [self spaceAndNewLineTextObj:resultText];
         }
         
     }

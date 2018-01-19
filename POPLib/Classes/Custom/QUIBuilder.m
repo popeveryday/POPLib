@@ -521,18 +521,28 @@
     return UITextFieldViewModeNever;
 }
 
+NSString* andStr = @"[AnD]";
+NSString* equalStr = @"[EqL]";
+
 //abc > LocalizedText(@"abc", nil)
 //'abc ' > LocalizedText(@"abc ", nil)
 //"abc " > LocalizedText(@"abc ", nil)
 //""abc "" > LocalizedText(@"\"abc \"", nil)
 //[zh-Hant]:"   time is: 08:30 PM" => LocalizedText(@"   time is: 08:30 PM", @"zh-Hant")
+//[localized]: en [EqL] Language [AnD] vi [EqL] Ngôn Ngữ [AnD] zh-Hant [EqL] 语言
+//   => [LocalizedText(@"-") isEqualToString:@"vi"] ? @"Ngôn Ngữ" :
+//      [LocalizedText(@"-") isEqualToString:@"zh-Hant"] ? @"语言" : @"Language"
+//  Note: first language will be the default language
 +(NSString*) textObj:(NSString*)value
 {
     if([value containsString:@":"]){
         NSArray* arr = [value componentsSeparatedByString:@":"];
         NSString* langCode = [StringLib trim:arr[0]] ;
         
-        if( ([langCode hasPrefix:@"["] && [langCode hasSuffix:@"]"]) ){
+        
+        
+        if( ([langCode hasPrefix:@"["] && [langCode hasSuffix:@"]"]) )
+        {
             NSString* data = @"";
             
             langCode = [StringLib trim:[[langCode substringToIndex:langCode.length-1] substringFromIndex:1]];
@@ -541,7 +551,24 @@
                 data = [NSString stringWithFormat:@"%@%@%@",data, data.length > 0 ? @":": @"", arr[i] ];
             }
             
-            return LocalizedText( [self spaceAndNewLineTextObj:data], langCode);
+            if (![langCode.lowercaseString isEqualToString:@"localized"]) {
+                return LocalizedText( [self spaceAndNewLineTextObj:data], langCode);
+            }
+            
+            data = [data stringByReplacingOccurrencesOfString:@"[EqL]" withString:@"="];
+            data = [data stringByReplacingOccurrencesOfString:@"[AnD]" withString:@"&"];
+            NSDictionary* langs = [[StringLib deparseString:data autoTrimKeyValue:YES] toDictionary];
+            NSString* defaultKey = [StringLib trim: [[data componentsSeparatedByString:@"="] firstObject]];
+            NSString* resultText = [langs objectForKey:defaultKey];
+            NSString* currentLangCode = LocalizedText(@"-", nil);
+            for (NSString* key in langs.allKeys)
+            {
+                if ([key isEqualToString:currentLangCode]) {
+                    resultText = [langs objectForKey:key];
+                    break;
+                }
+            }
+            return resultText;
         }
         
     }

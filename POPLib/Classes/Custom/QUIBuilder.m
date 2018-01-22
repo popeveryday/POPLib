@@ -195,6 +195,15 @@
                 view.clipsToBounds = [self boolValue:propValue];
             }
             
+            propKey = @"interaction";
+            if([allKeys containsObject:propKey])
+            {
+                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                view.userInteractionEnabled = [self boolValue:propValue];
+            }
+            
+            
+            
             
             //TextField, TextView
             propKey = @"placeholder";

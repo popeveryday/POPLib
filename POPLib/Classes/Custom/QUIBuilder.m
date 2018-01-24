@@ -295,8 +295,6 @@
             }
             
             
-            
-            
             //UIButton
             propKey = @"title";
             if([allKeys containsObject:propKey])
@@ -326,6 +324,25 @@
                 if([view isKindOfClass:[UIButton class]]) [self titleImageObj:propValue button:(UIButton*)view];
             }
             
+            //UILabel, UIButton
+            propKey = @"underline";
+            if([allKeys containsObject:propKey]
+               && ([view isKindOfClass:[UILabel class]] || [view isKindOfClass:[UIButton class]]) )
+            {
+                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                
+                if([self boolValue:propValue]){
+                    
+                    NSString* stringValue = [view isKindOfClass:[UILabel class]] ? ((UILabel*)view).text : [((UIButton*)view) currentTitle];
+                    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:stringValue];
+                    [attributeString addAttribute:NSUnderlineStyleAttributeName
+                                            value:[NSNumber numberWithInt:1]
+                                            range:(NSRange){0,[attributeString length]}];
+                    
+                    if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).attributedText = attributeString;
+                    if([view isKindOfClass:[UIButton class]]) ((UIButton*)view).titleLabel.attributedText = attributeString;
+                }
+            }
             
         }
     }@catch(NSException* exception)

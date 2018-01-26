@@ -48,157 +48,125 @@
 {
     
     
-    NSDictionary* tempdir = [self handleContent:content withDevice:device];
-    content = [tempdir objectForKey:@"content"];
-    NSDictionary* updateDic = [tempdir objectForKey:@"updateDic"];
+    NSDictionary* allItemDic = [self handleContent:content withDevice:device];
     
     NSString* propKey = @"starting", *propValue;
     NSMutableDictionary* uiElements = [NSMutableDictionary new];
+    NSDictionary* itemDic;
     
     @try{
         
-        NSArray* items = [content componentsSeparatedByString:CONTROL_BREAK];
+        NSArray* sortedKeys = [allItemDic.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* a,NSString* b)
+                               {
+                                   return [a compare:b];
+                               }];
         
-        NSArray* allValues, *allKeys;
-        for (NSString* item in items) {
+        for (NSString* sortedItemKey in sortedKeys) {
             
-            NSDictionary* temp = [self extractKeyValueFromItemString:item];
-            allValues = [temp objectForKey:@"allValues"];
-            allKeys = [temp objectForKey:@"allKeys"];
-            
+            itemDic = [allItemDic objectForKey:sortedItemKey];
             
             propKey = @"name";
-            NSString* name = [allKeys containsObject:propKey] ? [allValues objectAtIndex:[allKeys indexOfObject:propKey]] : [NSString stringWithFormat:@"view%@", @(uiElements.count)];
-            
+            NSString* name = [StringLib subStringBetween:sortedItemKey startStr:@"(" endStr:@")"];
             UIView* view;
             
-            if (![uiElements.allKeys containsObject:name])
+            propKey = @"type";
+            propValue = [itemDic objectForKey:propKey];
+            enum ALControlType controlType = (enum ALControlType) [[CONTROL_TYPES objectForKey:propValue.lowercaseString] integerValue];
+            
+            propKey = @"superedge";
+            NSString* superEdge = superEdge = [itemDic objectForKey:propKey];
+            
+            //otherEdge = B-10:tf, T10:abc
+            propKey = @"otheredge";
+            NSMutableDictionary* otherEdge = [NSMutableDictionary new];
+            if([itemDic.allKeys containsObject:propKey])
             {
-                NSArray* _allValues, *_allKeys;
-                if(updateDic && [updateDic.allKeys containsObject:name])
-                {
-                    NSDictionary* _temp = [self extractKeyValueFromItemString: [updateDic objectForKey:name]];
-                    _allValues = [_temp objectForKey:@"allValues"];
-                    _allKeys = [_temp objectForKey:@"allKeys"];
+                propValue = [itemDic objectForKey:propKey];
+                NSArray* otherEdgeArr = [propValue componentsSeparatedByString:@","];
+                
+                for (NSString* oneEdge in otherEdgeArr) {
+                    if(![oneEdge containsString:@":"]) continue;
+                    NSArray* arr = [oneEdge componentsSeparatedByString:@":"];
+                    NSString* edgeValue = [StringLib trim:arr[0]];
+                    NSString* otherViewName = [StringLib trim:arr[1]];
+                    UIView* otherView = [uiElements objectForKey:otherViewName];
+                    if(!otherView) continue;
+                    [otherEdge setObject:otherView forKey:edgeValue];
                 }
-                
-                propKey = @"type";
-                if(![allKeys containsObject:propKey]) continue;
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
-                if([_allKeys containsObject:propKey]) propValue = [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]];
-                
-                if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
-                {
-                    NSDictionary* temp2 = [self typeFromObjectName:propValue currentObjectStr:item arrayItems:items];
-                    allKeys = [temp2 objectForKey:@"allKeys"];
-                    allValues = [temp2 objectForKey:@"allValues"];
-                    
-                    if(![allKeys containsObject:propKey]) continue;
-                    propValue = [[allValues objectAtIndex:[allKeys indexOfObject:propKey]] lowercaseString];
-                    
-                    if(![CONTROL_TYPES.allKeys containsObject:propValue]) continue;
-                }
-                
-                enum ALControlType controlType = (enum ALControlType) [[CONTROL_TYPES objectForKey:propValue.lowercaseString] integerValue];
-                
-                propKey = [@"superEdge" lowercaseString];
-                NSString* superEdge = nil;
-                if([allKeys containsObject:propKey]) superEdge = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
-                if([_allKeys containsObject:propKey]) superEdge = [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]];
-                
-                
-                //otherEdge = B-10:tf, T10:abc
-                propKey = [@"otherEdge" lowercaseString];
-                NSMutableDictionary* otherEdge = [NSMutableDictionary new];
-                if([allKeys containsObject:propKey] || [_allKeys containsObject:propKey])
-                {
-                    NSArray* otherEdgeArr = [( [_allKeys containsObject:propKey] ? [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]] : [allValues objectAtIndex:[allKeys indexOfObject:propKey]]) componentsSeparatedByString:@","];
-                    
-                    for (NSString* oneEdge in otherEdgeArr) {
-                        if(![oneEdge containsString:@":"]) continue;
-                        NSArray* arr = [oneEdge componentsSeparatedByString:@":"];
-                        NSString* edgeValue = [StringLib trim:arr[0]];
-                        NSString* otherViewName = [StringLib trim:arr[1]];
-                        UIView* otherView = [uiElements objectForKey:otherViewName];
-                        if(!otherView) continue;
-                        [otherEdge setObject:otherView forKey:edgeValue];
-                    }
-                }
-                
-                UIView* containerView = container;
-                propKey = [@"container" lowercaseString];
-                if([allKeys containsObject:propKey] || [_allKeys containsObject:propKey])
-                {
-                    propValue = [_allKeys containsObject:propKey] ? [_allValues objectAtIndex:[_allKeys indexOfObject:propKey]] : [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
-                    if([uiElements.allKeys containsObject:propValue])
-                        containerView = [uiElements objectForKey:propValue];
-                }
-                
-                view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
-                [uiElements setObject:view forKey:name];
-            }else{
-                view = [uiElements objectForKey:name];
             }
+            
+            UIView* containerView = container;
+            propKey = [@"container" lowercaseString];
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                if([uiElements.allKeys containsObject:propValue])
+                    containerView = [uiElements objectForKey:propValue];
+            }
+            
+            view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
+            [uiElements setObject:view forKey:name];
+            
             
             
             //UIView
             propKey = @"borderwidth";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.layer.borderWidth = [propValue floatValue];
             }
             
             
             propKey = @"hidden";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.hidden = [self boolValue:propValue];
             }
             
             
             propKey = @"cornerradius";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.layer.cornerRadius = [propValue floatValue];
                 
             }
             
             propKey = @"bgcolor";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.backgroundColor = [self colorObj:propValue];
             }
             
             
             propKey = @"bordercolor";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.layer.borderColor = [[self colorObj:propValue] CGColor];
             }
             
             propKey = @"alpha";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.alpha = [propValue floatValue];
             }
             
             propKey = @"clipstobounds";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.clipsToBounds = [self boolValue:propValue];
             }
             
             propKey = @"interaction";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.userInteractionEnabled = [self boolValue:propValue];
             }
             
@@ -207,17 +175,17 @@
             
             //TextField, TextView
             propKey = @"placeholder";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).placeholder = propValue;
             }
             
             
             propKey = @"textcolor";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).textColor = [self colorObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).textColor = [self colorObj:propValue];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).textColor = [self colorObj:propValue];
@@ -225,17 +193,17 @@
             
             
             propKey = @"returnkeytype";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).returnKeyType = [self returnKeyTypeObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).returnKeyType = [self returnKeyTypeObj:propValue];
             }
             
             propKey = @"font";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).font = [self fontObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).font = [self fontObj:propValue];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).font = [self fontObj:propValue];
@@ -243,9 +211,9 @@
             }
             
             propKey = @"textalignment";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).textAlignment = [self textAlignObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).textAlignment = [self textAlignObj:propValue];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).textAlignment = [self textAlignObj:propValue];
@@ -253,9 +221,9 @@
             
             
             propKey = @"text";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).text = [self textObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).text = [self textObj:propValue];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).text = [self textObj:propValue];
@@ -263,16 +231,16 @@
             
             
             propKey = @"clearbuttonmode";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).clearButtonMode = [self clearButtonModeObj:propValue];
             }
             
             propKey = @"autocaptype";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).autocapitalizationType = [self autocapTypeObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).autocapitalizationType = [self autocapTypeObj:propValue];
             }
@@ -280,56 +248,56 @@
             
             //UIImageView, UIView
             propKey = @"contentmode";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 view.contentMode = [self contentModeObj:propValue];
             }
             
             
             propKey = @"src";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UIImageView class]]) ((UIImageView*)view).image = [self imageObj:propValue];
             }
             
             
             //UIButton
             propKey = @"title";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UIButton class]]) [self titleObj:propValue button:(UIButton*)view];
             }
             
             propKey = @"titlecolor";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UIButton class]]) [self titleColorObj:propValue button:(UIButton*)view];
             }
             
             propKey = @"bgimage";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UIButton class]]) [self bgImageObj:propValue button:(UIButton*)view];
             }
             
             propKey = @"titleimage";
-            if([allKeys containsObject:propKey])
+            if([itemDic.allKeys containsObject:propKey])
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UIButton class]]) [self titleImageObj:propValue button:(UIButton*)view];
             }
             
             //UILabel, UIButton
             propKey = @"underline";
-            if([allKeys containsObject:propKey]
+            if([itemDic.allKeys containsObject:propKey]
                && ([view isKindOfClass:[UILabel class]] || [view isKindOfClass:[UIButton class]]) )
             {
-                propValue = [allValues objectAtIndex:[allKeys indexOfObject:propKey]];
+                propValue = [itemDic objectForKey:propKey];
                 
                 if([self boolValue:propValue]){
                     
@@ -343,6 +311,9 @@
                     if([view isKindOfClass:[UIButton class]]) ((UIButton*)view).titleLabel.attributedText = attributeString;
                 }
             }
+            
+            
+            
             
         }
     }@catch(NSException* exception)
@@ -381,6 +352,7 @@
 {
     NSArray* allValues = [StringLib deparseString:item].values;
     NSArray* allKeys = [StringLib deparseString:item.lowercaseString].keys;
+    if(!allValues || !allKeys) return nil;
     return @{ @"allKeys": allKeys, @"allValues": allValues };
 }
 
@@ -388,7 +360,7 @@
 //CONTROL_BREAK
 //type = [abc] & name = copy_of_abc & bgColor = blue
 // => type = view & name = copy_of_abc & bgColor = blue & title = hello
-+(NSDictionary*) typeFromObjectName:(NSString*)objectName currentObjectStr:(NSString*)currentItem arrayItems:(NSArray*)allItems
++(NSDictionary*) typeFromObjectName:(NSString*)objectName currentObjectStr:(NSString*)currentItem arrayItems:(NSArray*)allItems deviceUpdateDic:(NSDictionary*)deviceUpdateDic
 {
     objectName = [objectName stringByReplacingOccurrencesOfString:@"[" withString:@""];
     objectName = [objectName stringByReplacingOccurrencesOfString:@"]" withString:@""];
@@ -425,6 +397,20 @@
                 [resultDict setObject:[allValues objectAtIndex:[allKeys indexOfObject:key]] forKey:key];
             }
             
+            NSArray* _allValues, *_allKeys;
+            if(deviceUpdateDic && [deviceUpdateDic.allKeys containsObject:name])
+            {
+                NSDictionary* _temp = [self extractKeyValueFromItemString: [deviceUpdateDic objectForKey:name]];
+                _allValues = [_temp objectForKey:@"allValues"];
+                _allKeys = [_temp objectForKey:@"allKeys"];
+                
+                for (NSString* key in _allKeys)
+                {
+                    if([key isEqualToString:@"type"] || [key isEqualToString:@"name"]) continue;
+                    [resultDict setObject:[_allValues objectAtIndex:[_allKeys indexOfObject:key]] forKey:key];
+                }
+            }
+            
             break;
         }
     }
@@ -432,7 +418,7 @@
     NSString* propValue = [resultDict objectForKey:@"type"];
     if(![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
     {
-        return [self typeFromObjectName:propValue currentObjectStr:[StringLib parseStringFromDictionary:resultDict] arrayItems:allItems];
+        return [self typeFromObjectName:propValue currentObjectStr:[StringLib parseStringFromDictionary:resultDict] arrayItems:allItems deviceUpdateDic:deviceUpdateDic];
     }
     
     return [self extractKeyValueFromItemString:[StringLib parseStringFromDictionary:resultDict]];
@@ -762,8 +748,9 @@ NSString* equalStr = @"[EqL]";
         }
     }
     
-    if(![content containsString:DEVICE_BREAK]){
-        return @{ @"content": content };
+    if(![content containsString:DEVICE_BREAK])
+    {
+        return [self rebuildFinalItemWithContent:content];
     }
     
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
@@ -779,7 +766,6 @@ NSString* equalStr = @"[EqL]";
         deviceCode = [CommonLib getDeviceByResolution];
     }
     
-    NSMutableDictionary* updateDic;
     NSString* device, *devContent;
     for (int i = 1; i < arr.count; i++)
     {
@@ -789,26 +775,11 @@ NSString* equalStr = @"[EqL]";
         device = [[StringLib trim:device] lowercaseString];
         
         if(![deviceCode isEqualToString:device]) continue;
-        
-        updateDic = [NSMutableDictionary new];
         content = [content stringByAppendingFormat:@"%@\n%@", CONTROL_BREAK, devContent];
-        
-        NSArray* allValues, *allKeys;
-        NSDictionary *temp;
-        NSArray* items = [devContent componentsSeparatedByString:CONTROL_BREAK];
-        for (NSString* item in items) {
-            temp = [self extractKeyValueFromItemString:item];
-            allValues = [temp objectForKey:@"allValues"];
-            allKeys = [temp objectForKey:@"allKeys"];
-            
-            if(![allKeys containsObject:@"name"]) continue;
-            [updateDic setObject:item forKey:[allValues objectAtIndex:[allKeys indexOfObject:@"name"]]];
-        }
         break;
     }
     
-    if(updateDic) return @{ @"content": content, @"updateDic": updateDic};
-    return @{ @"content": content };
+    return [self rebuildFinalItemWithContent:content];
 }
 
 +(NSString*) fillAutoTextWithContent:(NSString*)content autoTextFile:(NSString*)autoTextFile
@@ -824,6 +795,114 @@ NSString* equalStr = @"[EqL]";
         content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"#%@#",key] withString:value];
     }
     return content;
+}
+
++(NSDictionary*) rebuildFinalItemWithContent:(NSString*)content
+{
+    NSArray* items = [content componentsSeparatedByString:CONTROL_BREAK];
+    NSArray* allValues, *allKeys;
+    
+    NSMutableDictionary* finalDic = [NSMutableDictionary new];
+    NSString* propKey, *propValue, *sortname;
+    NSMutableDictionary* itemDic;
+    NSMutableDictionary* itemNameDic = [NSMutableDictionary new];
+    int indexer = 1;
+    NSMutableDictionary* inheritedItemNames = [NSMutableDictionary new];
+    
+    for (NSString* item in items)
+    {
+        
+        NSDictionary* temp = [self extractKeyValueFromItemString:item];
+        if(!temp) continue;
+        allValues = [temp objectForKey:@"allValues"];
+        allKeys = [temp objectForKey:@"allKeys"];
+        
+        propKey = @"name";
+        NSString* name = [allKeys containsObject:propKey] ? [allValues objectAtIndex:[allKeys indexOfObject:propKey]] : [NSString stringWithFormat:@"view%@", @(finalDic.count)];
+        NSLog(@"Name >> %@", name);
+        
+        
+        if ([itemNameDic.allKeys containsObject:name])
+        {
+            sortname = [itemNameDic objectForKey:name];
+            itemDic = [finalDic objectForKey:sortname];
+        }
+        else
+        {
+            itemDic = [NSMutableDictionary new];
+            sortname = [NSString stringWithFormat:@"%05d(%@)", indexer++,name];
+            [itemNameDic setObject:sortname forKey:name];
+        }
+        
+        for (NSString* key in allKeys)
+        {
+            propValue = [allValues objectAtIndex:[allKeys indexOfObject:key]];
+            [itemDic setObject:propValue forKey:key];
+            
+            if ([key isEqualToString:@"type"] && ![CONTROL_TYPES.allKeys containsObject:propValue.lowercaseString])
+            {
+                [inheritedItemNames setObject:propValue forKey:sortname];
+            }
+        }
+        
+        [finalDic setObject:itemDic forKey:sortname];
+    }
+    
+    
+    //Fill for repeat view
+    for (NSString* itemkey in inheritedItemNames.allKeys)
+    {
+        //itemTypeName to find
+        NSString* typeItemName = [inheritedItemNames objectForKey:itemkey];
+        NSMutableDictionary* srcDic = [self getSrcDicWithTypeItemName:typeItemName finalDic:finalDic itemNameDic:itemNameDic];
+        
+        if (!srcDic)
+        {
+            NSLog(@"Type not found: %@ for item name: %@", typeItemName, itemkey);
+            [finalDic removeObjectForKey:itemkey];
+            continue;
+        }
+        
+        itemDic = [finalDic objectForKey:itemkey];
+        NSMutableDictionary* resultDic = [[NSMutableDictionary alloc] initWithDictionary:srcDic];
+        for (NSString* key in itemDic.allKeys)
+        {
+            if([key isEqualToString:@"type"]) continue;
+            [resultDic setObject:[itemDic objectForKey:key] forKey:key];
+        }
+        
+        [finalDic setObject:resultDic forKey:itemkey];
+    }
+    
+    return finalDic;
+}
+
++(NSMutableDictionary*) getSrcDicWithTypeItemName:(NSString*)typeItemName finalDic:(NSMutableDictionary*)finalDic itemNameDic:(NSMutableDictionary*) itemNameDic
+{
+    NSString* sortname = [itemNameDic objectForKey:typeItemName];
+    
+    if (!sortname)
+    {
+        NSLog(@"Type not found: %@ for item name: %@", typeItemName, sortname);
+        return nil;
+    }
+    
+    NSMutableDictionary* srcDic = [finalDic objectForKey:sortname];
+    
+    NSString* type = [srcDic objectForKey:@"type"];
+    if (![CONTROL_TYPES.allKeys containsObject:type.lowercaseString])
+    {
+        NSMutableDictionary* parentDic = [self getSrcDicWithTypeItemName:type finalDic:finalDic itemNameDic:itemNameDic];
+        NSMutableDictionary* resultDic = [[NSMutableDictionary alloc] initWithDictionary:parentDic];
+        for (NSString* key in srcDic.allKeys)
+        {
+            if([key isEqualToString:@"type"]) continue;
+            [resultDic setObject:[srcDic objectForKey:key] forKey:key];
+        }
+        return resultDic;
+    }
+    
+    return srcDic;
 }
 
 @end

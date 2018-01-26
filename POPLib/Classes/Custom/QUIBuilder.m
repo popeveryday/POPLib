@@ -178,7 +178,7 @@
             if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).placeholder = propValue;
+                if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).placeholder = [self textObj:propValue];
             }
             
             
@@ -264,33 +264,43 @@
             
             
             //UIButton
-            propKey = @"title";
-            if([itemDic.allKeys containsObject:propKey])
-            {
-                propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[UIButton class]]) [self titleObj:propValue button:(UIButton*)view];
+            if ([view isKindOfClass:[UIButton class]]) {
+                propKey = @"title";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [self titleObj:propValue button:(UIButton*)view];
+                }
+                
+                propKey = @"titlecolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [self titleColorObj:propValue button:(UIButton*)view];
+                }
+                
+                propKey = @"bgimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [self bgImageObj:propValue button:(UIButton*)view];
+                }
+                
+                propKey = @"titleimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [self titleImageObj:propValue button:(UIButton*)view];
+                }
+                
+                propKey = @"showtouch";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UIButton*)view).showsTouchWhenHighlighted = [self boolValue:propValue];
+                }
             }
             
-            propKey = @"titlecolor";
-            if([itemDic.allKeys containsObject:propKey])
-            {
-                propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[UIButton class]]) [self titleColorObj:propValue button:(UIButton*)view];
-            }
-            
-            propKey = @"bgimage";
-            if([itemDic.allKeys containsObject:propKey])
-            {
-                propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[UIButton class]]) [self bgImageObj:propValue button:(UIButton*)view];
-            }
-            
-            propKey = @"titleimage";
-            if([itemDic.allKeys containsObject:propKey])
-            {
-                propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[UIButton class]]) [self titleImageObj:propValue button:(UIButton*)view];
-            }
             
             //UILabel, UIButton
             propKey = @"underline";

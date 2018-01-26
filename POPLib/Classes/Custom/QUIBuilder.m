@@ -760,7 +760,7 @@ NSString* equalStr = @"[EqL]";
     
     if(![content containsString:DEVICE_BREAK])
     {
-        return [self rebuildFinalItemWithContent:content];
+        return [self rebuildFinalItemWithContent: [self fillAutoTextWithContent:content]];
     }
     
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
@@ -789,7 +789,23 @@ NSString* equalStr = @"[EqL]";
         break;
     }
     
-    return [self rebuildFinalItemWithContent:content];
+    return [self rebuildFinalItemWithContent:[self fillAutoTextWithContent:content]];
+}
+
++(NSString*) fillAutoTextWithContent:(NSString*)content
+{
+    NSMutableArray* list = [NSMutableArray new];
+    NSString* autoText;
+    while (YES) {
+        autoText = [StringLib subStringBetween:content startStr:@"<<[" endStr:@"]>>"];
+        if(![StringLib isValid:autoText]) break;
+        content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<<[%@]>>", autoText] withString:@""];
+        [list addObject:autoText];
+    }
+    
+    content = [self fillAutoTextWithContent:content replaceContents:list];
+    
+    return content;
 }
 
 +(NSString*) fillAutoTextWithContent:(NSString*)content autoTextFile:(NSString*)autoTextFile
@@ -798,7 +814,24 @@ NSString* equalStr = @"[EqL]";
     if(![FileLib checkPathExisted:realFile]) return content;
     
     NSString* replaceContent = [FileLib readFile:realFile];
-    NSDictionary* data = [[StringLib deparseString:replaceContent] toDictionary];
+    return [self fillAutoTextWithContent:content replaceContents:@[replaceContent]];
+}
+
++(NSString*) fillAutoTextWithContent:(NSString*)content replaceContents:(NSArray*)replaceContents
+{
+    NSMutableDictionary* data;
+    for (NSString* each in replaceContents) {
+        NSDictionary* dic = [[StringLib deparseString:each] toDictionary];
+        if(data){
+            for (NSString* key in dic.allKeys) {
+                [data setObject:[dic objectForKey:key] forKey:key];
+            }
+        }else{
+            data = [NSMutableDictionary dictionaryWithDictionary:dic];
+        }
+    }
+    
+    
     NSString* value;
     for (NSString* key in data.allKeys) {
         value = [data objectForKey:key];

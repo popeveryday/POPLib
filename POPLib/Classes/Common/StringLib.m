@@ -156,13 +156,13 @@
 
 +(NSInteger)indexOf:(NSString*) str inString:(NSString*) sourcestr fromIndex:(NSInteger) fromIndex
 {
-    sourcestr = [sourcestr substringFromIndex:fromIndex];
+    NSString* _sourcestr = [sourcestr substringFromIndex:fromIndex];
     
-    NSRange rs = [sourcestr rangeOfString:str];
+    NSRange rs = [_sourcestr rangeOfString:str];
     if (rs.location == NSNotFound) {
         return -1;
     }
-    return rs.location;
+    return fromIndex + rs.location;
 }
 
 +(NSInteger)lastIndexOf:(NSString*)searchStr inString:(NSString*)srcString{
@@ -197,8 +197,12 @@
 }
 
 
-
 +(NSString*)subStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr{
+    return [self subStringBetween:source startStr:startStr endStr:endStr includeStartEnd:NO];
+}
+
++(NSString*)subStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd
+{
     source = [NSString stringWithFormat:@" %@", source];
     NSInteger index = [self indexOf:startStr inString:source];
     if (index == -1) return nil;
@@ -209,7 +213,35 @@
     
     if (endIndex == -1) return nil;
     
-    return [[source substringFromIndex:index] substringToIndex:endIndex];
+    NSString* rs = [[source substringFromIndex:index] substringToIndex:endIndex - index];
+    if (includeStartEnd) rs = [NSString stringWithFormat:@"%@%@%@",startStr, rs, endStr];
+    return rs;
+}
+
++(NSArray*)allSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr
+{
+    return [self allSubStringBetween:source startStr:startStr endStr:endStr includeStartEnd:NO];
+}
+
++(NSArray*)allSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd
+{
+    NSMutableArray* rs = [NSMutableArray new];
+    
+    NSString* obj, *nstr = source;
+    NSInteger start, end;
+    while (YES)
+    {
+        obj = [self subStringBetween:nstr startStr:startStr endStr:endStr includeStartEnd:includeStartEnd];
+        if (!obj) break;
+        
+        [rs addObject:obj];
+        start = [StringLib indexOf:startStr inString:nstr] + startStr.length;
+        end = [StringLib indexOf:endStr inString:nstr fromIndex:start];
+        end += endStr.length;
+        nstr = [nstr substringFromIndex:end];
+    }
+    
+    return rs;
 }
 
 +(NSDictionary*)deparseJson:(NSString*)jsonString{

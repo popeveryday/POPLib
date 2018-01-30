@@ -43,3 +43,4 @@ typedef void (^ActionBlock)(void);
 -(void) removeAllHandleEvent;
 
 @end
+

@@ -51,6 +51,10 @@
 +(BOOL)isEqualString:(NSString*) str1 withString:(NSString*) str2;
 
 +(NSString*)subStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr;
++(NSString*)subStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd;
+
++(NSArray*)allSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr;
++(NSArray*)allSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd;
 
 +(NSDictionary*)deparseJson:(NSString*)jsonString;
 
@@ -69,3 +73,4 @@
 + (NSString*)sha256:(NSString*)input;
 
 @end
+

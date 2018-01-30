@@ -781,6 +781,7 @@ NSString* equalStr = @"[EqL]";
 
 +(NSDictionary*) handleContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
+    content = [self removeAllComment:content];
     
     if([content containsString:AUTOTEXT_BREAK]){
         NSString* defaultValue = [StringLib subStringBetween:content startStr:AUTOTEXT_BREAK endStr:@">>"];
@@ -827,6 +828,24 @@ NSString* equalStr = @"[EqL]";
     }
     
     return [self rebuildFinalItemWithContent:[self fillAutoTextWithContent:content]];
+}
+
+//remove all // or /* */
++(NSString*) removeAllComment:(NSString*)content
+{
+    if (![content containsString:@"//"] && ![content containsString:@"/*"]) {
+        return content;
+    }
+    
+    NSMutableArray* comments = [NSMutableArray new];
+    [comments addObjectsFromArray:[StringLib allSubStringBetween:content startStr:@"//" endStr:@"\n" includeStartEnd:YES]];
+    [comments addObjectsFromArray:[StringLib allSubStringBetween:content startStr:@"/*" endStr:@"*/" includeStartEnd:YES]];
+    
+    for (NSString* item in comments) {
+        content = [content stringByReplacingOccurrencesOfString:item withString: [item hasSuffix:@"\n"] ? @"\n" : @"" ];
+    }
+    
+    return content;
 }
 
 +(NSString*) fillAutoTextWithContent:(NSString*)content

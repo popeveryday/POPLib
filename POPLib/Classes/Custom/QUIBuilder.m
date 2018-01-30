@@ -61,6 +61,7 @@
                                    return [a compare:b];
                                }];
         
+        //for creating view
         for (NSString* sortedItemKey in sortedKeys) {
             
             itemDic = [allItemDic objectForKey:sortedItemKey];
@@ -106,8 +107,14 @@
             
             view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
             [uiElements setObject:view forKey:name];
-            
-            
+        }
+        
+        //for properties and action
+        for (NSString* sortedItemKey in sortedKeys)
+        {
+            NSString* name = [StringLib subStringBetween:sortedItemKey startStr:@"(" endStr:@")"];
+            UIView* view = [uiElements objectForKey:name];
+            itemDic = [allItemDic objectForKey:sortedItemKey];
             
             //UIView
             propKey = @"borderwidth";
@@ -322,7 +329,13 @@
                 }
             }
             
-            
+            //action
+            propKey = @"action";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                [self applyAction:propValue forView:view uiElements:uiElements];
+            }
             
             
         }
@@ -339,6 +352,7 @@
 +(void) clearQUIViewWithUIElement:(NSDictionary*) uiElements
 {
     for (UIView* view in uiElements.allValues) {
+        [view removeAllHandleEvent];
         [view removeFromSuperview];
     }
 }
@@ -358,6 +372,29 @@
 }
 
 #pragma builder functions
+//action = show(box)  ==> view/button tap to show the object name 'box'.
+//action = hide(box)  ==> view/button tap to hide the object name 'box'.
+//action = toggle(box)  ==> view/button tap to show/hide the object name 'box'.
+// if view => userinteraction = yes + add tab gesture
+// if button => addtarget for button
++(void) applyAction:(NSString*)action forView:(UIView*)view uiElements:(NSMutableDictionary*) uiElements
+{
+    action = [StringLib trim:action];
+    if ([action hasPrefix:@"show"] || [action hasPrefix:@"hide"] || [action hasPrefix:@"toggle"])
+    {
+        void (^actionBlock)(void) = ^void()
+        {
+            NSString* actionkey = [[action componentsSeparatedByString:@"("] firstObject];
+            NSString* objName = [StringLib subStringBetween:action startStr:@"(" endStr:@")"];
+            UIView* obj = [uiElements objectForKey:objName];
+            if(!objName || !obj) return;
+            [obj setHidden: [actionkey isEqualToString:@"show"] ? NO : ([actionkey isEqualToString:@"hide"] ? YES : !obj.hidden) ];
+        };
+        
+        [view handleControlEvent:UIControlEventTouchUpInside withBlock:actionBlock];
+    }
+}
+
 +(NSDictionary*) extractKeyValueFromItemString:(NSString*)item
 {
     NSArray* allValues = [StringLib deparseString:item].values;
@@ -951,7 +988,48 @@ NSString* equalStr = @"[EqL]";
 @end
 
 
+@implementation UIView (UIBlockActionView)
 
+NSMutableDictionary* _actionBlock;
+
+-(void) handleControlEvent:(UIControlEvents)event
+                 withBlock:(ActionBlock) action
+{
+    if(!_actionBlock) _actionBlock = [NSMutableDictionary new];
+    NSString* key = [[[NSString stringWithFormat:@"%@",self] componentsSeparatedByString:@";"] firstObject];
+    [_actionBlock setObject:action forKey:key ];
+    
+    if ([self isKindOfClass:[UIButton class]])
+    {
+        [(UIButton*)self addTarget:self action:@selector(callActionBlock:) forControlEvents:event];
+    }else{
+        [self setUserInteractionEnabled:YES];
+        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapgesture:)]];
+    }
+}
+
+-(void) removeAllHandleEvent
+{
+    if(!_actionBlock) return;
+    NSString* key = [[[NSString stringWithFormat:@"%@",self] componentsSeparatedByString:@";"] firstObject];
+    [_actionBlock removeObjectForKey: key];
+    
+}
+
+- (void) tapgesture: (UITapGestureRecognizer *)recognizer
+{
+    [self callActionBlock:nil];
+}
+
+-(void) callActionBlock:(id)sender
+{
+    NSString* key = [[[NSString stringWithFormat:@"%@",self] componentsSeparatedByString:@";"] firstObject];
+    ActionBlock block = [_actionBlock objectForKey: key];
+    if (block) {
+        block();
+    }
+}
+@end
 
 
 

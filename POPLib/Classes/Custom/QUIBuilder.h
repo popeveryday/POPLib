@@ -11,6 +11,7 @@
 
 enum QUIBuilderDeviceType
 {
+    QUIBuilderDeviceType_iPhone4,
     QUIBuilderDeviceType_iPhone5,
     QUIBuilderDeviceType_iPhone6,
     QUIBuilderDeviceType_iPhone6p,
@@ -35,3 +36,10 @@ enum QUIBuilderDeviceType
 @end
 
 
+typedef void (^ActionBlock)(void);
+@interface UIView (UIBlockActionView)
+
+-(void) handleControlEvent:(UIControlEvents)event withBlock:(ActionBlock) action;
+-(void) removeAllHandleEvent;
+
+@end

@@ -375,24 +375,45 @@
 //action = show(box)  ==> view/button tap to show the object name 'box'.
 //action = hide(box)  ==> view/button tap to hide the object name 'box'.
 //action = toggle(box)  ==> view/button tap to show/hide the object name 'box'.
+//action = observer(number) ==> call [ObserverObject sendObserver:number]
+//action = observer(number,obj,key) ==> [ObserverObject sendObserver:number object:@"obj" notificationKey:@"key"]
+//action = observer(number,,key) ==> [ObserverObject sendObserver:number object:nil notificationKey:@"key"]
+//action = observer(number,obj) ==> [ObserverObject sendObserver:number object:@"obj" notificationKey:nil]
 // if view => userinteraction = yes + add tab gesture
 // if button => addtarget for button
 +(void) applyAction:(NSString*)action forView:(UIView*)view uiElements:(NSMutableDictionary*) uiElements
 {
     action = [StringLib trim:action];
+    NSString* actionkey = [[action componentsSeparatedByString:@"("] firstObject];
+    NSString* objName = [StringLib subStringBetween:action startStr:@"(" endStr:@")"];
+    void (^actionBlock)(void);
+    
     if ([action hasPrefix:@"show"] || [action hasPrefix:@"hide"] || [action hasPrefix:@"toggle"])
     {
-        void (^actionBlock)(void) = ^void()
+        UIView* obj = [uiElements objectForKey:objName];
+        if(!objName || !obj) return;
+        
+        actionBlock = ^void()
         {
-            NSString* actionkey = [[action componentsSeparatedByString:@"("] firstObject];
-            NSString* objName = [StringLib subStringBetween:action startStr:@"(" endStr:@")"];
-            UIView* obj = [uiElements objectForKey:objName];
-            if(!objName || !obj) return;
             [obj setHidden: [actionkey isEqualToString:@"show"] ? NO : ([actionkey isEqualToString:@"hide"] ? YES : !obj.hidden) ];
         };
-        
-        [view handleControlEvent:UIControlEventTouchUpInside withBlock:actionBlock];
     }
+    else if([action hasPrefix:@"observer"])
+    {
+        if(!objName || ![StringLib isValid:objName]) return;
+        
+        actionBlock = ^void()
+        {
+            NSArray* arr = [objName componentsSeparatedByString:@","];
+            NSInteger index = [[arr objectAtIndex:0] integerValue];
+            NSString* object = arr.count >= 2 ? [arr objectAtIndex:1] : nil;
+            NSString* key = arr.count >= 3 ? [arr objectAtIndex:2] : nil;
+            
+            [ObserverObject sendObserver:index object:object notificationKey:key];
+        };
+    }
+    
+    [view handleControlEvent:UIControlEventTouchUpInside withBlock:actionBlock];
 }
 
 +(NSDictionary*) extractKeyValueFromItemString:(NSString*)item

@@ -96,9 +96,9 @@
         loading.animationType = MBProgressHUDAnimationFade;
     }
     
-    loading.labelText = title == nil ? LocalizedText(@"Loading",nil) : title;
-    loading.detailsLabelText = detailText == nil ? LocalizedText(@"please wait",nil) : detailText;
-    [loading show:YES];
+    loading.label.text = title == nil ? LocalizedText(@"Loading",nil) : title;
+    loading.detailsLabel.text = detailText == nil ? LocalizedText(@"please wait",nil) : detailText;
+    [loading showAnimated:YES];
     
     return loading;
 }
@@ -114,9 +114,9 @@
     if ([uiview viewWithTag:indicatorTag]) {
         loading = (MBProgressHUD*)[uiview viewWithTag:indicatorTag];
         if (delay > 0) {
-            [loading hide:YES afterDelay:delay];
+            [loading hideAnimated:YES afterDelay:delay];
         }else{
-            [loading hide:YES];
+            [loading hideAnimated:YES];
         }
         
     }
@@ -141,15 +141,15 @@
         loading.delegate = delegate;
     }
     
-    loading.labelText = title == nil ? LocalizedText(@"Loading",nil) : title;
-    loading.detailsLabelText = detailText == nil ? LocalizedText(@"please wait",nil) : detailText;
+    loading.label.text = title == nil ? LocalizedText(@"Loading",nil) : title;
+    loading.detailsLabel.text = detailText == nil ? LocalizedText(@"please wait",nil) : detailText;
     loading.square = YES;
     
     [loading showWhileExecuting:method onTarget:target withObject:object animated:YES];
 }
 
 +(void)hideLoadingWithHUD:(MBProgressHUD*) loading{
-    [loading hide:YES];
+    [loading hideAnimated:YES];
 }
 
 +(MBProgressHUD*)showLoadingWithTitle:(NSString*)title detailText:(NSString*)detailText uiview:(UIView*)uiview container:(id<MBProgressHUDDelegate>)container
@@ -167,9 +167,9 @@
         loading.square = YES;
     }
     loading.square = YES;
-    loading.labelText = title == nil ? LocalizedText(@"Loading",nil) : title;
-    loading.detailsLabelText = detailText == nil ? LocalizedText( @"please wait" ,nil) : detailText;
-    [loading show:YES];
+    loading.label.text = title == nil ? LocalizedText(@"Loading",nil) : title;
+    loading.detailsLabel.text = detailText == nil ? LocalizedText( @"please wait" ,nil) : detailText;
+    [loading showAnimated:YES];
     
     return loading;
 }
@@ -185,7 +185,7 @@
     
     if ([container viewWithTag:indicatorTag]) {
         loading = (MBProgressHUD*)[container viewWithTag:indicatorTag];
-        [loading hide:YES];
+        [loading hideAnimated:YES];
     }
 }
 
@@ -381,7 +381,7 @@
     return [vc isEqual: controller];
 }
 
-+(void)presentViewWithStorboardName:(NSString*)storyboardName storyboardViewID:(NSString*)viewID currentViewController:(UIViewController*)viewController displayStyle:(enum DisplayStyle) displayStyle prepareBlock:(void(^)(UIViewController* destinationVC))prepareBlock completeBlock:(void(^)())completeBlock
++(void)presentViewWithStorboardName:(NSString*)storyboardName storyboardViewID:(NSString*)viewID currentViewController:(UIViewController*)viewController displayStyle:(enum DisplayStyle) displayStyle prepareBlock:(void(^)(UIViewController* destinationVC))prepareBlock completeBlock:(void(^)(void))completeBlock
 {
     UINavigationController* nav = (UINavigationController*) [viewController parentViewController];
     UIViewController* currentViewController = [nav.viewControllers firstObject];
@@ -392,7 +392,7 @@
     [self presentViewController:nextViewController fromViewController:currentViewController displayStyle:displayStyle prepareBlock:prepareBlock completeBlock:completeBlock];
 }
 
-+(void)presentViewController:(UIViewController*)nextViewController fromViewController:(UIViewController*)currentViewController displayStyle:(enum DisplayStyle) displayStyle prepareBlock:(void(^)(UIViewController* destinationVC))prepareBlock completeBlock:(void(^)())completeBlock
++(void)presentViewController:(UIViewController*)nextViewController fromViewController:(UIViewController*)currentViewController displayStyle:(enum DisplayStyle) displayStyle prepareBlock:(void(^)(UIViewController* destinationVC))prepareBlock completeBlock:(void(^)(void))completeBlock
 {
     if (prepareBlock != nil) {
         prepareBlock(nextViewController);
@@ -593,7 +593,7 @@
     enum NSLayoutRelation relation = [StringLib contains:@">" inString:edgeStr] ? NSLayoutRelationGreaterThanOrEqual : [StringLib contains:@"<" inString:edgeStr] ? NSLayoutRelationLessThanOrEqual : NSLayoutRelationEqual;
     NSString* insetStr = [[[edgeStr substringFromIndex:1] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""];
     
-    //Width: W100, Height: E100, Size: S100#100
+    //Width: W100, Height: E100, Size: S100#100 or S100
     if ( [StringLib contains:direction inString:@"WES"] ) {
         if(![StringLib isValid:insetStr]) return direction;
         
@@ -601,7 +601,7 @@
         {
             NSArray* sizeParts = [insetStr componentsSeparatedByString:@"#"];
             CGFloat width = [[sizeParts firstObject] floatValue];
-            CGFloat height = [[sizeParts objectAtIndex:1] floatValue];
+            CGFloat height = sizeParts.count >= 2 ? [[sizeParts objectAtIndex:1] floatValue] : width;
             [view autoSetDimensionsToSize:CGSizeMake(width, height)];
         }
         else if([direction isEqualToString:@"W"])
@@ -651,3 +651,4 @@
 }
 
 @end
+

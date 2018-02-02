@@ -137,8 +137,30 @@
             if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
-                view.layer.cornerRadius = [propValue floatValue];
-                
+                if ([propValue.lowercaseString isEqualToString:@"auto"])
+                {
+                    NSString* tempstr = [itemDic objectForKey:@"superedge"];
+                    for (NSString* letter in [@"T,R,L,B,C,H,V,W,E,S" componentsSeparatedByString:@","] ) {
+                        tempstr = [tempstr stringByReplacingOccurrencesOfString:letter withString:[NSString stringWithFormat:@",%@",letter]];
+                    }
+                    
+                    for (NSString* item in [tempstr componentsSeparatedByString:@","]) {
+                        if(![item hasPrefix:@"W"] && ![item hasPrefix:@"S"]) continue;
+                        @try{
+                            view.layer.cornerRadius = [[[StringLib trim:item] substringFromIndex:1] floatValue] / 2;
+                        }@catch(NSException* exception)
+                        {
+                            NSString* error = [NSString stringWithFormat:@"Exception(%s): \n%@", __func__, exception];
+                            NSLog(@"%@", error);
+                        }
+                        
+                        break;
+                    }
+                }
+                else
+                {
+                    view.layer.cornerRadius = [propValue floatValue];
+                }
             }
             
             propKey = @"bgcolor";

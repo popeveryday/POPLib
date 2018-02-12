@@ -65,16 +65,36 @@
     return [[result stringByReplacingOccurrencesOfString:@"[@]&" withString:@""] stringByReplacingOccurrencesOfString:@"[@]" withString: @""];
 }
 
+// & => [AnD] ; [AnD] => [AnD2] ; = => [EqL] ; [EqL] => [EqL2] ...[EqL9]
+// & <= [AnD] ; [AnD] <= [AnD2] ; = <= [EqL] ; [EqL] <= [EqL2] ...[EqL9]
 +(NSString*)parseStringValidate:(id) value isParseString:(BOOL)isParseString{
     
-    NSString* andStr = @"[AnD]";
-    NSString* equalStr = @"[EqL]";
+    NSString* andStr = @"[AnD]", *equalStr = @"[EqL]";
+    NSString* andStr2 = @"[AnD%@]",*equalStr2 = @"[EqL%@]";
     NSString* valueStr = [NSString stringWithFormat:@"%@",value];
     
     if (isParseString) {
+        
+        
+        for (int i = 9 ; i >=2 ; i--)
+        {
+            valueStr = [valueStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:andStr2, i == 2 ? @"" : @(i-1)] withString:[NSString stringWithFormat:andStr2, @(i)]];
+            valueStr = [valueStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:equalStr2, i == 2 ? @"" : @(i-1)] withString:[NSString stringWithFormat:equalStr2, @(i)]];
+        }
+        
         return [[valueStr stringByReplacingOccurrencesOfString:@"&" withString:andStr] stringByReplacingOccurrencesOfString:@"=" withString:equalStr];
     }else{
-        return [[valueStr stringByReplacingOccurrencesOfString:andStr withString:@"&"] stringByReplacingOccurrencesOfString:equalStr withString:@"="];
+        
+        valueStr = [[valueStr stringByReplacingOccurrencesOfString:andStr withString:@"&"] stringByReplacingOccurrencesOfString:equalStr withString:@"="];
+        
+        
+        for (int i = 2 ; i < 10 ; i++)
+        {
+            valueStr = [valueStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:andStr2, @(i)] withString:[NSString stringWithFormat:andStr2, i == 2 ? @"" : @(i-1)]];
+            valueStr = [valueStr stringByReplacingOccurrencesOfString:[NSString stringWithFormat:equalStr2, @(i)] withString:[NSString stringWithFormat:equalStr2, i == 2 ? @"" : @(i-1)]];
+        }
+        
+        return valueStr;
     }
 }
 

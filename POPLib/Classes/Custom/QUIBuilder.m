@@ -855,6 +855,9 @@ NSString* equalStr = @"[EqL]";
     
     if (!deviceCode) {
         deviceCode = [CommonLib getDeviceByResolution];
+        if ([deviceCode hasPrefix:@"ipad"]) {
+            deviceCode = @"iphone4";
+        }
     }
     
     NSString* device, *devContent;

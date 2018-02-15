@@ -400,11 +400,9 @@
     
     UIView* snapshot = currentViewController.navigationController != nil ? [currentViewController.navigationController.view snapshotViewAfterScreenUpdates:YES] : [currentViewController.view snapshotViewAfterScreenUpdates:YES];
     
-    UINavigationController* nav;
-    
+    UINavigationController* nav = (UINavigationController*) [currentViewController parentViewController];
     switch (displayStyle) {
         case DisplayStyleReplaceNavigationRootVC:
-            nav = (UINavigationController*) [currentViewController parentViewController];
             [nav setViewControllers:@[ nextViewController ]];
             [currentViewController.view removeFromSuperview];
             currentViewController = nil;

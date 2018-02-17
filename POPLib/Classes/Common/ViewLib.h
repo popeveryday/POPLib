@@ -78,6 +78,8 @@ enum ALControlType{
 
 +(void)fixNavigationBarCoverContent:(UIViewController*) controller isFixed:(BOOL)isFixed;
 
++(void)fixNavigationBar:(UINavigationBar*)navbar translucentColor:(UIColor*)barColor;
+
 +(UIEdgeInsets)collectionEdgeInsectFromHashString:(NSString*) hashString;
 
 +(void)setNavigationBarColorHex:(NSString*)hexcolor viewController:(UIViewController*)controller;

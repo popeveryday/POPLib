@@ -325,6 +325,19 @@
         controller.edgesForExtendedLayout = isFixed ? UIRectEdgeNone : UIRectEdgeAll;
 }
 
++(void)fixNavigationBar:(UINavigationBar*)navbar translucentColor:(UIColor*)barColor
+{
+    CGRect frame = navbar.frame;
+    frame.origin.y = -20.0f;
+    frame.size.height += 20.0f;
+    UIView *colorView = [[UIView alloc] initWithFrame:frame];
+    colorView.opaque = NO;
+    colorView.backgroundColor = barColor;
+    navbar.barTintColor = barColor;
+    [navbar.layer insertSublayer:colorView.layer atIndex:1];
+}
+
+
 +(UIEdgeInsets)collectionEdgeInsectFromHashString:(NSString*) hashString
 {
     //structure hashString device = top, left, bottom, right

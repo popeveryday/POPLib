@@ -72,17 +72,17 @@
 
 +(NSTimeInterval)toTimeStamp:(NSDate *)date
 {
-    return (long)[date timeIntervalSince1970];
+    return [date timeIntervalSince1970];
 }
 
 +(NSTimeInterval)toTimeStamp:(NSDate *)date miliSecond:(BOOL)miliSecond
 {
-    return [self toTimeStamp:date] * (miliSecond?1000:1);
+    return [self toTimeStamp:date] * (miliSecond ? 1000.0f : 1.0f);
 }
 
 +(NSDate*)fromTimeStamp:(NSTimeInterval)timestamp miliSecond:(BOOL)miliSecond
 {
-    return [NSDate dateWithTimeIntervalSince1970: timestamp/(miliSecond?1000:1)];
+    return [NSDate dateWithTimeIntervalSince1970: timestamp / (miliSecond ? 1000.0f : 1.0f)];
 }
 
 @end

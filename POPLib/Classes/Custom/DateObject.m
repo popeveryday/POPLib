@@ -12,13 +12,6 @@
 
 @implementation DateObject
 
-@synthesize Year = _Year;
-@synthesize Month = _Month;
-@synthesize Day = _Day;
-
-@synthesize Hour = _Hour;
-@synthesize Minute = _Minute;
-@synthesize Second = _Second;
 
 -(void)dealloc{
     
@@ -45,6 +38,13 @@
     date.Minute = [[[ymdhmsStr substringFromIndex:10] substringToIndex:2] intValue];
     date.Second = [[[ymdhmsStr substringFromIndex:12] substringToIndex:2] intValue];
     
+    if (ymdhmsStr.length > 14) {
+        NSString* mili = [ymdhmsStr substringFromIndex:14];
+        if(mili.length > 3) mili = [mili substringToIndex:4];
+        date.MiliSecond = [mili intValue];
+    }
+    
+    
     return date;
 }
 
@@ -57,6 +57,11 @@
     return [self initWithYMDHMSString:[NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second]];
 }
 
++(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second milisecond:(int)milisecond
+{
+    return [self initWithYMDHMSString:[NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d.%02d", year, month, day, hour, minute, second, milisecond]];
+}
+
 +(DateObject*)initWithNSDate:(NSDate*) date
 {
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
@@ -66,7 +71,8 @@
                           day:(int)components.day
                          hour:(int)components.hour
                        minute:(int)components.minute
-                       second:(int)components.second];
+                       second:(int)components.second
+                   milisecond:(int)components.nanosecond];
 }
 
 +(DateObject*)initToday

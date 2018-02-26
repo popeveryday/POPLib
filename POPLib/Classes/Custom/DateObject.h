@@ -18,11 +18,13 @@
 @property (nonatomic) int Hour;
 @property (nonatomic) int Minute;
 @property (nonatomic) int Second;
+@property (nonatomic) int MiliSecond;
 
 +(id)initWithYMDString:(NSString*)ymdStr;
 +(id)initWithYMDHMSString:(NSString*)ymdhmsStr;
 +(id)initWithYear: (int) year month: (int) month day:(int) day;
 +(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second;
++(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second milisecond:(int)milisecond;
 +(DateObject*)initWithNSDate:(NSDate*) date;
 +(DateObject*)initToday;
 

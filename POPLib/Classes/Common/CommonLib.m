@@ -625,7 +625,11 @@
     
 }
 
-+(id) loadObjectFromFile:(NSString*) filePath allowSafeBackup:(BOOL)allowSafeBackup
++(id) loadObjectFromFile:(NSString*) filePath allowSafeBackup:(BOOL)allowSafeBackup{
+    return [self loadObjectFromFile:filePath allowSafeBackup:allowSafeBackup validateBlock:nil];
+}
+
++(id) loadObjectFromFile:(NSString*) filePath allowSafeBackup:(BOOL)allowSafeBackup validateBlock:(BOOL (^)(id obj)) validateBlock
 {
     if (allowSafeBackup)
     {
@@ -637,19 +641,39 @@
         if ([FileLib checkPathExisted:filePath])
         {
             id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-            if(obj) return obj;
+            if(obj){
+                if(validateBlock){
+                    if(validateBlock(obj))return obj;
+                }else{
+                    return obj;
+                }
+            }
         }
         
         if ([FileLib checkPathExisted:safeFile]){
             id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:safeFile];
-            if(obj) return obj;
+            if(obj){
+                if(validateBlock){
+                    if(validateBlock(obj))return obj;
+                }else{
+                    return obj;
+                }
+            }
         }
         return nil;
     }
     else
     {
         if(![FileLib checkPathExisted:filePath]) return nil;
-        return [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        if(obj){
+            if(validateBlock){
+                if(validateBlock(obj))return obj;
+            }else{
+                return obj;
+            }
+        }
+        return nil;
     }
 }
 

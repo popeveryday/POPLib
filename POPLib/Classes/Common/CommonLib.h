@@ -98,4 +98,5 @@
 +(BOOL) saveObject:(id)obj toFilePath:(NSString*)filePath allowSafeBackup:(BOOL)allowSafeBackup;
 
 +(id) loadObjectFromFile:(NSString*) filePath allowSafeBackup:(BOOL)allowSafeBackup;
++(id) loadObjectFromFile:(NSString*) filePath allowSafeBackup:(BOOL)allowSafeBackup validateBlock:(BOOL (^)(id obj)) validateBlock;
 @end

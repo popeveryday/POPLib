@@ -964,7 +964,7 @@ NSString* equalStr = @"[EqL]";
         
         propKey = @"name";
         NSString* name = [allKeys containsObject:propKey] ? [allValues objectAtIndex:[allKeys indexOfObject:propKey]] : [NSString stringWithFormat:@"view%@", @(finalDic.count)];
-        NSLog(@"Name >> %@", name);
+        
         
         
         if ([itemNameDic.allKeys containsObject:name])

@@ -11,20 +11,20 @@
 
 @interface DateObject : NSObject
 
-@property (nonatomic) int Year;
-@property (nonatomic) int Month;
-@property (nonatomic) int Day;
+@property (nonatomic) NSInteger Year;
+@property (nonatomic) NSInteger Month;
+@property (nonatomic) NSInteger Day;
 
-@property (nonatomic) int Hour;
-@property (nonatomic) int Minute;
-@property (nonatomic) int Second;
-@property (nonatomic) int MiliSecond;
+@property (nonatomic) NSInteger Hour;
+@property (nonatomic) NSInteger Minute;
+@property (nonatomic) NSInteger Second;
+@property (nonatomic) NSInteger MiliSecond;
 
 +(id)initWithYMDString:(NSString*)ymdStr;
 +(id)initWithYMDHMSString:(NSString*)ymdhmsStr;
-+(id)initWithYear: (int) year month: (int) month day:(int) day;
-+(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second;
-+(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second milisecond:(int)milisecond;
++(id)initWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day;
++(id)initWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute second:(NSInteger) second;
++(id)initWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute second:(NSInteger) second milisecond:(NSInteger)milisecond;
 +(DateObject*)initWithNSDate:(NSDate*) date;
 +(DateObject*)initToday;
 
@@ -52,8 +52,8 @@
 
 -(NSDate*)toNSDate;
 -(NSDate*)toNSDateUTC;
--(DateObject*)addTimeWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second;
--(DateObject*)addTimeWithYear: (int) year month: (int) month day:(int) day;
+-(DateObject*)addTimeWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute second:(NSInteger) second;
+-(DateObject*)addTimeWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day;
 
 -(double)getYMDInterval;
 -(int)getWeekday;

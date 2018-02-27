@@ -30,49 +30,57 @@
     ymdhmsStr = [ymdhmsStr stringByReplacingOccurrencesOfString:@":" withString:@""];
     ymdhmsStr = [ymdhmsStr stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    date.Year = [[ymdhmsStr substringToIndex:4] intValue];
-    date.Month = [[[ymdhmsStr substringFromIndex:4] substringToIndex:2] intValue];
-    date.Day = [[[ymdhmsStr substringFromIndex:6] substringToIndex:2] intValue];
+    date.Year = [[ymdhmsStr substringToIndex:4] integerValue];
+    date.Month = [[[ymdhmsStr substringFromIndex:4] substringToIndex:2] integerValue];
+    date.Day = [[[ymdhmsStr substringFromIndex:6] substringToIndex:2] integerValue];
     
-    date.Hour = [[[ymdhmsStr substringFromIndex:8] substringToIndex:2] intValue];
-    date.Minute = [[[ymdhmsStr substringFromIndex:10] substringToIndex:2] intValue];
-    date.Second = [[[ymdhmsStr substringFromIndex:12] substringToIndex:2] intValue];
+    date.Hour = [[[ymdhmsStr substringFromIndex:8] substringToIndex:2] integerValue];
+    date.Minute = [[[ymdhmsStr substringFromIndex:10] substringToIndex:2] integerValue];
+    date.Second = [[[ymdhmsStr substringFromIndex:12] substringToIndex:2] integerValue];
     
     if (ymdhmsStr.length > 14) {
         NSString* mili = [ymdhmsStr substringFromIndex:14];
         if(mili.length > 3) mili = [mili substringToIndex:4];
-        date.MiliSecond = [mili intValue];
+        date.MiliSecond = [mili integerValue];
     }
     
     
     return date;
 }
 
-+(id)initWithYear: (int) year month: (int) month day:(int) day{
-    return [self initWithYMDString:[NSString stringWithFormat:@"%04d-%02d-%02d", year, month, day]];
++(id)initWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day{
+    return [self initWithYMDString:[NSString stringWithFormat:@"%d-%02d-%02d", (int)year, (int)month, (int)day]];
 }
 
-+(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second
++(id)initWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute second:(NSInteger) second
 {
-    return [self initWithYMDHMSString:[NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second]];
+    return [self initWithYMDHMSString:[NSString stringWithFormat:@"%d-%02d-%02d %02d:%02d:%02d", (int)year, (int)month, (int)day, (int)hour, (int)minute, (int)second]];
 }
 
-+(id)initWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second milisecond:(int)milisecond
++(id)initWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute second:(NSInteger) second milisecond:(NSInteger)milisecond
 {
-    return [self initWithYMDHMSString:[NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d.%02d", year, month, day, hour, minute, second, milisecond]];
+    return [self initWithYMDHMSString:[NSString stringWithFormat:@"%d-%02d-%02d %02d:%02d:%02d.%d", (int)year, (int)month, (int)day, (int)hour, (int)minute, (int)second, (int)milisecond]];
 }
 
 +(DateObject*)initWithNSDate:(NSDate*) date
 {
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
     
-    return [self initWithYear:(int)components.year
-                        month:(int)components.month
-                          day:(int)components.day
-                         hour:(int)components.hour
-                       minute:(int)components.minute
-                       second:(int)components.second
-                   milisecond:(int)components.nanosecond];
+    NSDateComponents *components;
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000 // iOS 8.0 and later supported
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitNanosecond fromDate:date];
+#else
+    components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit } fromDate:date];
+#endif
+    
+    
+    return [self initWithYear:components.year
+                        month:components.month
+                          day:components.day
+                         hour:components.hour
+                       minute:components.minute
+                       second:components.second
+                   milisecond:components.nanosecond];
 }
 
 +(DateObject*)initToday
@@ -161,7 +169,7 @@
     [date setMinute:[self Minute]];
     [date setSecond:[self Second]];
     
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+    NSCalendar *gregorian = [self getCalendar];
     
     NSDate *today = [gregorian dateFromComponents:date];
     
@@ -170,10 +178,10 @@
 
 -(NSDate*)toNSDateUTC
 {
-    return [[self addTimeWithYear:0 month:0 day:0 hour:0 minute:0 second:(int)[[NSTimeZone localTimeZone] secondsFromGMT]] toNSDate];
+    return [[self addTimeWithYear:0 month:0 day:0 hour:0 minute:0 second:[[NSTimeZone localTimeZone] secondsFromGMT]] toNSDate];
 }
 
--(DateObject*)addTimeWithYear: (int) year month: (int) month day:(int) day hour:(int) hour minute:(int) minute second:(int) second
+-(DateObject*)addTimeWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute second:(NSInteger) second
 {
     // set up date components
     NSDateComponents *date = [[NSDateComponents alloc] init];
@@ -186,23 +194,40 @@
     
     
     // create a calendar
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [self getCalendar];
     
     NSDate *result = [gregorian dateByAddingComponents:date toDate:[self toNSDate] options:0];
     
     return [DateObject initWithNSDate:result];
 }
 
--(DateObject*)addTimeWithYear: (int) year month: (int) month day:(int) day
+-(DateObject*)addTimeWithYear: (NSInteger) year month: (NSInteger) month day:(NSInteger) day
 {
     return [self addTimeWithYear:year month:month day:day hour:0 minute:0 second:0];
 }
 
+-(NSCalendar*) getCalendar
+{
+    NSCalendar *gregorian;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000 // iOS 8.0 and later supported
+    gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+#else
+    gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+#endif
+    return gregorian;
+}
+
 -(int)getWeekday
 {
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [self getCalendar];
     
-    NSDateComponents *weekdayComponents = [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit) fromDate:[self toNSDate]];
+    
+    NSDateComponents *weekdayComponents;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000 // iOS 8.0 and later supported
+    weekdayComponents = [gregorian components:(NSCalendarUnitDay | NSCalendarUnitWeekday) fromDate:[self toNSDate]];
+#else
+    weekdayComponents = [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit) fromDate:[self toNSDate]];
+#endif
     
     int weekday = (int)[weekdayComponents weekday];
     

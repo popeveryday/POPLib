@@ -371,10 +371,20 @@
     [self setNavigationBarColor:color tintColor:[UIColor whiteColor] foregroundColor:[UIColor whiteColor] viewController:controller];
 }
 
-+(void)setNavigationBarColor:(UIColor*)color tintColor:(UIColor*)tintColor foregroundColor:(UIColor*)foregroundColor viewController:(UIViewController*)controller{
-    [controller.navigationController.navigationBar setBarTintColor:color];
-    [controller.navigationController.navigationBar setTintColor:tintColor];
-    [controller.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : foregroundColor}];
++(void)setNavigationBarColor:(UIColor*)color tintColor:(UIColor*)tintColor foregroundColor:(UIColor*)foregroundColor viewController:(UIViewController*)controller
+{
+    UINavigationBar* navbar;
+    if ([controller isKindOfClass:[UINavigationController class]]) {
+        navbar = ((UINavigationController*)controller).navigationBar;
+    }else{
+        navbar = controller.navigationController.navigationBar;
+    }
+    
+    if (navbar) {
+        [navbar setBarTintColor:color];
+        [navbar setTintColor:tintColor];
+        [navbar setTitleTextAttributes:@{NSForegroundColorAttributeName : foregroundColor}];
+    }
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     

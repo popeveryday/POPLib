@@ -168,6 +168,7 @@
     [date setHour:[self Hour]];
     [date setMinute:[self Minute]];
     [date setSecond:[self Second]];
+    [date setNanosecond:[self MiliSecond]];
     
     NSCalendar *gregorian = [self getCalendar];
     

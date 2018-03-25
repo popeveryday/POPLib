@@ -916,7 +916,7 @@ NSString* equalStr = @"[EqL]";
     NSString* autoText;
     while (YES) {
         autoText = [StringLib subStringBetween:content startStr:@"<<[" endStr:@"]>>"];
-        if(![StringLib isValid:autoText]) break;
+        if(autoText == nil) break;
         content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<<[%@]>>", autoText] withString:@""];
         [list addObject:autoText];
     }

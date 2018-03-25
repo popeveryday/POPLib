@@ -524,7 +524,7 @@
     else if (type == ALControlTypeColorLabel)
     {
         control = [RTLabel newAutoLayoutView];
-        [(RTLabel*)control setLineBreakMode:RTTextLineBreakModeCharWrapping];
+        [(RTLabel*)control setLineBreakMode:RTTextLineBreakModeWordWrapping];
         [(RTLabel*)control setTextAlignment:RTTextAlignmentLeft];
     }
     else if (type == ALControlTypeImage)

@@ -7,6 +7,7 @@
 //
 
 #import "ViewLib.h"
+#import "RTLabel.h"
 
 @implementation ViewLib
 
@@ -516,9 +517,15 @@
     
     if (type == ALControlTypeLabel) {
         control = [UILabel newAutoLayoutView];
-        [control setLineBreakMode:NSLineBreakByTruncatingTail];
-        [control setNumberOfLines:0];
-        [control setTextAlignment:NSTextAlignmentLeft];
+        [(UILabel*)control setLineBreakMode:NSLineBreakByTruncatingTail];
+        [(UILabel*)control setNumberOfLines:0];
+        [(UILabel*)control setTextAlignment:NSTextAlignmentLeft];
+    }
+    else if (type == ALControlTypeColorLabel)
+    {
+        control = [RTLabel newAutoLayoutView];
+        [(RTLabel*)control setLineBreakMode:RTTextLineBreakModeCharWrapping];
+        [(RTLabel*)control setTextAlignment:RTTextAlignmentLeft];
     }
     else if (type == ALControlTypeImage)
     {

@@ -29,6 +29,7 @@ enum ALControlType{
     ALControlTypeTextField,
     ALControlTypeProgressView,
     ALControlTypeVisualEffectView,
+    ALControlTypeColorLabel,
 };
 
 

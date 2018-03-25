@@ -32,6 +32,8 @@
 		5426709A1F7F572F0020C36A /* QUIBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 542670981F7F572F0020C36A /* QUIBuilder.m */; };
 		5427723F1FC41B7900BD3AB6 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5427723E1FC41B7800BD3AB6 /* SimplePing.m */; };
 		56C733EE233BE000A912FE576B40774D /* NSDate+NVTimeAgo.h in Headers */ = {isa = PBXBuildFile; fileRef = F367461379EC206064BE407805439B97 /* NSDate+NVTimeAgo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		582A0A4A206796320009FF81 /* RTLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 582A0A48206796320009FF81 /* RTLabel.h */; };
+		582A0A4B206796320009FF81 /* RTLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 582A0A49206796320009FF81 /* RTLabel.m */; };
 		5AE0A525A430D512328930A6A1A9AA8C /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 05896C4B701FF3B0FC0B3349AD2BB038 /* ALView+PureLayout.m */; };
 		5AEE3F20204FC822FA89E1E28ADC774B /* GameCenterLib2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A34B3A55FBE87C3816DF91BBDE1CBCB /* GameCenterLib2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EFE3C1316AE3DF65B81286439987953 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27D3EA6983F310D7D06A9CCE06C18BE0 /* QuartzCore.framework */; };
@@ -164,6 +166,8 @@
 		5427723D1FC41B7800BD3AB6 /* SimplePing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimplePing.h; sourceTree = "<group>"; };
 		5427723E1FC41B7800BD3AB6 /* SimplePing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
 		574FFF12910001050319CA3AD050DB6B /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+PureLayout.m"; path = "PureLayout/PureLayout/NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
+		582A0A48206796320009FF81 /* RTLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLabel.h; sourceTree = "<group>"; };
+		582A0A49206796320009FF81 /* RTLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLabel.m; sourceTree = "<group>"; };
 		594B6A5C1594844CB820F16C32B58A9B /* ImageLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ImageLib.m; sourceTree = "<group>"; };
 		5ADDEEA3B3D9ECA35D101921DBF8A6CA /* Pods-POPLib_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-POPLib_Example-umbrella.h"; sourceTree = "<group>"; };
 		5C6CF1C36A8952008D92B32577833B5E /* MBProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MBProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -513,6 +517,8 @@
 				96956E1D5833B8CD8226133930B69C37 /* ObserverObject.m */,
 				2497F3EFA0C40EEAB555C3DFA1AD541A /* Reachability.h */,
 				693E33B5A50FEE5938344B67CA9D5CCE /* Reachability.m */,
+				582A0A48206796320009FF81 /* RTLabel.h */,
+				582A0A49206796320009FF81 /* RTLabel.m */,
 				004E0BEB7170DFA40B45F4989C576CF7 /* ReturnSet.h */,
 				3D4464B27014ACA0D5D5E2B58A5ACE96 /* ReturnSet.m */,
 			);
@@ -559,6 +565,7 @@
 				D165A11202A3D695254573FFFFD8774C /* InAppPurchaseLib.h in Headers */,
 				234404433CBAE65B68C5A450B7D5B109 /* NetLib.h in Headers */,
 				D8A6AC38E01D7B26E0502DE6FB813104 /* NetServiceHelper.h in Headers */,
+				582A0A4A206796320009FF81 /* RTLabel.h in Headers */,
 				56C733EE233BE000A912FE576B40774D /* NSDate+NVTimeAgo.h in Headers */,
 				1325B33ABC8E2CEC995D27F604BC8669 /* ObserverObject.h in Headers */,
 				B19F5A978849AC19B656A5BD9B01367B /* POPLib-umbrella.h in Headers */,
@@ -758,6 +765,7 @@
 				F12CB30C8D25F3EA2D8D462468FC3A8B /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
 				6C2CACBF054C8A88D9805F868B2AE01B /* AlertObject.m in Sources */,
 				B419EFC11C2FFFD8303354E4EEC899C4 /* CommonLib.m in Sources */,
+				582A0A4B206796320009FF81 /* RTLabel.m in Sources */,
 				435BD9F5CCE320DA4CDD7EE300590205 /* CoreData.m in Sources */,
 				DB9D84F49EA2AA0B78DF3E06E0AC0566 /* DateLib.m in Sources */,
 				A4F3ED50B982C93B40F7DF1C6027E19A /* DateObject.m in Sources */,

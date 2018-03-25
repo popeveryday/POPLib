@@ -17,7 +17,9 @@
 @"textview": @(ALControlTypeTextView), \
 @"textfield": @(ALControlTypeTextField), \
 @"progressview": @(ALControlTypeProgressView), \
-@"blurview": @(ALControlTypeVisualEffectView)}
+@"blurview": @(ALControlTypeVisualEffectView), \
+@"colorlabel": @(ALControlTypeColorLabel),\
+}
 
 #define CONTROL_BREAK @"<<BrEak>>"
 #define AUTOTEXT_BREAK @"<<AuToTeXt"

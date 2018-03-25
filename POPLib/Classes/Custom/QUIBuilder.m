@@ -9,6 +9,7 @@
 #import "QUIBuilder.h"
 #import <POPLib/NetServiceHelper.h>
 #import <POPLib/POPLib.h>
+#import "RTLabel.h"
 
 #define CONTROL_TYPES  @{@"label": @(ALControlTypeLabel),\
 @"image": @(ALControlTypeImage), \
@@ -248,6 +249,7 @@
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).textAlignment = [self textAlignObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).textAlignment = [self textAlignObj:propValue];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).textAlignment = [self textAlignObj:propValue];
+                if([view isKindOfClass:[RTLabel class]]) ((RTLabel*)view).textAlignment = [self textAlignObjRT:propValue];
             }
             
             
@@ -257,6 +259,7 @@
                 propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).text = [self textObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).text = [self textObj:propValue];
+                if([view isKindOfClass:[RTLabel class]]) [((RTLabel*)view) setText:[self textObj:propValue]];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).text = [self textObj:propValue];
             }
             
@@ -710,6 +713,17 @@ NSString* equalStr = @"[EqL]";
     if([value isEqualToString:@"natural"]) return NSTextAlignmentNatural;
     return NSTextAlignmentLeft;
 }
+
++(RTTextAlignment) textAlignObjRT:(NSString*)value
+{
+    value = [value lowercaseString];
+    if([value isEqualToString:@"right"]) return RTTextAlignmentRight;
+    if([value isEqualToString:@"center"]) return RTTextAlignmentCenter;
+    if([value isEqualToString:@"justified"]) return RTTextAlignmentJustify;
+    if([value isEqualToString:@"justify"]) return RTTextAlignmentJustify;
+    return RTTextAlignmentLeft;
+}
+
 
 
 //12 > [UIFont systemFontOfSize:12]

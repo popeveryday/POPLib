@@ -838,10 +838,21 @@ NSString* equalStr = @"[EqL]";
 }
 
 
+
+
+
+
+
+
+
+
+//remove all comment // /* */
+//
 +(NSDictionary*) handleContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
     content = [self removeAllComment:content];
     
+    //fill default data from define
     if([content containsString:AUTOTEXT_BREAK]){
         NSString* defaultValue = [StringLib subStringBetween:content startStr:AUTOTEXT_BREAK endStr:@">>"];
         if([StringLib isValid:defaultValue])
@@ -855,9 +866,10 @@ NSString* equalStr = @"[EqL]";
         }
     }
     
+    //if has no device break
     if(![content containsString:DEVICE_BREAK])
     {
-        return [self rebuildFinalItemWithContent: [self fillAutoTextWithContent:content]];
+        return [self rebuildFinalItemWithContent: [self fillAutoTextWithContent:content withDevice:deviceType]];
     }
     
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
@@ -889,7 +901,7 @@ NSString* equalStr = @"[EqL]";
         break;
     }
     
-    return [self rebuildFinalItemWithContent:[self fillAutoTextWithContent:content]];
+    return [self rebuildFinalItemWithContent:[self fillAutoTextWithContent:content withDevice:deviceType]];
 }
 
 //remove all // or /* */
@@ -910,8 +922,18 @@ NSString* equalStr = @"[EqL]";
     return content;
 }
 
-+(NSString*) fillAutoTextWithContent:(NSString*)content
+///<<[ a = 1 & b = 2 ]>>
+///text = #a# and #b#
+///==> text = 1 and 2
+// if need to use # -> convert to ##
++(NSString*) fillAutoTextWithContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
+    
+    //convert all ## to [HaSh]
+    content = [content stringByReplacingOccurrencesOfString:@"^^" withString:@"[HaSh]"];
+    
+    content = [self fillAutoNumberByDeviceWithContent:content withDevice:deviceType];
+    
     NSMutableArray* list = [NSMutableArray new];
     NSString* autoText;
     while (YES) {
@@ -922,6 +944,9 @@ NSString* equalStr = @"[EqL]";
     }
     
     content = [self fillAutoTextWithContent:content replaceContents:list];
+    
+    //convert all [HaSh] to #
+    content = [content stringByReplacingOccurrencesOfString:@"[HaSh]" withString:@"#"];
     
     return content;
 }
@@ -935,6 +960,10 @@ NSString* equalStr = @"[EqL]";
     return [self fillAutoTextWithContent:content replaceContents:@[replaceContent]];
 }
 
+
+///<<[ a = 1 & b = 2 ]>>
+///text = #a# and #b#
+///==> text = 1 and 2
 +(NSString*) fillAutoTextWithContent:(NSString*)content replaceContents:(NSArray*)replaceContents
 {
     NSMutableDictionary* data;
@@ -1066,7 +1095,51 @@ NSString* equalStr = @"[EqL]";
     return srcDic;
 }
 
+
+//             iphone4/5      iphone6/X         iphone6p
+// superEdge = L20            L30              L40
+//                              ALL
+// ==> superEdge = L^30^
+// if need to use ^ -> convert to ^^
++(NSString*) fillAutoNumberByDeviceWithContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
+{
+    NSString* device = [CommonLib getDeviceByResolution];
+    if (deviceType != QUIBuilderDeviceType_AutoDetect) {
+        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
+        if(deviceList.count > deviceType) device = [deviceList objectAtIndex:deviceType];
+    }
+    
+    
+    //convert all ^^ to [UpPeR]
+    content = [content stringByReplacingOccurrencesOfString:@"^^" withString:@"[UpPeR]"];
+    
+    NSArray* items = [StringLib allSubStringBetween:content startStr:@"^" endStr:@"^"];
+    
+    double value;
+    for (NSString* item in items) {
+        value = [item doubleValue];
+        if ([@"iphone5,iphone4" containsString:device]) {
+            value = value * (320.0f/375.0f);
+        }
+        
+        if ([device isEqualToString: @"iphone6p"]) {
+            value = value * (414.0f/375.0f);
+        }
+        
+        content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"^%@^",item] withString:[@(value) stringValue]];
+    }
+    
+    //convert all [UpPeR] to ^
+    content = [content stringByReplacingOccurrencesOfString:@"[UpPeR]" withString:@"^"];
+    
+    return content;
+}
+
 @end
+
+
+
+
 
 
 @implementation UIView (UIBlockActionView)
@@ -1110,6 +1183,9 @@ NSMutableDictionary* _actionBlock;
         block();
     }
 }
+
+
+
 @end
 
 

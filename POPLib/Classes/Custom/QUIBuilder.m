@@ -202,7 +202,15 @@
                 view.userInteractionEnabled = [self boolValue:propValue];
             }
             
-            
+            propKey = @"font";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).font = [self fontObj:propValue];
+                if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).font = [self fontObj:propValue];
+                if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).font = [self fontObj:propValue];
+                if([view isKindOfClass:[UIButton class]]) ((UIButton*)view).titleLabel.font = [self fontObj:propValue];
+            }
             
             
             //TextField, TextView
@@ -211,6 +219,13 @@
             {
                 propValue = [itemDic objectForKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).placeholder = [self textObj:propValue];
+            }
+            
+            propKey = @"placeholdercolor";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                if([view isKindOfClass:[UITextField class]]) [self placeholderColorObj:propValue textfield:(UITextField*)view];
             }
             
             
@@ -232,15 +247,6 @@
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).returnKeyType = [self returnKeyTypeObj:propValue];
             }
             
-            propKey = @"font";
-            if([itemDic.allKeys containsObject:propKey])
-            {
-                propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).font = [self fontObj:propValue];
-                if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).font = [self fontObj:propValue];
-                if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).font = [self fontObj:propValue];
-                if([view isKindOfClass:[UIButton class]]) ((UIButton*)view).titleLabel.font = [self fontObj:propValue];
-            }
             
             propKey = @"textalignment";
             if([itemDic.allKeys containsObject:propKey])
@@ -262,6 +268,14 @@
                 if([view isKindOfClass:[RTLabel class]]) [((RTLabel*)view) setText:[self textObj:propValue]];
                 if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).text = [self textObj:propValue];
             }
+            
+            propKey = @"ispassword";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).secureTextEntry = [self boolValue:propValue];
+            }
+            
             
             
             propKey = @"clearbuttonmode";
@@ -534,6 +548,12 @@
     }
     
     [button setTitleColor:[self colorObj:value] forState:UIControlStateNormal];
+}
+
++(void)placeholderColorObj:(NSString*)value textfield:(UITextField*)textfield
+{
+    NSAttributedString *str = [[NSAttributedString alloc] initWithString:textfield.placeholder attributes:@{ NSForegroundColorAttributeName : [self colorObj:value], NSFontAttributeName: textfield.font }];
+    textfield.attributedPlaceholder = str;
 }
 
 

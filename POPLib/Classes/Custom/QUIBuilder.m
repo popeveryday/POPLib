@@ -1123,10 +1123,17 @@ NSString* equalStr = @"[EqL]";
 // if need to use ^ -> convert to ^^
 +(NSString*) fillAutoNumberByDeviceWithContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
-    NSString* device = [CommonLib getDeviceByResolution];
+    NSString* device = nil;
     if (deviceType != QUIBuilderDeviceType_AutoDetect) {
         NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
         if(deviceList.count > deviceType) device = [deviceList objectAtIndex:deviceType];
+    }
+    
+    if (!device) {
+        device = [CommonLib getDeviceByResolution];
+        if ([device hasPrefix:@"ipad"]) {
+            device = @"iphone4";
+        }
     }
     
     

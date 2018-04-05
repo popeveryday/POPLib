@@ -16,7 +16,7 @@ else
 	then
     	git add -A && git commit -m $version
 	else
-		git add -A && git commit -m '$comment'
+		git add -A && git commit -m "'$comment'"
 	fi
 
 	

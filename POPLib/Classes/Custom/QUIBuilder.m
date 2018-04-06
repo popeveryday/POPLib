@@ -212,6 +212,13 @@
                 if([view isKindOfClass:[UIButton class]]) ((UIButton*)view).titleLabel.font = [self fontObj:propValue];
             }
             
+            propKey = @"shadown";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                [self applyShadownWithView:view value:propValue];
+            }
+            
             
             //TextField, TextView
             propKey = @"placeholder";
@@ -413,6 +420,46 @@
 }
 
 #pragma builder functions
+//shadown = default or shadown = true
+//shadown = false
+//shadown = custom(color, radius, offset, opacity)
+//ex: shadown with color = '#FFCC00', radius = 0.4f, offset = CGSizeMake(0, 2), opacity = 0.5f
+//    shadown = custom(#FFCC00, 0.4, 0;2 , 0.5)
+//ex: shadown with offset = CGPointMake(0, 2)
+//    shadown = custom(, , [0,2], )
++(void) applyShadownWithView:(UIView*)view value:(NSString*)value
+{
+    UIColor* color = [UIColor grayColor];
+    CGFloat radius = 8.0f;
+    CGSize offset = CGSizeMake(0, 2);
+    CGFloat opacity = 0.5f;
+    
+    value = [StringLib trim:value];
+    if ([value.lowercaseString hasPrefix:@"custom"]) {
+        NSString* options = [StringLib subStringBetween:value startStr:@"(" endStr:@")"];
+        if([StringLib isValid:options]){
+            NSArray* arr = [options componentsSeparatedByString:@","];
+            NSString* _color = arr.count > 0 ? arr[0] : nil;
+            NSString* _radius = arr.count > 1 ? arr[1] : nil;
+            NSString* _offset = arr.count > 2 ? arr[2] : nil;
+            NSString* _opacity = arr.count > 3 ? arr[3] : nil;
+            if([StringLib isValid: _color]) color = [self colorObj:_color];
+            if([StringLib isValid: _radius]) radius = [_radius floatValue];
+            if([StringLib isValid: _opacity]) opacity = [_opacity floatValue];
+            if([StringLib isValid: _offset]){
+                NSArray* locarr = [_offset componentsSeparatedByString:@";"];
+                offset = CGSizeMake([locarr[0] floatValue], locarr.count>1?[locarr[1] floatValue]:0);
+            }
+        }
+    }
+    
+    view.layer.masksToBounds = NO;
+    view.layer.shadowColor = color.CGColor;
+    view.layer.shadowOffset = offset;
+    view.layer.shadowOpacity = opacity;
+    view.layer.shadowRadius = radius;
+}
+
 //action = show(box)  ==> view/button tap to show the object name 'box'.
 //action = hide(box)  ==> view/button tap to hide the object name 'box'.
 //action = toggle(box)  ==> view/button tap to show/hide the object name 'box'.

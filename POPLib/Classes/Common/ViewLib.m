@@ -559,6 +559,11 @@
         control = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
         [control configureForAutoLayout];
     }
+    else if (type == ALControlTypeScrollView)
+    {
+        control = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [control configureForAutoLayout];
+    }
     
     
     //fix bug UIVisualEffectView add subview

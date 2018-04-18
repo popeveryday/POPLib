@@ -30,6 +30,7 @@ enum ALControlType{
     ALControlTypeProgressView,
     ALControlTypeVisualEffectView,
     ALControlTypeColorLabel,
+    ALControlTypeScrollView,
 };
 
 

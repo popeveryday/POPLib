@@ -20,6 +20,7 @@
 @"progressview": @(ALControlTypeProgressView), \
 @"blurview": @(ALControlTypeVisualEffectView), \
 @"colorlabel": @(ALControlTypeColorLabel),\
+@"scrollview": @(ALControlTypeScrollView),\
 }
 
 #define CONTROL_BREAK @"<<BrEak>>"
@@ -385,7 +386,13 @@
                 [self applyAction:propValue forView:view uiElements:uiElements];
             }
             
-            
+            //scrollview
+            propKey = @"contentsize";
+            if([itemDic.allKeys containsObject:propKey] && [view isKindOfClass:[UIScrollView class]])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                ((UIScrollView*)view).contentSize = [self sizeValue:propValue];
+            }
         }
     }@catch(NSException* exception)
     {
@@ -420,6 +427,17 @@
 }
 
 #pragma builder functions
+
+//contentsize = width,height
++(CGSize) sizeValue:(NSString*)value
+{
+    NSArray* arr = [value componentsSeparatedByString:@","];
+    CGFloat width = [arr[0] floatValue];
+    CGFloat height = [arr.lastObject floatValue];
+    return CGSizeMake(width, height);
+}
+
+
 //shadown = default or shadown = true
 //shadown = false
 //shadown = custom(color, radius, offset, opacity)
@@ -1261,6 +1279,7 @@ NSMutableDictionary* _actionBlock;
 
 
 @end
+
 
 
 

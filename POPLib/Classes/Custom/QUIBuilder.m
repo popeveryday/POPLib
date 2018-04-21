@@ -174,6 +174,13 @@
                 view.backgroundColor = [self colorObj:propValue];
             }
             
+            propKey = @"tag";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                view.tag = [propValue integerValue];
+            }
+            
             
             propKey = @"bordercolor";
             if([itemDic.allKeys containsObject:propKey])

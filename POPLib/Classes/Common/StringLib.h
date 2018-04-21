@@ -56,6 +56,10 @@
 +(NSArray*)allSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr;
 +(NSArray*)allSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd;
 
++(NSDictionary*)buildTreeSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr;
+
++(NSString*)lastSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd;
+
 +(NSDictionary*)deparseJson:(NSString*)jsonString;
 
 +(NSString*) convertUnicodeEncoding:(NSString*)string;
@@ -72,5 +76,6 @@
 
 + (NSString*)sha256:(NSString*)input;
 
++(NSString*) replaceOneTimeWithContent:(NSString*)content original:(NSString*)original replacement:(NSString*)replacement;
 @end
 

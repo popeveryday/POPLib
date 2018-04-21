@@ -264,6 +264,44 @@
     return rs;
 }
 
++(NSDictionary*)buildTreeSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr
+{
+    NSMutableDictionary* rs = [NSMutableDictionary new];
+    
+    NSString* obj, *nstr = source, *key;
+    NSInteger counter = 1;
+    while (YES)
+    {
+        obj = [self lastSubStringBetween:nstr startStr:startStr endStr:endStr includeStartEnd:YES];
+        if (!obj) break;
+        key = [NSString stringWithFormat:@"[ObJeCt%@]",@(counter)];
+        [rs setObject:obj forKey:key];
+        nstr = [nstr stringByReplacingOccurrencesOfString:obj withString:key];
+        counter++;
+    }
+    
+    [rs setObject:nstr forKey:@"content"];
+    
+    return rs;
+}
+
++(NSString*)lastSubStringBetween:(NSString*) source startStr:(NSString*) startStr endStr:(NSString*)endStr includeStartEnd:(BOOL)includeStartEnd
+{
+    source = [NSString stringWithFormat:@" %@", source];
+    NSInteger index = [StringLib  lastIndexOf:startStr inString:source];
+    if (index == -1) return nil;
+    
+    index += startStr.length;
+    
+    NSInteger endIndex = [StringLib indexOf:endStr inString:source fromIndex:index];
+    
+    if (endIndex == -1) return nil;
+    
+    NSString* rs = [[source substringFromIndex:index] substringToIndex:endIndex - index];
+    if (includeStartEnd) rs = [NSString stringWithFormat:@"%@%@%@",startStr, rs, endStr];
+    return rs;
+}
+
 +(NSDictionary*)deparseJson:(NSString*)jsonString{
     NSError *jsonError;
     NSData *objectData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
@@ -395,6 +433,15 @@
     }
     
     return output;
+}
+
++(NSString*) replaceOneTimeWithContent:(NSString*)content original:(NSString*)original replacement:(NSString*)replacement
+{
+    NSRange rOriginal = [content rangeOfString:original];
+    if (NSNotFound != rOriginal.location) {
+        return [content stringByReplacingCharactersInRange:rOriginal withString:replacement];
+    }
+    return content;
 }
 
 @end

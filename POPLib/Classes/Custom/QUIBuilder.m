@@ -496,7 +496,14 @@
 // if button => addtarget for button
 +(void) applyAction:(NSString*)action forView:(UIView*)view uiElements:(NSMutableDictionary*) uiElements
 {
+    
     action = [StringLib trim:action];
+    
+    //encode all special characters: ( ) ,
+    action = [action stringByReplacingOccurrencesOfString:@"((" withString:@"[OpEnBrAcKeT]"];
+    action = [action stringByReplacingOccurrencesOfString:@"))" withString:@"[ClOsEBrAcKeT]"];
+    action = [action stringByReplacingOccurrencesOfString:@",," withString:@"[CoMmA]"];
+    
     NSString* actionkey = [[action componentsSeparatedByString:@"("] firstObject];
     NSString* objName = [StringLib subStringBetween:action startStr:@"(" endStr:@")"];
     void (^actionBlock)(void);
@@ -521,6 +528,14 @@
             NSInteger index = [[arr objectAtIndex:0] integerValue];
             NSString* object = arr.count >= 2 ? [arr objectAtIndex:1] : nil;
             NSString* key = arr.count >= 3 ? [arr objectAtIndex:2] : nil;
+            
+            object = [object stringByReplacingOccurrencesOfString:@"[OpEnBrAcKeT]" withString:@"("];
+            object = [object stringByReplacingOccurrencesOfString:@"[ClOsEBrAcKeT]" withString:@")"];
+            object = [object stringByReplacingOccurrencesOfString:@"[CoMmA]" withString:@","];
+            
+            key = [key stringByReplacingOccurrencesOfString:@"[OpEnBrAcKeT]" withString:@"("];
+            key = [key stringByReplacingOccurrencesOfString:@"[ClOsEBrAcKeT]" withString:@")"];
+            key = [key stringByReplacingOccurrencesOfString:@"[CoMmA]" withString:@","];
             
             [ObserverObject sendObserver:index object:object notificationKey:key];
         };
@@ -1308,7 +1323,7 @@ NSString* equalStr = @"[EqL]";
 
 
 
-// <<FoR key = x & data = 1:3 ... for>> ==>  1... 2... 3...
+// <<FoR key = x & data = 1:3 ... FoR>> ==>  1... 2... 3...
 // replace special character: , :
 +(NSString*) buildForloopWithContent:(NSString*)content
 {
@@ -1366,27 +1381,58 @@ NSString* equalStr = @"[EqL]";
  */
 +(NSString*)generateSmartReplaceWithContent:(NSString*)content
 {
-    NSArray* children = [StringLib allSubStringBetween:content startStr:@"<<ReP" endStr:@"ReP>>" includeStartEnd:YES];
-    NSString* resultStr = content;
+    NSDictionary* items = [StringLib buildTreeSubStringBetween:content startStr:@"<<ReP" endStr:@"ReP>>"];
     
-    for (NSString* childstr in children) {
-        NSString* fordata = [StringLib subStringBetween:childstr startStr:@"<<ReP" endStr:@"\n"];
-        NSArray* items = [self getItemFromForloop:fordata];
-        NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
-        NSString* key = [dic objectForKey:@"key"];
-        NSString* replaceContent = [StringLib subStringBetween:childstr startStr:@"\n" endStr:@"ReP>>"];
+    NSMutableDictionary* rs = [NSMutableDictionary new];
+    NSArray* sortedKeys = [items.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* a,NSString* b)
+                           {
+                               return [a compare:b];
+                           }];
+    NSString* value;
+    for (NSString* key in sortedKeys) {
+        if([key isEqualToString:@"content"]) continue;
+        value = [items objectForKey:key];
         
-        for (NSString* item in items)
-        {
-            replaceContent = [StringLib replaceOneTimeWithContent:replaceContent original:[NSString stringWithFormat:@"$%@$",key] replacement:item];
+        if ([value containsString:@"[ObJeCt"]) {
+            for (NSString* k in rs.allKeys)
+            {
+                value = [value stringByReplacingOccurrencesOfString:k withString: [rs objectForKey:k] ];
+            }
         }
         
-        resultStr = [resultStr stringByReplacingOccurrencesOfString:childstr withString: replaceContent];
+        value = [self buildReplacementWithContent:value];
+        
+        [rs setObject:value forKey:key];
     }
     
-    return resultStr;
+    NSString* final = [items objectForKey:@"content"];
+    for (NSString* key in rs.allKeys) {
+        final = [final stringByReplacingOccurrencesOfString:key withString:[rs objectForKey:key]];
+    }
+    
+    return final;
 }
 
+
+// <<ReP key = x & data = 1:3 ... ReP>> ==>  1... 2... 3...
+// replace special character: , :
++(NSString*) buildReplacementWithContent:(NSString*)content
+{
+    NSString* fordata = [StringLib subStringBetween:content startStr:@"<<ReP" endStr:@"\n"];
+    NSArray* items = [self getItemFromForloop:fordata];
+    
+    NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
+    NSString* key = [dic objectForKey:@"key"];
+    
+    
+    NSString* replaceContent = [StringLib subStringBetween:content startStr:@"\n" endStr:@"ReP>>"];
+    
+    for (NSString* item in items) {
+        replaceContent = [StringLib replaceOneTimeWithContent:replaceContent original:[NSString stringWithFormat:@"$%@$",key] replacement:item];
+    }
+    
+    return replaceContent;
+}
 
 @end
 

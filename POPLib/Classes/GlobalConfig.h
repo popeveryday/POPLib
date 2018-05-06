@@ -99,6 +99,11 @@ enum ViewDesignStyle
 #define LocalizedText(text,lang) [CommonLib localizedText:text languageCode:lang]
 #define LocalizedDefaultLanguageCode(lang) [CommonLib localizedDefaulLanguageCode:lang]
 
+#define GC_AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
+#define GC_AppVersionBuild [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
+
+
+
 
 
 

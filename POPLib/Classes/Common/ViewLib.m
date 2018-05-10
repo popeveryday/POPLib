@@ -8,6 +8,7 @@
 
 #import "ViewLib.h"
 #import "RTLabel.h"
+#import "PageView.h"
 
 @implementation ViewLib
 
@@ -562,6 +563,11 @@
     else if (type == ALControlTypeScrollView)
     {
         control = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [control configureForAutoLayout];
+    }
+    else if (type == ALControlTypePageView)
+    {
+        control = [[PageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         [control configureForAutoLayout];
     }
     

@@ -10,6 +10,7 @@
 #import <POPLib/NetServiceHelper.h>
 #import <POPLib/POPLib.h>
 #import "RTLabel.h"
+#import "PageView.h"
 
 #define CONTROL_TYPES  @{@"label": @(ALControlTypeLabel),\
 @"image": @(ALControlTypeImage), \
@@ -21,11 +22,16 @@
 @"blurview": @(ALControlTypeVisualEffectView), \
 @"colorlabel": @(ALControlTypeColorLabel),\
 @"scrollview": @(ALControlTypeScrollView),\
+@"pageview": @(ALControlTypePageView),\
 }
 
 #define CONTROL_BREAK @"<<BrEak>>"
 #define AUTOTEXT_BREAK @"<<AuToTeXt"
 #define DEVICE_BREAK @"<<DeViCe"
+
+
+
+
 
 
 
@@ -399,6 +405,53 @@
             {
                 propValue = [itemDic objectForKey:propKey];
                 ((UIScrollView*)view).contentSize = [self sizeValue:propValue];
+            }
+            
+            //pageview
+            propKey = @"datasource";
+            if([itemDic.allKeys containsObject:propKey] && [view isKindOfClass:[PageView class]])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                NSDictionary* dataSource = [[StringLib deparseString:propValue] toDictionary];
+                
+                NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
+                NSString* itemFileOrData = [dataSource objectForKey:@"itemFile"];
+                if(itemFileOrData) itemFileOrData = [self pathObj:itemFileOrData];
+                if(!itemFileOrData) itemFileOrData = [dataSource objectForKey:@"itemData"];
+                
+                NSString* temp;
+                if (itemFileOrData) {
+                    NSMutableArray* pageData = [NSMutableArray new];
+                    NSMutableDictionary* otherKeyValues = [NSMutableDictionary new];
+                    
+                    for (NSString* key in dataSource.allKeys) {
+                        if([key isEqualToString:@"totalItem"]) continue;
+                        if([key isEqualToString:@"itemFile"]) continue;
+                        if([key isEqualToString:@"itemData"]) continue;
+                        temp = [dataSource objectForKey:key];
+                        temp = [NSString stringWithFormat:@"data = %@", temp];
+                        [otherKeyValues setObject:[self getItemFromForloop:temp] forKey:key];
+                    }
+                    
+                    
+                    NSArray* tempArr;
+                    for (NSInteger i = 0; i < total; i++)
+                    {
+                        temp = [FileLib checkPathExisted:itemFileOrData] ? [FileLib readFile: itemFileOrData] : itemFileOrData;
+                        
+                        for (NSString* key in otherKeyValues.allKeys)
+                        {
+                            tempArr = [otherKeyValues objectForKey:key];
+                            if(tempArr.count > i)
+                                temp = [temp stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"$%@$",key] withString:[tempArr objectAtIndex:i]];
+                        }
+                        [pageData addObject:temp];
+                    }
+                    
+                    ((PageView*)view).pageData = pageData;
+                    
+                    [((PageView*)view) initUI];
+                }
             }
         }
     }@catch(NSException* exception)
@@ -918,6 +971,8 @@ NSString* equalStr = @"[EqL]";
     return Color(value);
 }
 
+
+
 //abc > [UIImage imageNamed:@"abc"]
 //file: abc > [UIImage imageWithContentsOfFile:@"abc"]
 //doc: abc > [UIImage imageWithContentsOfFile: [FileLib getDocumentPath:@"abc"]]
@@ -945,7 +1000,30 @@ NSString* equalStr = @"[EqL]";
 }
 
 
-
++(NSString*) pathObj:(NSString*)value
+{
+    if([value containsString:@":"]){
+        NSArray* arr = [value componentsSeparatedByString:@":"];
+        NSString* prefix = [[StringLib trim:arr[0]] lowercaseString];
+        NSString* data = [StringLib trim:arr[1]];
+        
+        if([prefix isEqualToString:@"doc"]) data = [FileLib getDocumentPath:data];
+        if([prefix isEqualToString:@"lib"]) data = [FileLib getLibraryPath:data];
+        if([prefix isEqualToString:@"temp"]) data = [FileLib getTempPath:data];
+        
+        if([FileLib checkPathExisted:data])
+            return data;
+        
+        [CommonLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
+        return nil;
+    }
+    
+    if([FileLib checkPathExisted:value]){
+        return value;
+    }
+    
+    return nil;
+}
 
 
 
@@ -1348,6 +1426,10 @@ NSString* equalStr = @"[EqL]";
     return result;
 }
 
+//data = 1:20
+//data = 1:20:2
+//data = 50:10
+//data = a,b,c,d
 +(NSArray*) getItemFromForloop:(NSString*)fordata{
     fordata = [fordata stringByReplacingOccurrencesOfString:@",," withString:@"[CoMmA]"];
     fordata = [fordata stringByReplacingOccurrencesOfString:@"::" withString:@"[CoLoN]"];
@@ -1361,9 +1443,18 @@ NSString* equalStr = @"[EqL]";
         CGFloat to = [StringLib trim:[arr objectAtIndex:1]].floatValue;
         CGFloat inteval = arr.count == 3 ? [StringLib trim:[arr objectAtIndex:2]].floatValue : 1;
         
-        for (CGFloat i = from; i <= to; i+= inteval) {
-            [items addObject: [NSString stringWithFormat:@"%@",@(i)] ];
+        if (from < to) {
+            for (CGFloat i = from; i <= to; i+= inteval) {
+                [items addObject: [NSString stringWithFormat:@"%@",@(i)] ];
+            }
+        }else{
+            for (CGFloat i = from; i >= to; i-= inteval) {
+                [items addObject: [NSString stringWithFormat:@"%@",@(i)] ];
+            }
         }
+        
+        
+        
     }else{
         NSArray* arr = [data componentsSeparatedByString:@","];
         for (NSString* item in arr) {
@@ -1486,6 +1577,17 @@ NSMutableDictionary* _actionBlock;
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
 
 
 

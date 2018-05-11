@@ -36,8 +36,8 @@
 		582A0A4B206796320009FF81 /* RTLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 582A0A49206796320009FF81 /* RTLabel.m */; };
 		587BE93420A4374900ED46F1 /* PageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 587BE93220A4374900ED46F1 /* PageView.h */; };
 		587BE93520A4374900ED46F1 /* PageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 587BE93320A4374900ED46F1 /* PageView.m */; };
-		58AA8CC220A579C500AE5F25 /* CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 58AA8CC020A579C500AE5F25 /* CollectionView.h */; };
-		58AA8CC320A579C500AE5F25 /* CollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AA8CC120A579C500AE5F25 /* CollectionView.m */; };
+		58AA8CC420A57E2B00AE5F25 /* CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 58AA8CC020A579C500AE5F25 /* CollectionView.h */; };
+		58AA8CC520A57E3E00AE5F25 /* CollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AA8CC120A579C500AE5F25 /* CollectionView.m */; };
 		5AE0A525A430D512328930A6A1A9AA8C /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 05896C4B701FF3B0FC0B3349AD2BB038 /* ALView+PureLayout.m */; };
 		5AEE3F20204FC822FA89E1E28ADC774B /* GameCenterLib2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A34B3A55FBE87C3816DF91BBDE1CBCB /* GameCenterLib2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EFE3C1316AE3DF65B81286439987953 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27D3EA6983F310D7D06A9CCE06C18BE0 /* QuartzCore.framework */; };
@@ -556,7 +556,6 @@
 			files = (
 				28A794912ED1E06B05D96DF5ED0AED19 /* MBProgressHUD-umbrella.h in Headers */,
 				A5BF8DBDD8660DBCFE712657F3D82BDA /* MBProgressHUD.h in Headers */,
-				58AA8CC220A579C500AE5F25 /* CollectionView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +565,7 @@
 			files = (
 				587BE93420A4374900ED46F1 /* PageView.h in Headers */,
 				C13DB28908E1BD1E74880B20D800E0A0 /* ALAssetsLibrary+CustomPhotoAlbum.h in Headers */,
+				58AA8CC420A57E2B00AE5F25 /* CollectionView.h in Headers */,
 				10224C4B8FA2128213B5230056E175D0 /* AlertObject.h in Headers */,
 				41E9CB1B7EB078C5608EE2878F36D431 /* CommonLib.h in Headers */,
 				C852247FBEA0D4AD18CFFC01C10A42EC /* CoreData.h in Headers */,
@@ -788,6 +788,7 @@
 				66BF88CE87661F590AFF61FFAE4AA599 /* GameCenterLib2.m in Sources */,
 				F74CA1CE6D96A51382EC217361656164 /* Hashtable.m in Sources */,
 				45640F3F903A85DE16CFA2FEBD3B1F11 /* ImageLib.m in Sources */,
+				58AA8CC520A57E3E00AE5F25 /* CollectionView.m in Sources */,
 				698CA12BFFB45E8D26E5315DAF9562F2 /* InAppPurchaseLib.m in Sources */,
 				587BE93520A4374900ED46F1 /* PageView.m in Sources */,
 				D3FDE94A6F9D708F0FC3F207A990D61E /* NetLib.m in Sources */,
@@ -807,7 +808,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58AA8CC320A579C500AE5F25 /* CollectionView.m in Sources */,
 				0968524ED4DE8DF7834055C5B6089D72 /* MBProgressHUD-dummy.m in Sources */,
 				897C38C8E3C31950E2E93A4D6937CCC4 /* MBProgressHUD.m in Sources */,
 			);

@@ -11,6 +11,7 @@
 #import <POPLib/POPLib.h>
 #import "RTLabel.h"
 #import "PageView.h"
+#import "CollectionView.h"
 
 #define CONTROL_TYPES  @{@"label": @(ALControlTypeLabel),\
 @"image": @(ALControlTypeImage), \
@@ -410,52 +411,12 @@
             
             //pageview
             propKey = @"datasource";
-            if([itemDic.allKeys containsObject:propKey] && [view isKindOfClass:[PageView class]])
+            if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
-                NSDictionary* dataSource = [[StringLib deparseString:propValue] toDictionary];
+                if([view isKindOfClass:[PageView class]]) [self buildPageView:(PageView*)view withDataSource:propValue];
+                if([view isKindOfClass:[CollectionView class]]) [self buildCollectionView:(CollectionView*)view withDataSource:propValue itemDic:itemDic];
                 
-                NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
-                NSString* itemFileOrData = [dataSource objectForKey:@"itemFile"];
-                if(itemFileOrData) itemFileOrData = [self pathObj:itemFileOrData];
-                if(!itemFileOrData){
-                    itemFileOrData = [dataSource objectForKey:@"itemData"];
-                    itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<BrEak2>>" withString:@"<<BrEak>>"];
-                }
-                
-                NSString* temp;
-                if (itemFileOrData) {
-                    NSMutableArray* pageData = [NSMutableArray new];
-                    NSMutableDictionary* otherKeyValues = [NSMutableDictionary new];
-                    
-                    for (NSString* key in dataSource.allKeys) {
-                        if([key isEqualToString:@"totalItem"]) continue;
-                        if([key isEqualToString:@"itemFile"]) continue;
-                        if([key isEqualToString:@"itemData"]) continue;
-                        temp = [dataSource objectForKey:key];
-                        temp = [NSString stringWithFormat:@"data = %@", temp];
-                        [otherKeyValues setObject:[self getItemFromForloop:temp] forKey:key];
-                    }
-                    
-                    
-                    NSArray* tempArr;
-                    for (NSInteger i = 0; i < total; i++)
-                    {
-                        temp = [FileLib checkPathExisted:itemFileOrData] ? [FileLib readFile: itemFileOrData] : itemFileOrData;
-                        
-                        for (NSString* key in otherKeyValues.allKeys)
-                        {
-                            tempArr = [otherKeyValues objectForKey:key];
-                            if(tempArr.count > i)
-                                temp = [temp stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"$%@$",key] withString:[tempArr objectAtIndex:i]];
-                        }
-                        [pageData addObject:temp];
-                    }
-                    
-                    ((PageView*)view).pageData = pageData;
-                    
-                    [((PageView*)view) initUI];
-                }
             }
         }
     }@catch(NSException* exception)
@@ -491,6 +452,137 @@
 }
 
 #pragma builder functions
+
++(void) buildCollectionView:(CollectionView*)view withDataSource:(NSString*)propValue itemDic:(NSDictionary*)itemDic
+{
+    CGSize itemSize = CGSizeMake(100, 100);
+    CGFloat itemSpacing = 10;
+    CGFloat lineSpacing = 10;
+    UIEdgeInsets sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
+    BOOL scrollHorizontal = NO;
+    
+    
+    NSString* _itemSize = [itemDic objectForKey:@"itemsize"];
+    NSString* _itemSpacing = [itemDic objectForKey:@"itemspacing"];
+    NSString* _lineSpacing = [itemDic objectForKey:@"linespacing"];
+    NSString* _sectionInset = [itemDic objectForKey:@"sectioninset"];
+    NSString* _scrollHorizontal = [itemDic objectForKey:@"scrollhorizontal"];
+    
+    NSArray* arr;
+    if([StringLib isValid: _itemSize])
+    {
+        arr = [_itemSize containsString:@","] ? [_itemSize componentsSeparatedByString:@","] : [_itemSize containsString:@";"] ? [_itemSize componentsSeparatedByString:@";"] : @[_itemSize, _itemSize];
+        itemSize = CGSizeMake([[arr objectAtIndex:0] floatValue], [[arr objectAtIndex:1] floatValue]);
+    }
+    if([StringLib isValid: _itemSpacing]) itemSpacing = [_itemSpacing floatValue];
+    if([StringLib isValid: _lineSpacing]) lineSpacing = [_lineSpacing floatValue];
+    if([StringLib isValid: _sectionInset])
+    {
+        arr = [_sectionInset containsString:@","] ? [_sectionInset componentsSeparatedByString:@","] : [_sectionInset containsString:@";"] ? [_sectionInset componentsSeparatedByString:@";"] : @[_sectionInset, _sectionInset, _sectionInset, _sectionInset];
+        sectionInset = UIEdgeInsetsMake([[arr objectAtIndex:0] floatValue], [[arr objectAtIndex:1] floatValue], [[arr objectAtIndex:2] floatValue], [[arr objectAtIndex:3] floatValue]);
+    }
+    if([StringLib isValid: _scrollHorizontal]) scrollHorizontal = [_scrollHorizontal.lowercaseString containsString:@"true"];
+    
+    NSDictionary* dataSource = [[StringLib deparseString:propValue] toDictionary];
+    NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
+    NSString* itemFileOrData = [dataSource objectForKey:@"itemFile"];
+    if(itemFileOrData) itemFileOrData = [self pathObj:itemFileOrData];
+    if(!itemFileOrData){
+        itemFileOrData = [dataSource objectForKey:@"itemData"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<BrEak2>>" withString:@"<<BrEak>>"];
+    }
+    
+    NSString* temp;
+    if (itemFileOrData) {
+        NSMutableArray* pageData = [NSMutableArray new];
+        NSMutableDictionary* otherKeyValues = [NSMutableDictionary new];
+        
+        for (NSString* key in dataSource.allKeys) {
+            if([key isEqualToString:@"totalItem"]) continue;
+            if([key isEqualToString:@"itemFile"]) continue;
+            if([key isEqualToString:@"itemData"]) continue;
+            temp = [dataSource objectForKey:key];
+            temp = [NSString stringWithFormat:@"data = %@", temp];
+            [otherKeyValues setObject:[self getItemFromForloop:temp] forKey:key];
+        }
+        
+        
+        NSArray* tempArr;
+        for (NSInteger i = 0; i < total; i++)
+        {
+            temp = [FileLib checkPathExisted:itemFileOrData] ? [FileLib readFile: itemFileOrData] : itemFileOrData;
+            
+            for (NSString* key in otherKeyValues.allKeys)
+            {
+                tempArr = [otherKeyValues objectForKey:key];
+                if(tempArr.count > i)
+                    temp = [temp stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"$%@$",key] withString:[tempArr objectAtIndex:i]];
+            }
+            [pageData addObject:temp];
+        }
+        
+        view.itemSize = itemSize;
+        view.itemSpacing = itemSpacing;
+        view.lineSpacing = lineSpacing;
+        view.sectionInset = sectionInset;
+        view.isScrollDirectionHorizontal = scrollHorizontal;
+        view.itemData = pageData;
+        [view initUI];
+    }
+}
+
+/*
+ Other key except (totalItem, itemFile, itemData) will be foreach add to data
+ 1. dataSource = totalItem [EqL] 2 [AnD] itemFile [EqL] doc:quibuilder/item.qui
+ 2. dataSource = totalItem [EqL] 2 [AnD] itemData [EqL]
+ type [EqL2] button
+ [AnD2] name [EqL2] lala2
+ */
++(void) buildPageView:(PageView*)view withDataSource:(NSString*)propValue
+{
+    NSDictionary* dataSource = [[StringLib deparseString:propValue] toDictionary];
+    NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
+    NSString* itemFileOrData = [dataSource objectForKey:@"itemFile"];
+    if(itemFileOrData) itemFileOrData = [self pathObj:itemFileOrData];
+    if(!itemFileOrData){
+        itemFileOrData = [dataSource objectForKey:@"itemData"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<BrEak2>>" withString:@"<<BrEak>>"];
+    }
+    
+    NSString* temp;
+    if (itemFileOrData) {
+        NSMutableArray* pageData = [NSMutableArray new];
+        NSMutableDictionary* otherKeyValues = [NSMutableDictionary new];
+        
+        for (NSString* key in dataSource.allKeys) {
+            if([key isEqualToString:@"totalItem"]) continue;
+            if([key isEqualToString:@"itemFile"]) continue;
+            if([key isEqualToString:@"itemData"]) continue;
+            temp = [dataSource objectForKey:key];
+            temp = [NSString stringWithFormat:@"data = %@", temp];
+            [otherKeyValues setObject:[self getItemFromForloop:temp] forKey:key];
+        }
+        
+        
+        NSArray* tempArr;
+        for (NSInteger i = 0; i < total; i++)
+        {
+            temp = [FileLib checkPathExisted:itemFileOrData] ? [FileLib readFile: itemFileOrData] : itemFileOrData;
+            
+            for (NSString* key in otherKeyValues.allKeys)
+            {
+                tempArr = [otherKeyValues objectForKey:key];
+                if(tempArr.count > i)
+                    temp = [temp stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"$%@$",key] withString:[tempArr objectAtIndex:i]];
+            }
+            [pageData addObject:temp];
+        }
+        
+        view.pageData = pageData;
+        
+        [view initUI];
+    }
+}
 
 //contentsize = width,height
 +(CGSize) sizeValue:(NSString*)value
@@ -1104,11 +1196,18 @@ NSString* equalStr = @"[EqL]";
     
     NSMutableArray* comments = [NSMutableArray new];
     [comments addObjectsFromArray:[StringLib allSubStringBetween:content startStr:@"//" endStr:@"\n" includeStartEnd:YES]];
+    
+    for (NSString* item in comments) {
+        content = [content stringByReplacingOccurrencesOfString:item withString: [item hasSuffix:@"\n"] ? @"\n" : @"" ];
+    }
+    
+    [comments removeAllObjects];
     [comments addObjectsFromArray:[StringLib allSubStringBetween:content startStr:@"/*" endStr:@"*/" includeStartEnd:YES]];
     
     for (NSString* item in comments) {
         content = [content stringByReplacingOccurrencesOfString:item withString: [item hasSuffix:@"\n"] ? @"\n" : @"" ];
     }
+    
     
     return content;
 }

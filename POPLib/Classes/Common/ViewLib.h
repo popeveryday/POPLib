@@ -32,6 +32,7 @@ enum ALControlType{
     ALControlTypeColorLabel,
     ALControlTypeScrollView,
     ALControlTypePageView,
+    ALControlTypeCollectionView,
 };
 
 

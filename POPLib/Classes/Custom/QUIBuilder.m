@@ -23,6 +23,7 @@
 @"colorlabel": @(ALControlTypeColorLabel),\
 @"scrollview": @(ALControlTypeScrollView),\
 @"pageview": @(ALControlTypePageView),\
+@"collectionview": @(ALControlTypeCollectionView),\
 }
 
 #define CONTROL_BREAK @"<<BrEak>>"
@@ -417,7 +418,10 @@
                 NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
                 NSString* itemFileOrData = [dataSource objectForKey:@"itemFile"];
                 if(itemFileOrData) itemFileOrData = [self pathObj:itemFileOrData];
-                if(!itemFileOrData) itemFileOrData = [dataSource objectForKey:@"itemData"];
+                if(!itemFileOrData){
+                    itemFileOrData = [dataSource objectForKey:@"itemData"];
+                    itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<BrEak2>>" withString:@"<<BrEak>>"];
+                }
                 
                 NSString* temp;
                 if (itemFileOrData) {

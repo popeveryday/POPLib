@@ -503,7 +503,7 @@
             if([key isEqualToString:@"itemData"]) continue;
             temp = [dataSource objectForKey:key];
             temp = [NSString stringWithFormat:@"data = %@", temp];
-            [otherKeyValues setObject:[self getItemFromForloop:temp] forKey:key];
+            [otherKeyValues setObject:[self getItemFromForloop:temp maxSize:total] forKey:key];
         }
         
         
@@ -560,7 +560,7 @@
             if([key isEqualToString:@"itemData"]) continue;
             temp = [dataSource objectForKey:key];
             temp = [NSString stringWithFormat:@"data = %@", temp];
-            [otherKeyValues setObject:[self getItemFromForloop:temp] forKey:key];
+            [otherKeyValues setObject:[self getItemFromForloop:temp maxSize:total] forKey:key];
         }
         
         
@@ -1132,8 +1132,6 @@ NSString* equalStr = @"[EqL]";
 +(NSDictionary*) handleContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
     content = [self removeAllComment:content];
-    content = [self generateForloopWithContent:content];
-    content = [self generateSmartReplaceWithContent:content];
     
     //fill default data from define
     if([content containsString:AUTOTEXT_BREAK]){
@@ -1152,7 +1150,10 @@ NSString* equalStr = @"[EqL]";
     //if has no device break
     if(![content containsString:DEVICE_BREAK])
     {
-        return [self rebuildFinalItemWithContent: [self fillAutoTextWithContent:content withDevice:deviceType]];
+        content = [self fillAutoTextWithContent:content withDevice:deviceType];
+        content = [self generateForloopWithContent:content];
+        content = [self generateSmartReplaceWithContent:content];
+        return [self rebuildFinalItemWithContent: content];
     }
     
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
@@ -1184,7 +1185,10 @@ NSString* equalStr = @"[EqL]";
         break;
     }
     
-    return [self rebuildFinalItemWithContent:[self fillAutoTextWithContent:content withDevice:deviceType]];
+    content = [self fillAutoTextWithContent:content withDevice:deviceType];
+    content = [self generateForloopWithContent:content];
+    content = [self generateSmartReplaceWithContent:content];
+    return [self rebuildFinalItemWithContent: content];
 }
 
 //remove all // or /* */
@@ -1436,6 +1440,8 @@ NSString* equalStr = @"[EqL]";
 
 #pragma FOR EACH loop functions
 /*
+ FoR x = from_float : to_float & y = ...                      ex: FoR x = 1:5 & y = a,b,c,d,e
+ FoR totalItem = 5 & x = from_float : to_float & y = ...      ex: FoR totalItem = 2 & x = 1:5 & y = a,b,c,d,e
  FoR key = x & data = from_float : to_float                   ex: FoR key = x & data = 1:5
  FoR key = x & data = from_float : to_float : inteval_float   ex: FoR key = x & data = 1:10:2
  FoR key = x & data = from_letter: to_letter                  ex: FoR key = x & data = a:z
@@ -1446,6 +1452,8 @@ NSString* equalStr = @"[EqL]";
  + for $COUNTER$ for counter item begin with 1 each (for each loop)
  + for $[key]COUNTER$ replace counter for specific key
  ex: $xCOUNTER$ to replace counter for key x
+ + if NEW for (without key and data) use totalItem to limit indicate total and max item of other value.
+ ex: FoR totalItem = 2 & x = 1:5 & y = a,b,c,d,e ==> ...1.a..2...b
  
  Example:
  <<FoR key = x & data = 1:3
@@ -1503,13 +1511,64 @@ NSString* equalStr = @"[EqL]";
 }
 
 
-
+// <<FoR x = 1:3 & y = a,b,c ... FoR>> ==>  1..a. 2..b. 3.c..
 // <<FoR key = x & data = 1:3 ... FoR>> ==>  1... 2... 3...
 // replace special character: , :
 +(NSString*) buildForloopWithContent:(NSString*)content
 {
     NSString* fordata = [StringLib subStringBetween:content startStr:@"<<FoR" endStr:@"\n"];
-    NSArray* items = [self getItemFromForloop:fordata];
+    NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
+    
+    if ([dic.allKeys containsObject:@"key"] && [dic.allKeys containsObject:@"data"])
+    {
+        return [self buildForloopWithContent2:content];
+    }
+    else
+    {
+        NSString* replaceContent = [StringLib subStringBetween:content startStr:@"\n" endStr:@"FoR>>"];
+        NSInteger total = [dic.allKeys containsObject:@"totalItem"] ? [[dic objectForKey:@"totalItem"] integerValue] : -1;
+        NSMutableDictionary* dicKeyItem = [NSMutableDictionary new];
+        NSArray* items;
+        for (NSString* key in dic.allKeys)
+        {
+            if([key isEqualToString:@"totalItem"]) continue;
+            fordata = [NSString stringWithFormat:@"key = %@ & data = %@",key, [dic objectForKey:key]];
+            items = [self getItemFromForloop:fordata maxSize:total];
+            if(total == -1) total = items.count;
+            [dicKeyItem setObject:items forKey:key];
+        }
+        
+        NSString* temp, *result = @"";
+        for (NSInteger i = 0; i < total; i++)
+        {
+            temp = replaceContent;
+            
+            for (NSString* key in dicKeyItem.allKeys)
+            {
+                items = [dicKeyItem objectForKey:key];
+                
+                if(items.count > i) temp = [temp stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"$%@$",key] withString: [items objectAtIndex:i] ];
+                
+                temp = [temp stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"$%@COUNTER$",key] withString:[@(i+1) stringValue]];
+            }
+            
+            
+            temp = [temp stringByReplacingOccurrencesOfString:@"$COUNTER$" withString:[@(i+1) stringValue]];
+            
+            result = [NSString stringWithFormat:@"%@%@", result, temp];
+        }
+        
+        return result;
+    }
+}
+
+
+// <<FoR key = x & data = 1:3 ... FoR>> ==>  1... 2... 3...
+// replace special character: , :
++(NSString*) buildForloopWithContent2:(NSString*)content
+{
+    NSString* fordata = [StringLib subStringBetween:content startStr:@"<<FoR" endStr:@"\n"];
+    NSArray* items = [self getItemFromForloop:fordata maxSize:-1];
     
     NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
     NSString* key = [dic objectForKey:@"key"];
@@ -1533,7 +1592,8 @@ NSString* equalStr = @"[EqL]";
 //data = 1:20:2
 //data = 50:10
 //data = a,b,c,d
-+(NSArray*) getItemFromForloop:(NSString*)fordata{
++(NSArray*) getItemFromForloop:(NSString*)fordata maxSize:(NSInteger)maxSize
+{
     fordata = [fordata stringByReplacingOccurrencesOfString:@",," withString:@"[CoMmA]"];
     fordata = [fordata stringByReplacingOccurrencesOfString:@"::" withString:@"[CoLoN]"];
     NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
@@ -1549,19 +1609,21 @@ NSString* equalStr = @"[EqL]";
         if (from < to) {
             for (CGFloat i = from; i <= to; i+= inteval) {
                 [items addObject: [NSString stringWithFormat:@"%@",@(i)] ];
+                if(maxSize > 0 && items.count >= maxSize) break;
             }
         }else{
             for (CGFloat i = from; i >= to; i-= inteval) {
                 [items addObject: [NSString stringWithFormat:@"%@",@(i)] ];
+                if(maxSize > 0 && items.count >= maxSize) break;
             }
         }
-        
         
         
     }else{
         NSArray* arr = [data componentsSeparatedByString:@","];
         for (NSString* item in arr) {
             [items addObject: [[item stringByReplacingOccurrencesOfString:@"[CoMmA]" withString:@","] stringByReplacingOccurrencesOfString:@"[CoLoN]" withString:@":"]];
+            if(maxSize > 0 && items.count >= maxSize) break;
         }
     }
     return items;
@@ -1613,7 +1675,7 @@ NSString* equalStr = @"[EqL]";
 +(NSString*) buildReplacementWithContent:(NSString*)content
 {
     NSString* fordata = [StringLib subStringBetween:content startStr:@"<<ReP" endStr:@"\n"];
-    NSArray* items = [self getItemFromForloop:fordata];
+    NSArray* items = [self getItemFromForloop:fordata maxSize:-1];
     
     NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
     NSString* key = [dic objectForKey:@"key"];

@@ -827,6 +827,7 @@
 
 
 
+
 //abc > [button setTitle:@"abc" forState:UIControlStateNormal]
 //abc;def > [button setTitle:@"abc" forState:UIControlStateNormal]
 //          [button setTitle:@"def" forState:UIControlStateHighlighted]
@@ -1074,6 +1075,7 @@ NSString* equalStr = @"[EqL]";
 //doc: abc > [UIImage imageWithContentsOfFile: [FileLib getDocumentPath:@"abc"]]
 //lib: abc > [UIImage imageWithContentsOfFile: [FileLib getLibraryPath:@"abc"]]
 //temp: abc > [UIImage imageWithContentsOfFile: [FileLib getTempPath:@"abc"]]
+//color: ffcc00 > [UIImage imageWithContentsOfFile: [FileLib getTempPath:@"abc"]]
 +(UIImage*) imageObj:(NSString*)value
 {
     if([value containsString:@":"]){
@@ -1084,6 +1086,10 @@ NSString* equalStr = @"[EqL]";
         if([prefix isEqualToString:@"doc"]) data = [FileLib getDocumentPath:data];
         if([prefix isEqualToString:@"lib"]) data = [FileLib getLibraryPath:data];
         if([prefix isEqualToString:@"temp"]) data = [FileLib getTempPath:data];
+        if([prefix isEqualToString:@"color"])
+        {
+            return [ImageLib createCanvasImageWithColor:[self colorObj:data] size:CGSizeMake(1.0f, 1.0f) isTransparent:NO];
+        }
         
         if([FileLib checkPathExisted:data])
             return [UIImage imageWithContentsOfFile:data];
@@ -1739,9 +1745,8 @@ NSMutableDictionary* _actionBlock;
     }
 }
 
-
-
 @end
+
 
 
 

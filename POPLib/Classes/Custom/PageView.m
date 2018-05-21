@@ -57,16 +57,27 @@
 
 #pragma PageViewController delegate
 -(void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed{
-    
+    if ([self.delegate respondsToSelector:@selector(pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:)])
+    {
+        [self.delegate pageViewController:pageViewController didFinishAnimating:finished previousViewControllers:previousViewControllers transitionCompleted:completed];
+    }
 }
 
 -(void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
-    
+    if ([self.delegate respondsToSelector:@selector(pageViewController:willTransitionToViewControllers:)])
+    {
+        [self.delegate pageViewController:pageViewController willTransitionToViewControllers:pendingViewControllers];
+    }
 }
 
 -(UIViewController*) pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
+    if ([self.delegate respondsToSelector:@selector(pageViewController:viewControllerBeforeViewController:)])
+    {
+        return [self.delegate pageViewController:pageViewController viewControllerBeforeViewController:viewController];
+    }
+    
     NSInteger index = [views indexOfObject:viewController];
     
     if (index == NSNotFound) {
@@ -88,6 +99,11 @@
 
 -(UIViewController*) pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
+    if ([self.delegate respondsToSelector:@selector(pageViewController:viewControllerAfterViewController:)])
+    {
+        return [self.delegate pageViewController:pageViewController viewControllerAfterViewController:viewController];
+    }
+    
     NSInteger index = [views indexOfObject:viewController];
     
     if (index == NSNotFound) {
@@ -106,11 +122,23 @@
     return [views objectAtIndex:index];
 }
 
--(NSInteger) presentationCountForPageViewController:(UIPageViewController *)pageViewController{
+-(NSInteger) presentationCountForPageViewController:(UIPageViewController *)pageViewController
+{
+    if ([self.delegate respondsToSelector:@selector(presentationCountForPageViewController:)])
+    {
+        return [self.delegate presentationCountForPageViewController:pageViewController];
+    }
+    
     return views.count;
 }
 
--(NSInteger) presentationIndexForPageViewController:(UIPageViewController *)pageViewController{
+-(NSInteger) presentationIndexForPageViewController:(UIPageViewController *)pageViewController
+{
+    if ([self.delegate respondsToSelector:@selector(presentationIndexForPageViewController:)])
+    {
+        return [self.delegate presentationIndexForPageViewController:pageViewController];
+    }
+    
     return 0;
 }
 

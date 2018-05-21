@@ -42,23 +42,23 @@
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect errorBlock:errorBlock];
-}
-
-+(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
-    if(![FileLib checkPathExisted:file]) return nil;
-    NSString* content = [FileLib readFile:file];
-    
-    return [self rebuildUIWithContent:content containerView:container device:device errorBlock:errorBlock];
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
-    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect errorBlock:errorBlock];
+    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault errorBlock:errorBlock];
 }
 
-+(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
++(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
+    if(![FileLib checkPathExisted:file]) return nil;
+    NSString* content = [FileLib readFile:file];
     
+    return [self rebuildUIWithContent:content containerView:container device:device genUIType:genUIType errorBlock:errorBlock];
+}
+
++(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
+{
     
     NSDictionary* allItemDic = [self handleContent:content withDevice:device];
     
@@ -68,10 +68,11 @@
     
     @try{
         
-        NSArray* sortedKeys = [allItemDic.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* a,NSString* b)
-                               {
-                                   return [a compare:b];
-                               }];
+        NSArray* sortedKeys = [allItemDic.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* a,NSString* b){
+            return [a compare:b];
+        }];
+        
+        NSArray* alreadAddedSubviews = [container subviews];
         
         //for creating view
         for (NSString* sortedItemKey in sortedKeys) {
@@ -117,7 +118,44 @@
                     containerView = [uiElements objectForKey:propValue];
             }
             
-            view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
+            if ([containerView isEqual:container] && genUIType != QUIBuilderGenUITypeDefault)
+            {
+                UIView* addedView;
+                for (UIView* v in alreadAddedSubviews) {
+                    if([v.accessibilityIdentifier isEqualToString:name]
+                       || [v.accessibilityLabel isEqualToString:name]
+                       || [v.accessibilityHint isEqualToString:name])
+                    {
+                        addedView = v;
+                        break;
+                    }
+                }
+                
+                if (addedView) {
+                    switch (genUIType) {
+                        case QUIBuilderGenUITypeSkipItemIfExist:
+                            continue;
+                            break;
+                        case QUIBuilderGenUITypeUpdateItemIfExist:
+                            view = addedView;
+                            break;
+                        case QUIBuilderGenUITypeRemoveAndAddItemIfExist:
+                            [addedView removeFromSuperview];
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            
+            
+            if (!view) {
+                view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
+            }
+            
+            view.accessibilityIdentifier = name;
+            view.accessibilityLabel = name;
+            view.accessibilityHint = name;
             [uiElements setObject:view forKey:name];
         }
         
@@ -490,6 +528,10 @@
     if(!itemFileOrData){
         itemFileOrData = [dataSource objectForKey:@"itemData"];
         itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<BrEak2>>" withString:@"<<BrEak>>"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<FoR2" withString:@"<<FoR"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"FoR2>>" withString:@"FoR>>"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<ReP2" withString:@"<<ReP"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"ReP2>>" withString:@"ReP>>"];
     }
     
     NSString* temp;
@@ -547,6 +589,10 @@
     if(!itemFileOrData){
         itemFileOrData = [dataSource objectForKey:@"itemData"];
         itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<BrEak2>>" withString:@"<<BrEak>>"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<FoR2" withString:@"<<FoR"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"FoR2>>" withString:@"FoR>>"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"<<ReP2" withString:@"<<ReP"];
+        itemFileOrData = [itemFileOrData stringByReplacingOccurrencesOfString:@"ReP2>>" withString:@"ReP>>"];
     }
     
     NSString* temp;

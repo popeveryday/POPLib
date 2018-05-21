@@ -19,15 +19,23 @@ enum QUIBuilderDeviceType
     QUIBuilderDeviceType_AutoDetect
 };
 
+enum QUIBuilderGenUIType
+{
+    QUIBuilderGenUITypeDefault,
+    QUIBuilderGenUITypeSkipItemIfExist,
+    QUIBuilderGenUITypeUpdateItemIfExist,
+    QUIBuilderGenUITypeRemoveAndAddItemIfExist,
+};
+
 @interface QUIBuilder : NSObject
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
 
-+(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
-
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
 
-+(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
++(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
+
++(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
 
 +(void) clearQUIViewWithUIElement:(NSDictionary*) uiElements;
 

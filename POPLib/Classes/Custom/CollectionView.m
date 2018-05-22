@@ -10,6 +10,9 @@
 #import "QUIBuilder.h"
 
 @implementation CollectionView
+{
+    NSMutableDictionary* cellDatas;
+}
 
 -(instancetype)init{
     self = [super init];
@@ -71,21 +74,46 @@
     UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:indexPath];
     
     NSString* item = [self.itemData objectAtIndex:indexPath.row];
+    NSDictionary* uiElements;
+    NSString* cellKey = [StringLib subStringBetween:[NSString stringWithFormat:@"%@",cell] startStr:@"<UICollectionViewCell: " endStr:@";"];
     
-    //    for (UIView* view in cell.contentView.subviews)
-    //    {
-    //        [view removeFromSuperview];
-    //    }
+    if (self.isRemoveAllSubviewBeforeDrawCell)
+    {
+        for (UIView* view in cell.contentView.subviews)
+        {
+            [view removeFromSuperview];
+        }
+    }else{
+        if(cell.contentView.subviews.count > 0)
+        {
+            if ([self.delegate respondsToSelector:@selector(collectionView:modifyCell:forItems:atIndexPath:)])
+            {
+                uiElements = [cellDatas objectForKey:cellKey];
+                return [self.delegate collectionView:collectionView modifyCell:cell forItems:uiElements atIndexPath:indexPath];
+            }
+            
+            return cell;
+        }
+    }
+    
     
     if ([FileLib checkPathExisted:item])
     {
-        [QUIBuilder rebuildUIWithFile:item containerView:cell.contentView device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeUpdateItemIfExist errorBlock:^(NSString *msg, NSException *exception) {
+        uiElements = [QUIBuilder rebuildUIWithFile:item containerView:cell.contentView errorBlock:^(NSString *msg, NSException *exception) {
             NSLog(@"%@ %@", msg, exception);
         }];
     }else{
-        [QUIBuilder rebuildUIWithContent:item containerView:cell.contentView device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeUpdateItemIfExist  errorBlock:^(NSString *msg, NSException *exception) {
+        uiElements = [QUIBuilder rebuildUIWithContent:item containerView:cell.contentView errorBlock:^(NSString *msg, NSException *exception) {
             NSLog(@"%@ %@", msg, exception);
         }];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(collectionView:modifyCell:forItems:atIndexPath:)])
+    {
+        if(!cellDatas) cellDatas = [NSMutableDictionary new];
+        [cellDatas setObject:uiElements forKey: cellKey];
+        
+        return [self.delegate collectionView:collectionView modifyCell:cell forItems:uiElements atIndexPath:indexPath];
     }
     
     return cell;

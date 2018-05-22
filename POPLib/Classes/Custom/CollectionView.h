@@ -15,6 +15,8 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView modifyCell:(UICollectionViewCell *)cell forItems:(NSDictionary*)uiElements atIndexPath:(NSIndexPath *)indexPath;
+
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -29,6 +31,7 @@
 @property (nonatomic) CGFloat lineSpacing;
 @property (nonatomic) UIEdgeInsets sectionInset;
 @property (nonatomic) BOOL isScrollDirectionHorizontal;
+@property (nonatomic) BOOL isRemoveAllSubviewBeforeDrawCell;
 
 @property (nonatomic) id<CollectionViewDelegate> delegate;
 

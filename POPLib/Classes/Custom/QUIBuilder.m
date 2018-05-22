@@ -447,7 +447,7 @@
                 ((UIScrollView*)view).contentSize = [self sizeValue:propValue];
             }
             
-            //pageview
+            //pageview & collectionview
             propKey = @"datasource";
             if([itemDic.allKeys containsObject:propKey])
             {
@@ -498,6 +498,7 @@
     CGFloat lineSpacing = 10;
     UIEdgeInsets sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
     BOOL scrollHorizontal = NO;
+    BOOL redrawCell = NO;
     
     
     NSString* _itemSize = [itemDic objectForKey:@"itemsize"];
@@ -505,6 +506,7 @@
     NSString* _lineSpacing = [itemDic objectForKey:@"linespacing"];
     NSString* _sectionInset = [itemDic objectForKey:@"sectioninset"];
     NSString* _scrollHorizontal = [itemDic objectForKey:@"scrollhorizontal"];
+    NSString* _redrawCell = [itemDic objectForKey:@"redrawcell"];
     
     NSArray* arr;
     if([StringLib isValid: _itemSize])
@@ -520,6 +522,7 @@
         sectionInset = UIEdgeInsetsMake([[arr objectAtIndex:0] floatValue], [[arr objectAtIndex:1] floatValue], [[arr objectAtIndex:2] floatValue], [[arr objectAtIndex:3] floatValue]);
     }
     if([StringLib isValid: _scrollHorizontal]) scrollHorizontal = [_scrollHorizontal.lowercaseString containsString:@"true"];
+    if([StringLib isValid: _redrawCell]) redrawCell = [_redrawCell.lowercaseString containsString:@"true"];
     
     NSDictionary* dataSource = [[StringLib deparseString:propValue] toDictionary];
     NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
@@ -568,6 +571,7 @@
         view.lineSpacing = lineSpacing;
         view.sectionInset = sectionInset;
         view.isScrollDirectionHorizontal = scrollHorizontal;
+        view.isRemoveAllSubviewBeforeDrawCell = redrawCell;
         view.itemData = pageData;
         [view initUI];
     }

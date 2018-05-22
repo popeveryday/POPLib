@@ -132,6 +132,15 @@
     self.itemSelectedBlock(indexPath.row);
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)])
+    {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
+    }
+    
+    return ((UICollectionViewFlowLayout*)collectionViewLayout).itemSize;
+}
 
 
 @end

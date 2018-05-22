@@ -969,8 +969,7 @@ NSString* equalStr = @"[EqL]";
                 return LocalizedText( [self spaceAndNewLineTextObj:data], langCode);
             }
             
-            data = [data stringByReplacingOccurrencesOfString:@"[EqL]" withString:@"="];
-            data = [data stringByReplacingOccurrencesOfString:@"[AnD]" withString:@"&"];
+            
             NSDictionary* langs = [[StringLib deparseString:data autoTrimKeyValue:YES] toDictionary];
             NSString* defaultKey = [StringLib trim: [[data componentsSeparatedByString:@"="] firstObject]];
             NSString* resultText = [langs objectForKey:defaultKey];
@@ -982,6 +981,10 @@ NSString* equalStr = @"[EqL]";
                     break;
                 }
             }
+            
+            resultText = [resultText stringByReplacingOccurrencesOfString:@"[EqL]" withString:@"="];
+            resultText = [resultText stringByReplacingOccurrencesOfString:@"[AnD]" withString:@"&"];
+            
             return [self spaceAndNewLineTextObj:resultText];
         }
         

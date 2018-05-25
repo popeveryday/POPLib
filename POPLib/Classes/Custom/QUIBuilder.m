@@ -1071,7 +1071,11 @@ NSString* equalStr = @"[EqL]";
     if([value isEqualToString:@"yahoo"]) return UIReturnKeyYahoo;
     if([value isEqualToString:@"done"]) return UIReturnKeyDone;
     if([value isEqualToString:@"emergencycall"]) return UIReturnKeyEmergencyCall;
-    if([value isEqualToString:@"continue"]) return UIReturnKeyContinue;
+    
+    if (@available(iOS 9, *)) {
+        if([value isEqualToString:@"continue"]) return UIReturnKeyContinue;
+    }
+    
     return UIReturnKeyDefault;
 }
 
@@ -1086,7 +1090,8 @@ NSString* equalStr = @"[EqL]";
 //image:IMAGE_VALUE_FOR >
 +(UIColor*) colorObj:(NSString*)value
 {
-    NSString* value1 = [value lowercaseString];
+    NSString* value1 = [[StringLib trim:value] lowercaseString];
+    
     if([value1 isEqualToString:@"black"]) return [UIColor blackColor];
     if([value1 isEqualToString:@"darkgray"]) return [UIColor darkGrayColor];
     if([value1 isEqualToString:@"lightgray"]) return [UIColor lightGrayColor];
@@ -1103,8 +1108,8 @@ NSString* equalStr = @"[EqL]";
     if([value1 isEqualToString:@"brown"]) return [UIColor brownColor];
     if([value1 isEqualToString:@"clear"]) return [UIColor clearColor];
     
-    if([value containsString:@":"]){
-        NSArray* arr = [value componentsSeparatedByString:@":"];
+    if([value1 containsString:@":"]){
+        NSArray* arr = [value1 componentsSeparatedByString:@":"];
         NSString* prefix = [[StringLib trim:arr[0]] lowercaseString];
         NSString* data = [StringLib trim:arr[1]];
         if([prefix isEqualToString:@"image"])
@@ -1113,12 +1118,12 @@ NSString* equalStr = @"[EqL]";
         }
     }
     
-    if([value containsString:@","]){
-        NSArray* arr = [value componentsSeparatedByString:@","];
+    if([value1 containsString:@","]){
+        NSArray* arr = [value1 componentsSeparatedByString:@","];
         return Color2([StringLib trim:arr[0]], [[StringLib trim:arr[1]] floatValue] );
     }
     
-    return Color(value);
+    return Color(value1);
 }
 
 

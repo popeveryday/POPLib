@@ -273,6 +273,12 @@
                 [self applyShadownWithView:view value:propValue];
             }
             
+            propKey = @"transform";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                view.transform = [self transformFromValue:propValue];
+            }
             
             //TextField, TextView
             propKey = @"placeholder";
@@ -498,6 +504,14 @@
 }
 
 #pragma builder functions
+//-1,1 => CGAffineTransformMakeScale(-1, 1)
++(CGAffineTransform)transformFromValue:(NSString*)value
+{
+    NSArray* arr = [value componentsSeparatedByString:@","];
+    CGFloat x = [arr[0] floatValue];
+    CGFloat y = arr.count > 1 ? [arr[1] floatValue] : x;
+    return CGAffineTransformMakeScale(x, y);
+}
 
 +(void) buildCollectionView:(CollectionView*)view withDataSource:(NSString*)propValue itemDic:(NSDictionary*)itemDic
 {
@@ -1061,6 +1075,8 @@ NSString* equalStr = @"[EqL]";
 
 //12 > [UIFont systemFontOfSize:12]
 //bold:12 > [UIFont boldSystemFontOfSize:12]
+//italic:12 > [UIFont italicSystemFontOfSize:12]
+//bold-italic:12 > [UIFont italicSystemFontOfSize:12]
 //Arial:12 > [UIFont fontWithName:@"Arial" size:12];
 +(UIFont*) fontObj:(NSString*)value
 {
@@ -1068,12 +1084,20 @@ NSString* equalStr = @"[EqL]";
         NSArray* arr = [value componentsSeparatedByString:@":"];
         NSString* prefix = [[StringLib trim:arr[0]] lowercaseString];
         NSString* data = [StringLib trim:arr[1]];
-        if([prefix isEqualToString:@"bold"])
+        
+        if([prefix isEqualToString:@"bold"]) return [UIFont boldSystemFontOfSize:[data floatValue]];
+        if([prefix isEqualToString:@"italic"]) return [UIFont italicSystemFontOfSize:[data floatValue]];
+        if([prefix isEqualToString:@"bold-italic"] || [prefix isEqualToString:@"italic-bold"])
         {
-            return [UIFont boldSystemFontOfSize:[data floatValue]];
-        }else{
-            return [UIFont fontWithName:[StringLib trim:arr[0]] size:[data floatValue]];
+            UIFont* font = [UIFont systemFontOfSize:[data floatValue]];
+            
+            UIFontDescriptor * fontD = [font.fontDescriptor
+                                        fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold
+                                        | UIFontDescriptorTraitItalic];
+            return [UIFont fontWithDescriptor:fontD size:0];
         }
+        else return [UIFont fontWithName:[StringLib trim:arr[0]] size:[data floatValue]];
+        
     }
     
     return [UIFont systemFontOfSize:[value floatValue]];

@@ -456,6 +456,14 @@
                 if([view isKindOfClass:[CollectionView class]]) [self buildCollectionView:(CollectionView*)view withDataSource:propValue itemDic:itemDic];
                 
             }
+            
+            //blur view or UIVisualEffectView
+            propKey = @"blurstyle";
+            if([itemDic.allKeys containsObject:propKey] && [view isKindOfClass:[UIVisualEffectView class]])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                [((UIVisualEffectView*)view) setEffect:[UIBlurEffect effectWithStyle: [self getBlurEffectStyle:propValue] ]];
+            }
         }
     }@catch(NSException* exception)
     {
@@ -893,6 +901,21 @@
     
     
     [button setTitle:[self textObj:value] forState:UIControlStateNormal];
+}
+
++(UIBlurEffectStyle)getBlurEffectStyle:(NSString*)value
+{
+    value = [value lowercaseString];
+    if([value isEqualToString:@"dark"]) return UIBlurEffectStyleDark;
+    if([value isEqualToString:@"extralight"]) return UIBlurEffectStyleExtraLight;
+    if([value isEqualToString:@"light"]) return UIBlurEffectStyleLight;
+    
+    if (@available(iOS 10, *)) {
+        if([value isEqualToString:@"regular"]) return UIBlurEffectStyleRegular;
+        if([value isEqualToString:@"prominent"]) return UIBlurEffectStyleProminent;
+    }
+    
+    return UIBlurEffectStyleLight;
 }
 
 +(UIViewContentMode)contentModeObj:(NSString*)value

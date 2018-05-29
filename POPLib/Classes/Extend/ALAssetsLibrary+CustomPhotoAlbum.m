@@ -225,7 +225,7 @@
           [invocation setSelector:performChanges];
           
           // Set the |changeBlock| for |-performChangesAndWait:error:| or |-performChanges:completionHandler:|.
-          void (^changeBlock)() = ^{
+          void (^changeBlock)(void) = ^{
             Class PHAssetCollectionChangeRequest_class = NSClassFromString(@"PHAssetCollectionChangeRequest");
             SEL creationRequestForAssetCollectionWithTitle = NSSelectorFromString(@"creationRequestForAssetCollectionWithTitle:");
 #pragma clang diagnostic push
@@ -236,7 +236,7 @@
           [invocation setArgument:&changeBlock atIndex:2];
           
           // Block to be invoked after created album succeed.
-          void (^blockToEnumerateGroups)() = ^{
+          void (^blockToEnumerateGroups)(void) = ^{
             [self enumerateGroupsWithTypes:ALAssetsGroupAlbum
                                 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
                                   if (group) {

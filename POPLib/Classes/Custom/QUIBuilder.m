@@ -996,8 +996,9 @@ NSString* equalStr = @"[EqL]";
 //""abc "" > LocalizedText(@"\"abc \"", nil)
 //[zh-Hant]:"   time is: 08:30 PM" => LocalizedText(@"   time is: 08:30 PM", @"zh-Hant")
 //[localized]: en [EqL] Language [AnD] vi [EqL] Ngôn Ngữ [AnD] zh-Hant [EqL] 语言
-//   => [LocalizedText(@"-") isEqualToString:@"vi"] ? @"Ngôn Ngữ" :
-//      [LocalizedText(@"-") isEqualToString:@"zh-Hant"] ? @"语言" : @"Language"
+//   => CURRENT_LANG_CODE = [CommonLib getLocalizedWithDefaultLanguageCode:defaultKey];
+//   => [CURRENT_LANG_CODE isEqualToString:@"vi"] ? @"Ngôn Ngữ" :
+//      [CURRENT_LANG_CODE isEqualToString:@"zh-Hant"] ? @"语言" : @"Language"
 //  Note: first language will be the default language
 +(NSString*) textObj:(NSString*)value
 {
@@ -1025,7 +1026,7 @@ NSString* equalStr = @"[EqL]";
             NSDictionary* langs = [[StringLib deparseString:data autoTrimKeyValue:YES] toDictionary];
             NSString* defaultKey = [StringLib trim: [[data componentsSeparatedByString:@"="] firstObject]];
             NSString* resultText = [langs objectForKey:defaultKey];
-            NSString* currentLangCode = LocalizedText(@"-", nil);
+            NSString* currentLangCode = [CommonLib getLocalizedWithDefaultLanguageCode:defaultKey];
             for (NSString* key in langs.allKeys)
             {
                 if ([key isEqualToString:currentLangCode]) {

@@ -475,10 +475,17 @@
     return [bundle localizedStringForKey:text value:text table:nil];
 }
 
-+(void)localizedDefaulLanguageCode:(NSString*)code
++(void)localizedDefaultLanguageCode:(NSString*)code
 {
     [self setAppPreference:@"default_language_code" value:code];
 }
+
++(NSString*)getLocalizedWithDefaultLanguageCode:(NSString*)code
+{
+    return [self getAppPreference:@"default_language_code" defaultValue:code];
+}
+
+
 
 +(UIDeviceOrientation)deviceOrientation
 {

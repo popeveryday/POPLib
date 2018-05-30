@@ -85,7 +85,8 @@
 
 +(NSString*)localizedText:(NSString*)text languageCode:(NSString*)code;
 
-+(void)localizedDefaulLanguageCode:(NSString*)code;
++(void)localizedDefaultLanguageCode:(NSString*)code;
++(NSString*)getLocalizedWithDefaultLanguageCode:(NSString*)code;
 
 +(UIDeviceOrientation)deviceOrientation;
 

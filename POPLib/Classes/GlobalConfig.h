@@ -97,7 +97,7 @@ enum ViewDesignStyle
 #define GC_Popover_Size CGSizeMake(480, 640)
 
 #define LocalizedText(text,lang) [CommonLib localizedText:text languageCode:lang]
-#define LocalizedDefaultLanguageCode(lang) [CommonLib localizedDefaulLanguageCode:lang]
+#define LocalizedDefaultLanguageCode(lang) [CommonLib localizedDefaultLanguageCode:lang]
 
 #define GC_AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 #define GC_AppVersionBuild [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]

@@ -493,7 +493,11 @@
 {
     NSString* init = @"", *getset = @"";
     
-    for (NSString* key in uiElements.allKeys)
+    NSArray* sortedArrayKeys = [uiElements.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* a,NSString* b){
+        return [a compare:b];
+    }];
+    
+    for (NSString* key in sortedArrayKeys)
     {
         id control = [uiElements objectForKey:key];
         init = [NSString stringWithFormat:@"%@%@* %@;\n",init, [control class], key];
@@ -1742,6 +1746,7 @@ NSString* equalStr = @"[EqL]";
 
 #pragma Smart replace
 /*
+ <<ReP x = 1:5 & y = 1,2,3,4
  <<ReP key = bank & data = ???
  ....ReP>>
  key and data similar to FoR
@@ -1780,10 +1785,53 @@ NSString* equalStr = @"[EqL]";
     return final;
 }
 
-
+// <<ReP x = 1:5 & y = a,b,c,d ...ReP>> ==>  1.a.. 2.b.. 3.c..
 // <<ReP key = x & data = 1:3 ... ReP>> ==>  1... 2... 3...
 // replace special character: , :
 +(NSString*) buildReplacementWithContent:(NSString*)content
+{
+    NSString* fordata = [StringLib subStringBetween:content startStr:@"<<ReP" endStr:@"\n"];
+    NSDictionary* dic = [[StringLib deparseString:fordata] toDictionary];
+    
+    if ([dic.allKeys containsObject:@"key"] && [dic.allKeys containsObject:@"data"])
+    {
+        return [self buildReplacementWithContent2:content];
+    }
+    else
+    {
+        NSString* replaceContent = [StringLib subStringBetween:content startStr:@"\n" endStr:@"ReP>>"];
+        NSInteger total = [dic.allKeys containsObject:@"totalItem"] ? [[dic objectForKey:@"totalItem"] integerValue] : -1;
+        NSMutableDictionary* dicKeyItem = [NSMutableDictionary new];
+        NSArray* items;
+        for (NSString* key in dic.allKeys)
+        {
+            if([key isEqualToString:@"totalItem"]) continue;
+            fordata = [NSString stringWithFormat:@"key = %@ & data = %@",key, [dic objectForKey:key]];
+            items = [self getItemFromForloop:fordata maxSize:total];
+            if(total == -1) total = items.count;
+            [dicKeyItem setObject:items forKey:key];
+        }
+        
+        NSString* result = replaceContent;
+        for (NSInteger i = 0; i < total; i++)
+        {
+            for (NSString* key in dicKeyItem.allKeys)
+            {
+                items = [dicKeyItem objectForKey:key];
+                
+                if(items.count > i) result = [StringLib replaceOneTimeWithContent:result original:[NSString stringWithFormat:@"$%@$",key] replacement:[items objectAtIndex:i]];
+            }
+        }
+        
+        return result;
+    }
+}
+
+
+
+// <<ReP key = x & data = 1:3 ... ReP>> ==>  1... 2... 3...
+// replace special character: , :
++(NSString*) buildReplacementWithContent2:(NSString*)content
 {
     NSString* fordata = [StringLib subStringBetween:content startStr:@"<<ReP" endStr:@"\n"];
     NSArray* items = [self getItemFromForloop:fordata maxSize:-1];

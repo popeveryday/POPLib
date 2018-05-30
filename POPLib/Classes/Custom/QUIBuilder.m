@@ -42,20 +42,31 @@
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault errorBlock:errorBlock];
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault updateContentBlock:nil errorBlock:errorBlock];
+}
+
++(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
+{
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault updateContentBlock:updateContentBlock errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
     return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault errorBlock:errorBlock];
 }
 
-+(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
++(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
     if(![FileLib checkPathExisted:file]) return nil;
     NSString* content = [FileLib readFile:file];
     
+    if (updateContentBlock) {
+        content = updateContentBlock(content);
+    }
+    
     return [self rebuildUIWithContent:content containerView:container device:device genUIType:genUIType errorBlock:errorBlock];
 }
+
+
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {

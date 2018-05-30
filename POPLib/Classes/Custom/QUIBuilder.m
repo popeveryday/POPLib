@@ -1197,7 +1197,7 @@ NSString* equalStr = @"[EqL]";
         if([prefix isEqualToString:@"temp"]) data = [FileLib getTempPath:data];
         if([prefix isEqualToString:@"color"])
         {
-            return [ImageLib createCanvasImageWithColor:[self colorObj:data] size:CGSizeMake(1.0f, 1.0f) isTransparent:NO];
+            return [ImageLib createCanvasImageWithColor:[self colorObj:data] size:CGSizeMake(1.0f, 1.0f) isTransparent:YES];
         }
         
         if([FileLib checkPathExisted:data])

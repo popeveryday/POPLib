@@ -525,7 +525,9 @@
         { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &textAlignment },
         { kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &lineBreakMode  },
         { kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(CTWritingDirection), &direction },
+        
         { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &lineSpacing },
+        
         { kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(CGFloat), &firstLineIndent },
         { kCTParagraphStyleSpecifierHeadIndent, sizeof(CGFloat), &headIndent },
         { kCTParagraphStyleSpecifierTailIndent, sizeof(CGFloat), &tailIndent },

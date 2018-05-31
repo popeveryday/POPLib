@@ -13,7 +13,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 @end
 
 @implementation GameCenterLib2{
-    BOOL _enableGameCenter;
+    BOOL enableGameCenter;
 }
 + (instancetype)instance
 {
@@ -29,7 +29,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 {
     self = [super init];
     if (self) {
-        _enableGameCenter = YES;
+        enableGameCenter = YES;
     }
     return self;
 }
@@ -37,6 +37,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 - (void)authenticateLocalPlayerAtViewController:(UIViewController*)view
 {
     GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    
     
     localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error)
     {
@@ -51,7 +52,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
         else{
             if ([GKLocalPlayer localPlayer].authenticated) {
                 // If the player is already authenticated then indicate that the Game Center features can be used.
-                _enableGameCenter = YES;
+                self->enableGameCenter = YES;
                 
                 // Get the default leaderboard identifier.
                 [[GKLocalPlayer localPlayer] loadDefaultLeaderboardIdentifierWithCompletionHandler:^(NSString *leaderboardIdentifier, NSError *error) {
@@ -60,13 +61,13 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
                         NSLog(@"authenticateHandler error: %@", [error localizedDescription]);
                     }
                     else{
-                        _leaderboardIdentifier = leaderboardIdentifier;
+                        leaderboardIdentifier = leaderboardIdentifier;
                     }
                 }];
             }
             
             else{
-                _enableGameCenter = NO;
+                self->enableGameCenter = NO;
             }
         }
     };
@@ -90,7 +91,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 
 - (void)reportAchievements:(NSArray *)achievements
 {
-    if (!_enableGameCenter) {
+    if (!enableGameCenter) {
         NSLog(@"Local play is not authenticated");
         return;
     }
@@ -103,7 +104,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 
 - (void) reportAchievementIdentifier: (NSString*) identifier percentComplete: (float) percent
 {
-    if (!_enableGameCenter) {
+    if (!enableGameCenter) {
         NSLog(@"Local play is not authenticated");
         return;
     }
@@ -143,7 +144,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 
 - (void)showGKGameCenterViewController:(UIViewController *)viewController gameCenterType:(GKGameCenterViewControllerState)gameCenterType
 {
-    if (!_enableGameCenter) {
+    if (!enableGameCenter) {
         NSLog(@"Local play is not authenticated");
     }
     GKGameCenterViewController *gameCenterViewController = [[GKGameCenterViewController alloc] init];
@@ -163,7 +164,7 @@ NSString *const PresentAuthenticationViewController = @"present_authentication_v
 - (void)reportScore:(int64_t)score
    forLeaderboardID:(NSString *)leaderboardID
 {
-    if (!_enableGameCenter) {
+    if (!enableGameCenter) {
         NSLog(@"Local play is not authenticated");
     }
     //1

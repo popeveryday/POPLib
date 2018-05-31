@@ -523,33 +523,23 @@
 {
     if(![view.localizedTexts.allKeys containsObject:key]) return;
     
+    NSString* propValue = [view.localizedTexts objectForKey:key];
     if ([key isEqualToString:@"text"])
     {
-        if([view isKindOfClass:[UILabel class]])
-        {
-            ((UILabel*)view).text = [self textObj: [view.localizedTexts objectForKey:key]];
-        }
-        
-        if([view isKindOfClass:[UITextField class]])
-        {
-            ((UITextField*)view).text = [self textObj: [view.localizedTexts objectForKey:key]];
-        }
+        if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).text = [self textObj:propValue];
+        if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).text = [self textObj:propValue];
+        if([view isKindOfClass:[RTLabel class]]) [((RTLabel*)view) setText:[self textObj:propValue]];
+        if([view isKindOfClass:[UILabel class]]) ((UILabel*)view).text = [self textObj:propValue];
     }
     
     if ([key isEqualToString:@"title"])
     {
-        if([view isKindOfClass:[UIButton class]])
-        {
-            [self titleObj:[view.localizedTexts objectForKey:key] button:((UIButton*)view)];
-        }
+        if([view isKindOfClass:[UIButton class]]) [self titleObj:propValue button:(UIButton*)view];
     }
     
     if ([key isEqualToString:@"placeholder"])
     {
-        if([view isKindOfClass:[UITextField class]])
-        {
-            ((UITextField*)view).placeholder = [self textObj: [view.localizedTexts objectForKey:key]];
-        }
+        if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).placeholder = [self textObj:propValue];
     }
 }
 

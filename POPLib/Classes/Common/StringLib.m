@@ -405,7 +405,7 @@
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
     
     // Create 16 byte MD5 hash value, store in buffer
-    CC_MD5(ptr, strlen(ptr), md5Buffer);
+    CC_MD5(ptr, (int) strlen(ptr), md5Buffer);
     
     // Convert MD5 value in the buffer to NSString of hex values
     NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
@@ -423,7 +423,7 @@
     
     // This is an iOS5-specific method.
     // It takes in the data, how much data, and then output format, which in this case is an int array.
-    CC_SHA256(data.bytes, data.length, digest);
+    CC_SHA256(data.bytes, (int)data.length, digest);
     
     NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
     

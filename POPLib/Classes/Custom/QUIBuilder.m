@@ -74,7 +74,7 @@
     
     NSDictionary* allItemDic = [self handleContent:content withDevice:device];
     
-    NSString* propKey = @"starting", *propValue;
+    NSString* propKey = @"starting", *propValue, *name;
     NSMutableDictionary* uiElements = [NSMutableDictionary new];
     NSDictionary* itemDic;
     
@@ -92,7 +92,7 @@
             itemDic = [allItemDic objectForKey:sortedItemKey];
             
             propKey = @"name";
-            NSString* name = [StringLib subStringBetween:sortedItemKey startStr:@"(" endStr:@")"];
+            name = [StringLib subStringBetween:sortedItemKey startStr:@"(" endStr:@")"];
             UIView* view;
             
             propKey = @"type";
@@ -485,7 +485,7 @@
         }
     }@catch(NSException* exception)
     {
-        NSString* error = [NSString stringWithFormat:@"PropKey:%@\nException(%s): \n%@", propKey, __func__, exception];
+        NSString* error = [NSString stringWithFormat:@"ViewName:%@\nPropKey:%@\nException(%s): \n%@", name, propKey, __func__, exception];
         NSLog(@"%@", error);
         if(errorBlock) errorBlock(error, exception);
     }
@@ -900,6 +900,7 @@
 
 +(void)placeholderColorObj:(NSString*)value textfield:(UITextField*)textfield
 {
+    if(![StringLib isValid:value] || ![StringLib isValid:textfield.placeholder]) return;
     NSAttributedString *str = [[NSAttributedString alloc] initWithString:textfield.placeholder attributes:@{ NSForegroundColorAttributeName : [self colorObj:value], NSFontAttributeName: textfield.font }];
     textfield.attributedPlaceholder = str;
 }

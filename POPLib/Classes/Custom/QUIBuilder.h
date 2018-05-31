@@ -42,6 +42,7 @@ enum QUIBuilderGenUIType
 +(void) clearQUIViewWithUIElement:(NSDictionary*) uiElements;
 
 +(NSString*) genCode:(NSDictionary*)uiElements;
++(void) refreshLocalizedForView:(UIView*)view withKey:(NSString*)key;
 
 @end
 

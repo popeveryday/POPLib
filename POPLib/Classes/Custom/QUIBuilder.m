@@ -519,6 +519,40 @@
     return [NSString stringWithFormat:@"%@\n\n%@", init, getset];
 }
 
++(void) refreshLocalizedForView:(UIView*)view withKey:(NSString*)key
+{
+    if(![view.localizedTexts.allKeys containsObject:key]) return;
+    
+    if ([key isEqualToString:@"text"])
+    {
+        if([view isKindOfClass:[UILabel class]])
+        {
+            ((UILabel*)view).text = [self textObj: [view.localizedTexts objectForKey:key]];
+        }
+        
+        if([view isKindOfClass:[UITextField class]])
+        {
+            ((UITextField*)view).text = [self textObj: [view.localizedTexts objectForKey:key]];
+        }
+    }
+    
+    if ([key isEqualToString:@"title"])
+    {
+        if([view isKindOfClass:[UIButton class]])
+        {
+            [self titleObj:[view.localizedTexts objectForKey:key] button:((UIButton*)view)];
+        }
+    }
+    
+    if ([key isEqualToString:@"placeholder"])
+    {
+        if([view isKindOfClass:[UITextField class]])
+        {
+            ((UITextField*)view).placeholder = [self textObj: [view.localizedTexts objectForKey:key]];
+        }
+    }
+}
+
 #pragma builder functions
 //-1,1 => CGAffineTransformMakeScale(-1, 1)
 +(CGAffineTransform)transformFromValue:(NSString*)value

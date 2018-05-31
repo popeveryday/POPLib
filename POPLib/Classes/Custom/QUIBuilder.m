@@ -12,6 +12,7 @@
 #import "RTLabel.h"
 #import "PageView.h"
 #import "CollectionView.h"
+#import <objc/runtime.h>
 
 #define CONTROL_TYPES  @{@"label": @(ALControlTypeLabel),\
 @"image": @(ALControlTypeImage), \
@@ -133,9 +134,7 @@
             {
                 UIView* addedView;
                 for (UIView* v in alreadAddedSubviews) {
-                    if([v.accessibilityIdentifier isEqualToString:name]
-                       || [v.accessibilityLabel isEqualToString:name]
-                       || [v.accessibilityHint isEqualToString:name])
+                    if([v.viewName isEqualToString:name])
                     {
                         addedView = v;
                         break;
@@ -164,9 +163,7 @@
                 view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
             }
             
-            view.accessibilityIdentifier = name;
-            view.accessibilityLabel = name;
-            view.accessibilityHint = name;
+            view.viewName = name;
             [uiElements setObject:view forKey:name];
         }
         
@@ -296,6 +293,7 @@
             if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
+                [view.localizedTexts setObject:propValue forKey:propKey];
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).placeholder = [self textObj:propValue];
             }
             
@@ -341,6 +339,8 @@
             if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
+                [view.localizedTexts setObject:propValue forKey:propKey];
+                
                 if([view isKindOfClass:[UITextField class]]) ((UITextField*)view).text = [self textObj:propValue];
                 if([view isKindOfClass:[UITextView class]]) ((UITextView*)view).text = [self textObj:propValue];
                 if([view isKindOfClass:[RTLabel class]]) [((RTLabel*)view) setText:[self textObj:propValue]];
@@ -395,6 +395,7 @@
                 if([itemDic.allKeys containsObject:propKey])
                 {
                     propValue = [itemDic objectForKey:propKey];
+                    [view.localizedTexts setObject:propValue forKey:propKey];
                     [self titleObj:propValue button:(UIButton*)view];
                 }
                 
@@ -1870,6 +1871,34 @@ NSString* equalStr = @"[EqL]";
 
 @implementation UIView (UIBlockActionView)
 
+-(void)setViewName:(NSString *)viewName
+{
+    objc_setAssociatedObject(self, (__bridge const void*)(@"viewName"), viewName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSString *)viewName{
+    return objc_getAssociatedObject(self, (__bridge const void*)@"viewName");
+}
+
+
+-(void)setLocalizedTexts:(NSMutableDictionary *)localizedTexts
+{
+    objc_setAssociatedObject(self, (__bridge const void*)(@"localizedTexts"), localizedTexts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSMutableDictionary *)localizedTexts{
+    NSMutableDictionary* value = objc_getAssociatedObject(self, (__bridge const void*)@"localizedTexts");
+    if(!value)
+    {
+        value = [NSMutableDictionary new];
+        [self setLocalizedTexts: value];
+    }
+    
+    return value;
+}
+
+
+#pragma ACTION BLOCK FUNCTIONS
 NSMutableDictionary* _actionBlock;
 
 -(void) handleControlEvent:(UIControlEvents)event

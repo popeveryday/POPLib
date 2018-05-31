@@ -49,6 +49,9 @@ enum QUIBuilderGenUIType
 typedef void (^ActionBlock)(void);
 @interface UIView (UIBlockActionView)
 
+@property (nonatomic) NSString* viewName;
+@property (nonatomic) NSMutableDictionary* localizedTexts;
+
 -(void) handleControlEvent:(UIControlEvents)event withBlock:(ActionBlock) action;
 -(void) removeAllHandleEvent;
 

@@ -747,8 +747,9 @@
 }
 
 //action = show(box)  ==> view/button tap to show the object name 'box'.
-//action = hide(box)  ==> view/button tap to hide the object name 'box'.
-//action = toggle(box)  ==> view/button tap to show/hide the object name 'box'.
+//action = show(box,item..)  ==> view/button tap to show the object name 'box' and 'item' and more.
+//action = hide(box,item..)  ==> view/button tap to hide the object name 'box' and 'item' and more.
+//action = toggle(box,item...)  ==> view/button tap to show/hide the object name 'box' and 'item' and more.
 //action = observer(number) ==> call [ObserverObject sendObserver:number]
 //action = observer(number,obj,key) ==> [ObserverObject sendObserver:number object:@"obj" notificationKey:@"key"]
 //action = observer(number,,key) ==> [ObserverObject sendObserver:number object:nil notificationKey:@"key"]
@@ -766,26 +767,33 @@
     action = [action stringByReplacingOccurrencesOfString:@",," withString:@"[CoMmA]"];
     
     NSString* actionkey = [[action componentsSeparatedByString:@"("] firstObject];
-    NSString* objName = [StringLib subStringBetween:action startStr:@"(" endStr:@")"];
+    NSString* objNamesOrData = [StringLib subStringBetween:action startStr:@"(" endStr:@")"];
     void (^actionBlock)(void);
     
     if ([action hasPrefix:@"show"] || [action hasPrefix:@"hide"] || [action hasPrefix:@"toggle"])
     {
-        UIView* obj = [uiElements objectForKey:objName];
-        if(!objName || !obj) return;
-        
         actionBlock = ^void()
         {
-            [obj setHidden: [actionkey isEqualToString:@"show"] ? NO : ([actionkey isEqualToString:@"hide"] ? YES : !obj.hidden) ];
+            UIView* obj;
+            NSArray* objNameArr = [objNamesOrData componentsSeparatedByString:@","];
+            
+            for (NSString* objName in objNameArr) {
+                obj = [uiElements objectForKey:[StringLib trim:objName]];
+                if(!objName || !obj) return;
+                
+                [obj setHidden: [actionkey isEqualToString:@"show"] ? NO : ([actionkey isEqualToString:@"hide"] ? YES : !obj.hidden) ];
+            }
         };
+        
+        
     }
     else if([action hasPrefix:@"observer"])
     {
-        if(!objName || ![StringLib isValid:objName]) return;
+        if(!objNamesOrData || ![StringLib isValid:objNamesOrData]) return;
         
         actionBlock = ^void()
         {
-            NSArray* arr = [objName componentsSeparatedByString:@","];
+            NSArray* arr = [objNamesOrData componentsSeparatedByString:@","];
             NSInteger index = [[arr objectAtIndex:0] integerValue];
             NSString* object = arr.count >= 2 ? [arr objectAtIndex:1] : nil;
             NSString* key = arr.count >= 3 ? [arr objectAtIndex:2] : nil;

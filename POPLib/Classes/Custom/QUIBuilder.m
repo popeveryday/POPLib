@@ -377,7 +377,9 @@
             if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
-                view.contentMode = [self contentModeObj:propValue];
+                if([view isKindOfClass:[UIButton class]])
+                    ((UIButton*)view).imageView.contentMode = [self contentModeObj:propValue];
+                else view.contentMode = [self contentModeObj:propValue];
             }
             
             

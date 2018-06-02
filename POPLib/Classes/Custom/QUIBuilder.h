@@ -43,6 +43,8 @@ enum QUIBuilderGenUIType
 
 +(NSString*) genCode:(NSDictionary*)uiElements;
 +(void) refreshLocalizedForView:(UIView*)view withKey:(NSString*)key;
++(double) valueByDeviceScale:(double)value;
++(double) valueByDeviceScale:(double)value withDevice:(enum QUIBuilderDeviceType)deviceType;
 
 @end
 

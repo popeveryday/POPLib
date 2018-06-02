@@ -545,6 +545,49 @@
     }
 }
 
+//update value (iphone 6) to iphone 4,5,6plus
+//iphone X is same as iphone 6
++(double) valueByDeviceScale:(double)value
+{
+    return [self valueByDeviceScale:value withDevice:QUIBuilderDeviceType_AutoDetect];
+}
+
++(double) valueByDeviceScale:(double)value withDevice:(enum QUIBuilderDeviceType)deviceType
+{
+    NSString* device = nil;
+    if (deviceType != QUIBuilderDeviceType_AutoDetect) {
+        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
+        if(deviceList.count > deviceType) device = [deviceList objectAtIndex:deviceType];
+    }
+    
+    if (!device) {
+        device = [CommonLib getDeviceByResolution];
+        if ([device hasPrefix:@"ipad"]) {
+            device = @"iphone4";
+        }
+    }
+    
+    double result = value;
+    if ([@"iphone5,iphone4" containsString:device]) {
+        result = value * (320.0f/375.0f);
+    }
+    
+    if ([device isEqualToString: @"iphone6p"]) {
+        result = value * (414.0f/375.0f);
+    }
+    
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
 #pragma builder functions
 //-1,1 => CGAffineTransformMakeScale(-1, 1)
 +(CGAffineTransform)transformFromValue:(NSString*)value

@@ -619,14 +619,22 @@
 +(NSString*) pinEdgeWithView:(UIView*)view edgeStr:(NSString*)edgeStr otherView:(UIView*)otherView
 {
     NSString* direction = [edgeStr substringToIndex:1];
+    NSLayoutConstraint* lct = nil;
+    NSArray<NSLayoutConstraint*>* lctArr = nil;
     
     if ([direction isEqualToString:@"C"]) {
-        [view autoCenterInSuperview];
+        lctArr = [view autoCenterInSuperview];
+        for (NSLayoutConstraint* _lct in lctArr)
+        {
+            _lct.identifier = [NSString stringWithFormat:@"%@%@", direction, @([lctArr indexOfObject:_lct])];
+        };
+        
         return direction;
     }
     
     if ([direction isEqualToString:@"H"]) {
-        [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        lct = [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        lct.identifier = direction;
         return direction;
     }
     
@@ -647,17 +655,23 @@
             NSArray* sizeParts = [insetStr componentsSeparatedByString:@"#"];
             CGFloat width = [[sizeParts firstObject] floatValue];
             CGFloat height = sizeParts.count >= 2 ? [[sizeParts objectAtIndex:1] floatValue] : width;
-            [view autoSetDimensionsToSize:CGSizeMake(width, height)];
+            lctArr = [view autoSetDimensionsToSize:CGSizeMake(width, height)];
+            for (NSLayoutConstraint* _lct in lctArr)
+            {
+                _lct.identifier = [NSString stringWithFormat:@"%@%@", direction, @([lctArr indexOfObject:_lct])];
+            };
         }
         else if([direction isEqualToString:@"W"])
         {
             CGFloat width = [insetStr floatValue];
-            [view autoSetDimension:ALDimensionWidth toSize:width relation:relation];
+            lct = [view autoSetDimension:ALDimensionWidth toSize:width relation:relation];
+            lct.identifier = direction;
         }
         else
         {
             CGFloat height = [insetStr floatValue];
-            [view autoSetDimension:ALDimensionHeight toSize:height relation:relation];
+            lct = [view autoSetDimension:ALDimensionHeight toSize:height relation:relation];
+            lct.identifier = direction;
         }
         
         return direction;
@@ -671,10 +685,12 @@
     if (otherView == nil) {
         if(edge == ALEdgeLeft) edge = ALEdgeLeading;
         else if(edge == ALEdgeRight) edge = ALEdgeTrailing;
-        [view autoPinEdgeToSuperviewEdge:edge withInset:inset relation:relation];
+        lct = [view autoPinEdgeToSuperviewEdge:edge withInset:inset relation:relation];
+        lct.identifier = direction;
     }else{
         enum ALEdge otheredge = [[@"02143" substringWithRange: NSMakeRange(edge, 1)] integerValue];
-        [view autoPinEdge:edge toEdge:otheredge ofView:otherView withOffset:inset relation:relation];
+        lct = [view autoPinEdge:edge toEdge:otheredge ofView:otherView withOffset:inset relation:relation];
+        lct.identifier = direction;
     }
     
     return direction;

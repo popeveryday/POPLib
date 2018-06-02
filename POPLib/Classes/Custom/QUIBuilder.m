@@ -160,7 +160,7 @@
             
             
             if (!view) {
-                view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge];
+                view = [ViewLib initAutoLayoutWithType:controlType viewContainer:containerView superEdge:superEdge otherEdge:otherEdge viewName:name];
             }
             
             view.viewName = name;

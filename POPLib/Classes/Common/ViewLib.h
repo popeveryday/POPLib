@@ -108,6 +108,8 @@ enum ALControlType{
 
 +(id) initAutoLayoutWithType:(enum ALControlType)type viewContainer:(UIView*)viewContainer superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge;
 
++(id) initAutoLayoutWithType:(enum ALControlType)type viewContainer:(UIView*)viewContainer superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge viewName:(NSString*)viewName;
+
 +(void) updateLayoutForView:(ALView*)view superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge;
 
 +(NSString*) pinEdgeWithView:(UIView*)view edgeStr:(NSString*)edgeStr otherView:(UIView*)otherView;

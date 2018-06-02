@@ -10,6 +10,7 @@
 #import "RTLabel.h"
 #import "PageView.h"
 #import "CollectionView.h"
+#import "QUIBuilder.h"
 
 @implementation ViewLib
 
@@ -512,8 +513,12 @@
 }
 
 
-
 +(id) initAutoLayoutWithType:(enum ALControlType)type viewContainer:(UIView*)viewContainer superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge
+{
+    return [self initAutoLayoutWithType:type viewContainer:viewContainer superEdge:superEdge otherEdge:otherEdge viewName:nil];
+}
+
++(id) initAutoLayoutWithType:(enum ALControlType)type viewContainer:(UIView*)viewContainer superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge viewName:(NSString*)viewName
 {
     id control;
     
@@ -578,6 +583,7 @@
     }
     
     
+    
     //fix bug UIVisualEffectView add subview
     if (GC_Device_iOsVersion >= 11 && [viewContainer isKindOfClass:[UIVisualEffectView class]]) {
         [((UIVisualEffectView*)viewContainer).contentView addSubview:control];
@@ -585,6 +591,7 @@
         [viewContainer addSubview:control];
     }
     
+    if(viewName) ((UIView*)control).viewName = viewName;
     
     [self updateLayoutForView:control superEdge:superEdge otherEdge:otherEdge];
     
@@ -593,6 +600,7 @@
 
 +(void) updateLayoutForView:(ALView*)view superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge
 {
+    
     NSMutableArray* addedEdge = [[NSMutableArray alloc] init];
     if (otherEdge != nil) {
         for (NSString* edge in otherEdge.allKeys) {
@@ -626,7 +634,7 @@
         lctArr = [view autoCenterInSuperview];
         for (NSLayoutConstraint* _lct in lctArr)
         {
-            _lct.identifier = [NSString stringWithFormat:@"%@%@", direction, @([lctArr indexOfObject:_lct])];
+            _lct.identifier = [NSString stringWithFormat:@"%@%@|%@", direction, @([lctArr indexOfObject:_lct]), [view valueForKey:@"viewName"] ];
         };
         
         return direction;
@@ -634,12 +642,13 @@
     
     if ([direction isEqualToString:@"H"]) {
         lct = [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        lct.identifier = direction;
+        lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         return direction;
     }
     
     if ([direction isEqualToString:@"V"]) {
-        [view autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        lct = [view autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         return direction;
     }
     
@@ -658,20 +667,20 @@
             lctArr = [view autoSetDimensionsToSize:CGSizeMake(width, height)];
             for (NSLayoutConstraint* _lct in lctArr)
             {
-                _lct.identifier = [NSString stringWithFormat:@"%@%@", direction, @([lctArr indexOfObject:_lct])];
+                _lct.identifier = [NSString stringWithFormat:@"%@%@|%@", direction, @([lctArr indexOfObject:_lct]), [view valueForKey:@"viewName"] ];
             };
         }
         else if([direction isEqualToString:@"W"])
         {
             CGFloat width = [insetStr floatValue];
             lct = [view autoSetDimension:ALDimensionWidth toSize:width relation:relation];
-            lct.identifier = direction;
+            lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         }
         else
         {
             CGFloat height = [insetStr floatValue];
             lct = [view autoSetDimension:ALDimensionHeight toSize:height relation:relation];
-            lct.identifier = direction;
+            lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         }
         
         return direction;
@@ -686,11 +695,11 @@
         if(edge == ALEdgeLeft) edge = ALEdgeLeading;
         else if(edge == ALEdgeRight) edge = ALEdgeTrailing;
         lct = [view autoPinEdgeToSuperviewEdge:edge withInset:inset relation:relation];
-        lct.identifier = direction;
+        lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
     }else{
         enum ALEdge otheredge = [[@"02143" substringWithRange: NSMakeRange(edge, 1)] integerValue];
         lct = [view autoPinEdge:edge toEdge:otheredge ofView:otherView withOffset:inset relation:relation];
-        lct.identifier = direction;
+        lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
     }
     
     return direction;

@@ -7,6 +7,9 @@ read comment
 echo "Allow warning? (y/[n])"
 read alw
 
+echo "Call update.sh (y/[n])"
+read upt
+
 
 if [ "$version" == '' ] ; 
 then
@@ -32,6 +35,12 @@ else
 	else
 		pod trunk push $folder.podspec
 	fi
+
+	if [ "$upt" == 'y' ] ; 
+	then
+	    sh update.sh
+	fi
+
 fi
 
 

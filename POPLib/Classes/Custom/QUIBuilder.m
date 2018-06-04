@@ -43,19 +43,14 @@
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault updateContentBlock:nil errorBlock:errorBlock];
-}
-
-+(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
-{
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault updateContentBlock:updateContentBlock errorBlock:errorBlock];
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" updateContentBlock:nil errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
-    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault errorBlock:errorBlock];
+    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" errorBlock:errorBlock];
 }
 
-+(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
++(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType genUIModeKey:(NSString*)genUIModeKey updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
     if(![FileLib checkPathExisted:file]) return nil;
     NSString* content = [FileLib readFile:file];
@@ -64,12 +59,15 @@
         content = updateContentBlock(content);
     }
     
-    return [self rebuildUIWithContent:content containerView:container device:device genUIType:genUIType errorBlock:errorBlock];
+    return [self rebuildUIWithContent:content containerView:container device:device genUIType:genUIType genUIModeKey:genUIModeKey errorBlock:errorBlock];
 }
 
 
 
-+(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
+//genUIModeKey: for filter some views will not be gen if in different mode.
+//if not set mode or blank mode => do nothing
+//if mode XX pass to function => view with mode = XX will show, view with mode != XX => not add, view not specific mode will not check mode and will be add.
++(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType genUIModeKey:(NSString*)genUIModeKey errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
     
     NSDictionary* allItemDic = [self handleContent:content withDevice:device];
@@ -90,6 +88,20 @@
         for (NSString* sortedItemKey in sortedKeys) {
             
             itemDic = [allItemDic objectForKey:sortedItemKey];
+            
+            if ([StringLib isValid:genUIModeKey])
+            {
+                propKey = @"applymode";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    propValue = [StringLib trim:[propValue uppercaseString]];
+                    
+                    //not same ui mode key => not gen this item.
+                    if(![[StringLib trim:[genUIModeKey uppercaseString]] isEqualToString:propValue])
+                        continue;
+                }
+            }
             
             propKey = @"name";
             name = [StringLib subStringBetween:sortedItemKey startStr:@"(" endStr:@")"];
@@ -286,6 +298,13 @@
             {
                 propValue = [itemDic objectForKey:propKey];
                 view.transform = [self transformFromValue:propValue];
+            }
+            
+            propKey = @"embeduifile";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                [self embedUIWithValue:propValue forView:view device:device genUIType:genUIType genUIModeKey:genUIModeKey];
             }
             
             //TextField, TextView
@@ -589,6 +608,18 @@
 
 
 #pragma builder functions
+
+//embedUIFile = doc: quibuilder/home/home.qui
++(void) embedUIWithValue:(NSString*)fileValue forView:(UIView*)view device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType genUIModeKey:(NSString*)genUIModeKey
+{
+    NSString* path = [self pathObj:fileValue];
+    if (!path) return;
+    
+    [self rebuildUIWithFile:path containerView:view device:device genUIType:genUIType genUIModeKey:genUIModeKey updateContentBlock:nil errorBlock:^(NSString *msg, NSException *exception) {
+        NSLog(@"%@", exception);
+    }];
+}
+
 //-1,1 => CGAffineTransformMakeScale(-1, 1)
 +(CGAffineTransform)transformFromValue:(NSString*)value
 {
@@ -1324,6 +1355,8 @@ NSString* equalStr = @"[EqL]";
         return value;
     }
     
+    [CommonLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
+    
     return nil;
 }
 
@@ -1359,6 +1392,7 @@ NSString* equalStr = @"[EqL]";
         content = [self fillAutoTextWithContent:content withDevice:deviceType];
         content = [self generateForloopWithContent:content];
         content = [self generateSmartReplaceWithContent:content];
+        content = [self fillAutoNumberByDeviceWithContent:content withDevice:deviceType];
         return [self rebuildFinalItemWithContent: content];
     }
     
@@ -1394,6 +1428,7 @@ NSString* equalStr = @"[EqL]";
     content = [self fillAutoTextWithContent:content withDevice:deviceType];
     content = [self generateForloopWithContent:content];
     content = [self generateSmartReplaceWithContent:content];
+    content = [self fillAutoNumberByDeviceWithContent:content withDevice:deviceType];
     return [self rebuildFinalItemWithContent: content];
 }
 
@@ -1432,7 +1467,7 @@ NSString* equalStr = @"[EqL]";
     //convert all ## to [HaSh]
     content = [content stringByReplacingOccurrencesOfString:@"^^" withString:@"[HaSh]"];
     
-    content = [self fillAutoNumberByDeviceWithContent:content withDevice:deviceType];
+    
     
     NSMutableArray* list = [NSMutableArray new];
     NSString* autoText;

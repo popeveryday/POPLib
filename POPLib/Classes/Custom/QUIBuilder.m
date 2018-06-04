@@ -72,7 +72,7 @@
     
     NSDictionary* allItemDic = [self handleContent:content withDevice:device];
     
-    NSString* propKey = @"starting", *propValue, *name;
+    NSString* propKey = @"starting", *propValue, *name, *applyMode;
     NSMutableDictionary* uiElements = [NSMutableDictionary new];
     NSDictionary* itemDic;
     
@@ -89,17 +89,20 @@
             
             itemDic = [allItemDic objectForKey:sortedItemKey];
             
+            applyMode = nil;
             if ([StringLib isValid:genUIModeKey])
             {
                 propKey = @"applymode";
                 if([itemDic.allKeys containsObject:propKey])
                 {
-                    propValue = [itemDic objectForKey:propKey];
-                    propValue = [StringLib trim:[propValue uppercaseString]];
+                    applyMode = [itemDic objectForKey:propKey];
+                    applyMode = [StringLib trim:applyMode];
                     
-                    //not same ui mode key => not gen this item.
-                    if(![[StringLib trim:[genUIModeKey uppercaseString]] isEqualToString:propValue])
-                        continue;
+                    if (![applyMode isEqualToString:@""]) {
+                        //not same ui mode key => not gen this item.
+                        if(![[StringLib trim:[genUIModeKey uppercaseString]] isEqualToString:[applyMode uppercaseString]])
+                            continue;
+                    }
                 }
             }
             
@@ -177,6 +180,11 @@
             
             view.viewName = name;
             [uiElements setObject:view forKey:name];
+            
+            if (applyMode)
+            {
+                [view.localizedTexts setObject:applyMode forKey:@"applyMode"];
+            }
         }
         
         //for properties and action
@@ -524,6 +532,11 @@
 
 +(NSString*) genCode:(NSDictionary*)uiElements
 {
+    return [self genCode:uiElements shouldGenCodeForView:nil];
+}
+
++(NSString*) genCode:(NSDictionary*)uiElements shouldGenCodeForView:(BOOL(^)(UIView *view)) checkViewBlock
+{
     NSString* init = @"", *getset = @"";
     
     NSArray* sortedArrayKeys = [uiElements.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString* a,NSString* b){
@@ -533,6 +546,11 @@
     for (NSString* key in sortedArrayKeys)
     {
         id control = [uiElements objectForKey:key];
+        
+        if (checkViewBlock) {
+            if(! checkViewBlock(control) ) continue;
+        }
+        
         init = [NSString stringWithFormat:@"%@%@* %@;\n",init, [control class], key];
         getset = [NSString stringWithFormat:@"%@%@ = [_uiElements objectForKey:@\"%@\"];\n", getset, key, key];
     }

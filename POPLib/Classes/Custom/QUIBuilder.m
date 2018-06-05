@@ -1881,7 +1881,7 @@ NSString* equalStr = @"[EqL]";
     }else{
         NSArray* arr = [data componentsSeparatedByString:@","];
         for (NSString* item in arr) {
-            [items addObject: [[item stringByReplacingOccurrencesOfString:@"[CoMmA]" withString:@","] stringByReplacingOccurrencesOfString:@"[CoLoN]" withString:@":"]];
+            [items addObject: [StringLib trim:[[item stringByReplacingOccurrencesOfString:@"[CoMmA]" withString:@","] stringByReplacingOccurrencesOfString:@"[CoLoN]" withString:@":"]]];
             if(maxSize > 0 && items.count >= maxSize) break;
         }
     }

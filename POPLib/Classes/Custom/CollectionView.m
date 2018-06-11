@@ -73,7 +73,7 @@
     
     UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:indexPath];
     
-    NSString* item = [self.itemData objectAtIndex:indexPath.row];
+    NSString* item = [self.itemData objectAtIndex: self.itemData.count > indexPath.row ? indexPath.row : 0];
     NSDictionary* uiElements;
     NSString* cellKey = [StringLib subStringBetween:[NSString stringWithFormat:@"%@",cell] startStr:@"<UICollectionViewCell: " endStr:@";"];
     

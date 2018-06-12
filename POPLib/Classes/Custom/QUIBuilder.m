@@ -555,7 +555,9 @@
         getset = [NSString stringWithFormat:@"%@%@ = [_uiElements objectForKey:@\"%@\"];\n", getset, key, key];
     }
     
-    return [NSString stringWithFormat:@"%@\n\n%@", init, getset];
+    NSString* gencode = @"NSString* file = [FileLib getDocumentPath:@\"quibuilder/[DIR]/[FILE]\"];\n_uiElements = [QUIBuilder rebuildUIWithFile:file containerView:self.containerView errorBlock:^(NSString *msg, NSException *exception) {\nNSLog(@\"%%@\", msg);\n}];";
+    
+    return [NSString stringWithFormat:@"%@\n\n%@\n\n%@", init, gencode, getset];
 }
 
 +(void) refreshLocalizedForView:(UIView*)view withKey:(NSString*)key

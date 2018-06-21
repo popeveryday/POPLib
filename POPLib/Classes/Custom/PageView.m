@@ -31,7 +31,7 @@
     
     
     _collectionView = [[HWViewPager alloc] initWithFrame:self.frame collectionViewLayout:flow];
-    //    _collectionView.delegate = self;
+    [_collectionView setPagerDelegate:self];
     _collectionView.dataSource = self;
     [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     _collectionView.backgroundColor = [UIColor clearColor];

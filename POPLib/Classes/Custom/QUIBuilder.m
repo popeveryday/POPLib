@@ -504,7 +504,7 @@
             if([itemDic.allKeys containsObject:propKey])
             {
                 propValue = [itemDic objectForKey:propKey];
-                if([view isKindOfClass:[PageView class]]) [self buildPageView:(PageView*)view withDataSource:propValue];
+                if([view isKindOfClass:[PageView class]]) [self buildPageView:(PageView*)view withDataSource:propValue itemDic:itemDic];
                 if([view isKindOfClass:[CollectionView class]]) [self buildCollectionView:(CollectionView*)view withDataSource:propValue itemDic:itemDic];
                 
             }
@@ -748,8 +748,36 @@
  type [EqL2] button
  [AnD2] name [EqL2] lala2
  */
-+(void) buildPageView:(PageView*)view withDataSource:(NSString*)propValue
++(void) buildPageView:(PageView*)view withDataSource:(NSString*)propValue itemDic:(NSDictionary*)itemDic
 {
+    
+    CGSize itemSize = CGSizeMake(100, 100);
+    CGFloat itemSpacing = 10;
+    CGFloat lineSpacing = 10;
+    UIEdgeInsets sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
+    BOOL redrawCell = NO;
+    
+    NSString* _itemSize = [itemDic objectForKey:@"itemsize"];
+    NSString* _itemSpacing = [itemDic objectForKey:@"itemspacing"];
+    NSString* _lineSpacing = [itemDic objectForKey:@"linespacing"];
+    NSString* _sectionInset = [itemDic objectForKey:@"sectioninset"];
+    NSString* _redrawCell = [itemDic objectForKey:@"redrawcell"];
+    
+    NSArray* arr;
+    if([StringLib isValid: _itemSize])
+    {
+        arr = [_itemSize containsString:@","] ? [_itemSize componentsSeparatedByString:@","] : [_itemSize containsString:@";"] ? [_itemSize componentsSeparatedByString:@";"] : @[_itemSize, _itemSize];
+        itemSize = CGSizeMake([[arr objectAtIndex:0] floatValue], [[arr objectAtIndex:1] floatValue]);
+    }
+    if([StringLib isValid: _itemSpacing]) itemSpacing = [_itemSpacing floatValue];
+    if([StringLib isValid: _lineSpacing]) lineSpacing = [_lineSpacing floatValue];
+    if([StringLib isValid: _sectionInset])
+    {
+        arr = [_sectionInset containsString:@","] ? [_sectionInset componentsSeparatedByString:@","] : [_sectionInset containsString:@";"] ? [_sectionInset componentsSeparatedByString:@";"] : @[_sectionInset, _sectionInset, _sectionInset, _sectionInset];
+        sectionInset = UIEdgeInsetsMake([[arr objectAtIndex:0] floatValue], [[arr objectAtIndex:1] floatValue], [[arr objectAtIndex:2] floatValue], [[arr objectAtIndex:3] floatValue]);
+    }
+    if([StringLib isValid: _redrawCell]) redrawCell = [_redrawCell.lowercaseString containsString:@"true"];
+    
     NSDictionary* dataSource = [[StringLib deparseString:propValue] toDictionary];
     NSInteger total = [[dataSource objectForKey:@"totalItem"] integerValue];
     NSString* itemFileOrData = [dataSource objectForKey:@"itemFile"];
@@ -792,7 +820,12 @@
             [pageData addObject:temp];
         }
         
-        view.pageData = pageData;
+        view.itemData = pageData;
+        
+        view.itemSize = itemSize;
+        view.itemSpacing = itemSpacing;
+        view.lineSpacing = lineSpacing;
+        view.sectionInset = sectionInset;
         
         [view initUI];
     }

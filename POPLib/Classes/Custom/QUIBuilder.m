@@ -561,7 +561,7 @@
     }
     
     
-    NSString* gencode = @"NSString* file = [FileLib getDocumentPath:@\"[PATH_TO_QUI_FILE]\"];\n_uiElements = [QUIBuilder rebuildUIWithFile:file containerView:self.view device:(QUIBuilderDeviceType_AutoDetectUniversal) genUIType:(QUIBuilderGenUITypeDefault) genUIModeKey:@\"default\" updateContentBlock:nil errorBlock:^(NSString *msg, NSException *exception) {\
+    NSString* gencode = @"NSString* file = [FileLib getDocumentPath:@\"[PATH_TO_QUI_FILE]\"];\n_uiElements = [QUIBuilder rebuildUIWithFile:file containerView:<#self.view#> device:<#QUIBuilderDeviceType_AutoDetectUniversal#> genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@\"default\" updateContentBlock:nil errorBlock:^(NSString *msg, NSException *exception) {\
     NSLog(@\"%@\", msg);\
 }];";
     

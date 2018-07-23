@@ -16,3 +16,14 @@ echo .
 echo LIZKS STUDIO
 cd /Users/trungph/Dropbox/BitBucket/Lizks\ Studio/Lizks\ Studio
 pod update
+echo .
+echo .
+echo .
+
+
+echo LIZKS RECORDER
+cd /Users/trungph/Dropbox/BitBucket/Lizks\ Mobile/LizksRecorder
+pod update
+echo .
+echo .
+echo .

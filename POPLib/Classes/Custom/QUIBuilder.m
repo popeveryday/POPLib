@@ -1428,7 +1428,8 @@ NSString* equalStr = @"[EqL]";
     
     NSString* deviceCode = [self getDeviceCode:deviceType];
     
-    NSString* device, *devContent;
+    BOOL isFoundDevContent = NO;
+    NSString* device, *devContent, *devContentIpadBase;
     for (int i = 1; i < arr.count; i++)
     {
         devContent = arr[i];
@@ -1436,10 +1437,26 @@ NSString* equalStr = @"[EqL]";
         devContent = [devContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"=%@>>", device] withString:@""];
         device = [[StringLib trim:device] lowercaseString];
         
+        if ([deviceCode hasPrefix:@"ipad"] && [device isEqualToString:@"ipadhd"]) {
+            devContentIpadBase = devContent;
+        }
+        
         if(![deviceCode isEqualToString:device]) continue;
+        
+        if ([deviceCode hasPrefix:@"ipad"] && ![deviceCode isEqualToString:@"ipadhd"])
+        {
+            content = [content stringByAppendingFormat:@"%@\n%@", CONTROL_BREAK, devContentIpadBase];
+        }
+        
         content = [content stringByAppendingFormat:@"%@\n%@", CONTROL_BREAK, devContent];
+        isFoundDevContent = YES;
         break;
     }
+    
+    if (!isFoundDevContent && devContentIpadBase && [deviceCode hasPrefix:@"ipad"] ) {
+        content = [content stringByAppendingFormat:@"%@\n%@", CONTROL_BREAK, devContentIpadBase];
+    }
+    
     
     content = [self fillAutoTextWithContent:content withDevice:deviceType];
     content = [self generateForloopWithContent:content];
@@ -1689,16 +1706,14 @@ NSString* equalStr = @"[EqL]";
             value = value * (414.0f/375.0f);
         }
         
-        if ([device isEqualToString: @"ipadhd"]) {
-            value = value * (768.0f/375.0f);
-        }
+        
         
         if ([device isEqualToString: @"ipadpro10"]) {
-            value = value * (834.0f/375.0f);
+            value = value * (834.0f/768.0f);
         }
         
         if ([device isEqualToString: @"ipadpro12"]) {
-            value = value * (1024.0f/375.0f);
+            value = value * (1024.0f/768.0f);
         }
         
         content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"^%@^",item] withString:[@(value) stringValue]];

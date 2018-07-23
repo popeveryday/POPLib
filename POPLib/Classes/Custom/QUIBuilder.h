@@ -16,7 +16,11 @@ enum QUIBuilderDeviceType
     QUIBuilderDeviceType_iPhone6,
     QUIBuilderDeviceType_iPhone6p,
     QUIBuilderDeviceType_iPhoneX,
-    QUIBuilderDeviceType_AutoDetect
+    QUIBuilderDeviceType_iPadHD,
+    QUIBuilderDeviceType_iPadPro10,
+    QUIBuilderDeviceType_iPadPro12,
+    QUIBuilderDeviceType_AutoDetectIphoneOnly,
+    QUIBuilderDeviceType_AutoDetectUniversal,
 };
 
 enum QUIBuilderGenUIType

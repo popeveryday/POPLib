@@ -432,21 +432,23 @@
 
 +(NSString*)getDeviceByResolution
 {
-    NSDictionary* deviceSizes = @{ @"320,568": @"iphone5"
-                                   , @"568,320": @"iphone5"
-                                   , @"667,375": @"iphone6"
-                                   , @"375,667": @"iphone6"
-                                   , @"414,736": @"iphone6p"
-                                   , @"736,414": @"iphone6p"
-                                   , @"375,812": @"iphonex"
-                                   , @"812,375": @"iphonex"
-                                   , @"768,1024": @"ipadhd"
-                                   , @"1024,768": @"ipadhd"
-                                   , @"834,1112": @"ipadpro10"
-                                   , @"1112,834": @"ipadpro10"
-                                   , @"1024,1366": @"ipadpro12"
-                                   , @"1366,1024": @"ipadpro12"
-                                   };
+    NSDictionary* deviceSizes = @{   @"320,480": @"iphone4"
+                                     , @"480,320": @"iphone4"
+                                     , @"320,568": @"iphone5"
+                                     , @"568,320": @"iphone5"
+                                     , @"667,375": @"iphone6"
+                                     , @"375,667": @"iphone6"
+                                     , @"414,736": @"iphone6p"
+                                     , @"736,414": @"iphone6p"
+                                     , @"375,812": @"iphonex"
+                                     , @"812,375": @"iphonex"
+                                     , @"768,1024": @"ipadhd"
+                                     , @"1024,768": @"ipadhd"
+                                     , @"834,1112": @"ipadpro10"
+                                     , @"1112,834": @"ipadpro10"
+                                     , @"1024,1366": @"ipadpro12"
+                                     , @"1366,1024": @"ipadpro12"
+                                     };
     
     NSString* size = [NSString stringWithFormat:@"%@,%@", @(GC_ScreenWidth), @(GC_ScreenHeight) ];
     NSString* device = [deviceSizes objectForKey:size];

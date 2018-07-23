@@ -43,16 +43,16 @@
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" updateContentBlock:nil errorBlock:errorBlock];
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetectIphoneOnly genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" updateContentBlock:nil errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
 {
-    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" updateContentBlock:updateContentBlock errorBlock:errorBlock];
+    return [self rebuildUIWithFile:file containerView:container device:QUIBuilderDeviceType_AutoDetectIphoneOnly genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" updateContentBlock:updateContentBlock errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock{
-    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetect genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" errorBlock:errorBlock];
+    return [self rebuildUIWithContent:content containerView:container device:QUIBuilderDeviceType_AutoDetectIphoneOnly genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@"default" errorBlock:errorBlock];
 }
 
 +(NSDictionary*) rebuildUIWithFile:(NSString*)file containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType genUIModeKey:(NSString*)genUIModeKey updateContentBlock:(NSString*(^)(NSString *content)) updateContentBlock errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock
@@ -590,39 +590,7 @@
     }
 }
 
-//update value (iphone 6) to iphone 4,5,6plus
-//iphone X is same as iphone 6
-+(double) valueByDeviceScale:(double)value
-{
-    return [self valueByDeviceScale:value withDevice:QUIBuilderDeviceType_AutoDetect];
-}
 
-+(double) valueByDeviceScale:(double)value withDevice:(enum QUIBuilderDeviceType)deviceType
-{
-    NSString* device = nil;
-    if (deviceType != QUIBuilderDeviceType_AutoDetect) {
-        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
-        if(deviceList.count > deviceType) device = [deviceList objectAtIndex:deviceType];
-    }
-    
-    if (!device) {
-        device = [CommonLib getDeviceByResolution];
-        if ([device hasPrefix:@"ipad"]) {
-            device = @"iphone4";
-        }
-    }
-    
-    double result = value;
-    if ([@"iphone5,iphone4" containsString:device]) {
-        result = value * (320.0f/375.0f);
-    }
-    
-    if ([device isEqualToString: @"iphone6p"]) {
-        result = value * (414.0f/375.0f);
-    }
-    
-    return result;
-}
 
 
 
@@ -1458,18 +1426,7 @@ NSString* equalStr = @"[EqL]";
     NSArray* arr = [content componentsSeparatedByString:DEVICE_BREAK];
     content = arr[0];
     
-    NSString* deviceCode;
-    if (deviceType != QUIBuilderDeviceType_AutoDetect) {
-        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
-        if(deviceList.count > deviceType) deviceCode = [deviceList objectAtIndex:deviceType];
-    }
-    
-    if (!deviceCode) {
-        deviceCode = [CommonLib getDeviceByResolution];
-        if ([deviceCode hasPrefix:@"ipad"]) {
-            deviceCode = @"iphone4";
-        }
-    }
+    NSString* deviceCode = [self getDeviceCode:deviceType];
     
     NSString* device, *devContent;
     for (int i = 1; i < arr.count; i++)
@@ -1489,6 +1446,23 @@ NSString* equalStr = @"[EqL]";
     content = [self generateSmartReplaceWithContent:content];
     content = [self fillAutoNumberByDeviceWithContent:content withDevice:deviceType];
     return [self rebuildFinalItemWithContent: content];
+}
+
++(NSString*) getDeviceCode:(enum QUIBuilderDeviceType)deviceType
+{
+    NSString* deviceCode;
+    if (deviceType != QUIBuilderDeviceType_AutoDetectUniversal && deviceType != QUIBuilderDeviceType_AutoDetectIphoneOnly) {
+        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX,iPadHD,iPadPro10,iPadPro12" lowercaseString] componentsSeparatedByString:@","];
+        if(deviceList.count > deviceType) deviceCode = [deviceList objectAtIndex:deviceType];
+    }
+    
+    if (!deviceCode) {
+        deviceCode = [CommonLib getDeviceByResolution];
+        if (deviceType == QUIBuilderDeviceType_AutoDetectIphoneOnly && [deviceCode hasPrefix:@"ipad"]) {
+            deviceCode = @"iphone4";
+        }
+    }
+    return deviceCode;
 }
 
 //remove all // or /* */
@@ -1697,19 +1671,7 @@ NSString* equalStr = @"[EqL]";
 // if need to use ^ -> convert to ^^
 +(NSString*) fillAutoNumberByDeviceWithContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType
 {
-    NSString* device = nil;
-    if (deviceType != QUIBuilderDeviceType_AutoDetect) {
-        NSArray* deviceList = [[@"iPhone4,iPhone5,iPhone6,iPhone6p,iPhoneX" lowercaseString] componentsSeparatedByString:@","];
-        if(deviceList.count > deviceType) device = [deviceList objectAtIndex:deviceType];
-    }
-    
-    if (!device) {
-        device = [CommonLib getDeviceByResolution];
-        if ([device hasPrefix:@"ipad"]) {
-            device = @"iphone4";
-        }
-    }
-    
+    NSString* device = [self getDeviceCode:deviceType];
     
     //convert all ^^ to [UpPeR]
     content = [content stringByReplacingOccurrencesOfString:@"^^" withString:@"[UpPeR]"];
@@ -1725,6 +1687,18 @@ NSString* equalStr = @"[EqL]";
         
         if ([device isEqualToString: @"iphone6p"]) {
             value = value * (414.0f/375.0f);
+        }
+        
+        if ([device isEqualToString: @"ipadhd"]) {
+            value = value * (768.0f/375.0f);
+        }
+        
+        if ([device isEqualToString: @"ipadpro10"]) {
+            value = value * (834.0f/375.0f);
+        }
+        
+        if ([device isEqualToString: @"ipadpro12"]) {
+            value = value * (1024.0f/375.0f);
         }
         
         content = [content stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"^%@^",item] withString:[@(value) stringValue]];

@@ -49,7 +49,7 @@ enum QUIBuilderGenUIType
 +(NSString*) genCode:(NSDictionary*)uiElements shouldGenCodeForView:(BOOL(^)(UIView *view)) checkViewBlock;
 
 +(void) refreshLocalizedForView:(UIView*)view withKey:(NSString*)key;
-+(double) valueByDeviceScale:(double)value;
+
 +(double) valueByDeviceScale:(double)value withDevice:(enum QUIBuilderDeviceType)deviceType;
 
 @end

@@ -592,7 +592,34 @@
     }
 }
 
-
+//update value (iphone 6) to iphone 4,5,6plus
+//iphone X is same as iphone 6
+//ipadpro10 and ipadpro12 base on ipadhd (768px)
++(double) valueByDeviceScale:(double)value withDevice:(enum QUIBuilderDeviceType)deviceType
+{
+    NSString* device = [self getDeviceCode:deviceType];
+    
+    double result = value;
+    if ([@"iphone5,iphone4" containsString:device]) {
+        result = value * (320.0f/375.0f);
+    }
+    
+    if ([device isEqualToString: @"iphone6p"]) {
+        result = value * (414.0f/375.0f);
+    }
+    
+    
+    
+    if ([device isEqualToString: @"ipadpro10"]) {
+        result = value * (834.0f/768.0f);
+    }
+    
+    if ([device isEqualToString: @"ipadpro12"]) {
+        result = value * (1024.0f/768.0f);
+    }
+    
+    return result;
+}
 
 
 
@@ -2024,6 +2051,10 @@ NSString* equalStr = @"[EqL]";
     
     return replaceContent;
 }
+
+
+
+
 
 @end
 

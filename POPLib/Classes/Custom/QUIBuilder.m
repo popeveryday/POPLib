@@ -26,6 +26,7 @@
 @"scrollview": @(ALControlTypeScrollView),\
 @"pageview": @(ALControlTypePageView),\
 @"collectionview": @(ALControlTypeCollectionView),\
+@"slider": @(ALControlTypeSlider),\
 }
 
 #define CONTROL_BREAK @"<<BrEak>>"
@@ -422,6 +423,17 @@
                 if([view isKindOfClass:[UIImageView class]]) ((UIImageView*)view).image = [self imageObj:propValue];
             }
             
+            //UISlider
+            if ([view isKindOfClass:[UISlider class]])
+            {
+                propKey = @"value";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).value = propValue.floatValue;
+                }
+                
+            }
             
             //UIButton
             if ([view isKindOfClass:[UIButton class]]) {

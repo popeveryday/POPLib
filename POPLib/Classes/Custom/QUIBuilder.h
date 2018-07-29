@@ -44,6 +44,7 @@ enum QUIBuilderGenUIType
 +(NSDictionary*) rebuildUIWithContent:(NSString*)content containerView:(UIView*)container device:(enum QUIBuilderDeviceType)device genUIType:(enum QUIBuilderGenUIType)genUIType genUIModeKey:(NSString*)genUIModeKey errorBlock:(void(^)(NSString *msg, NSException *exception)) errorBlock;
 
 +(void) clearQUIViewWithUIElement:(NSDictionary*) uiElements;
++(void) clearView:(UIView*)mainView includeAllSubView:(BOOL)includeAllSubView;
 
 +(NSString*) genCode:(NSDictionary*)uiElements;
 +(NSString*) genCode:(NSDictionary*)uiElements shouldGenCodeForView:(BOOL(^)(UIView *view)) checkViewBlock;

@@ -542,10 +542,53 @@
 +(void) clearQUIViewWithUIElement:(NSDictionary*) uiElements
 {
     for (UIView* view in uiElements.allValues) {
+        [self cleanUpView:view];
+    }
+}
+
++(void) clearView:(UIView*)mainView includeAllSubView:(BOOL)includeAllSubView
+{
+    [self cleanUpView:mainView];
+    
+    if(!includeAllSubView) return;
+    
+    for (UIView* view in mainView.subviews) {
+        
+        if ([view isKindOfClass:[CollectionView class]]) {
+            ((CollectionView*)view).delegate = nil;
+        }
+        
+        if ([view isKindOfClass:[PageView class]]) {
+            ((PageView*)view).delegate = nil;
+        }
+        
+        @try{ [view setValue:nil forKey:@"delegate"]; }@catch(NSException* exception){}
+        
+        [view removeConstraints:view.constraints];
+        
         [view removeAllHandleEvent];
         [view removeFromSuperview];
     }
 }
+
++(void) cleanUpView:(UIView*)view
+{
+    if ([view isKindOfClass:[CollectionView class]]) {
+        ((CollectionView*)view).delegate = nil;
+    }
+    
+    if ([view isKindOfClass:[PageView class]]) {
+        ((PageView*)view).delegate = nil;
+    }
+    
+    @try{ [view setValue:nil forKey:@"delegate"]; }@catch(NSException* exception){}
+    
+    [view removeConstraints:view.constraints];
+    
+    [view removeAllHandleEvent];
+    [view removeFromSuperview];
+}
+
 
 +(NSString*) genCode:(NSDictionary*)uiElements
 {
@@ -575,7 +618,7 @@
     
     NSString* gencode = @"NSString* file = [FileLib getDocumentPath:@\"[PATH_TO_QUI_FILE]\"];\n_uiElements = [QUIBuilder rebuildUIWithFile:file containerView:<#self.view#> device:<#QUIBuilderDeviceType_AutoDetectUniversal#> genUIType:QUIBuilderGenUITypeDefault genUIModeKey:@\"default\" updateContentBlock:nil errorBlock:^(NSString *msg, NSException *exception) {\
     NSLog(@\"%@\", msg);\
-}];";
+    }];";
     
     return [NSString stringWithFormat:@"%@\n\n%@\n\n%@", init, gencode, getset];
 }

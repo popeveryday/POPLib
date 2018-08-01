@@ -586,6 +586,11 @@
         control = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         [control configureForAutoLayout];
     }
+    else if (type == ALControlTypeSwitch)
+    {
+        control = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [control configureForAutoLayout];
+    }
     
     
     

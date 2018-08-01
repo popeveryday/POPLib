@@ -34,6 +34,7 @@ enum ALControlType{
     ALControlTypePageView,
     ALControlTypeCollectionView,
     ALControlTypeSlider,
+    ALControlTypeSwitch,
 };
 
 

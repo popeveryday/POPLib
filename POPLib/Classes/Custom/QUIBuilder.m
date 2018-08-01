@@ -27,6 +27,7 @@
 @"pageview": @(ALControlTypePageView),\
 @"collectionview": @(ALControlTypeCollectionView),\
 @"slider": @(ALControlTypeSlider),\
+@"switch": @(ALControlTypeSwitch),\
 }
 
 #define CONTROL_BREAK @"<<BrEak>>"
@@ -562,6 +563,50 @@
                 }
             }
             
+            //UISwitch
+            if ([view isKindOfClass:[UISwitch class]]) {
+                propKey = @"ison";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISwitch*)view) setOn: [self boolValue:propValue]];
+                }
+                
+                propKey = @"onimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISwitch*)view) setOnImage: [self imageObj:propValue]];
+                }
+                
+                propKey = @"offimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISwitch*)view) setOffImage: [self imageObj:propValue]];
+                }
+                
+                propKey = @"tintcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISwitch*)view) setTintColor: [self colorObj:propValue]];
+                }
+                
+                propKey = @"thumbcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISwitch*)view) setThumbTintColor: [self colorObj:propValue]];
+                }
+                
+                propKey = @"ontintcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISwitch*)view) setOnTintColor: [self colorObj:propValue]];
+                }
+            }
             
             //UILabel, UIButton
             propKey = @"underline";

@@ -117,5 +117,9 @@ enum ALControlType{
 
 +(CGFloat)getCustomPaddingSuperEdge:(NSString*)key fullText:(NSString*)fullText;
 
++(CAShapeLayer*) drawCircleProgressWithView:(UIView*)view progress:(CGFloat)progress size:(CGSize)size strokeColor:(UIColor*)strokeColor fillColor:(UIColor*)fillColor lineWidth:(CGFloat)lineWidth;
+
++(CAShapeLayer*) drawCircleProgress:(CGFloat)progress size:(CGSize)size strokeColor:(UIColor*)strokeColor fillColor:(UIColor*)fillColor lineWidth:(CGFloat)lineWidth;
+
 @end
 

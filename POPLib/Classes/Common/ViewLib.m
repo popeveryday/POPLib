@@ -725,5 +725,35 @@
     return [customPaddingStr floatValue];
 }
 
++(CAShapeLayer*) drawCircleProgressWithView:(UIView*)view progress:(CGFloat)progress size:(CGSize)size strokeColor:(UIColor*)strokeColor fillColor:(UIColor*)fillColor lineWidth:(CGFloat)lineWidth
+{
+    CAShapeLayer *progressLayer = [self drawCircleProgress:progress size:size strokeColor:strokeColor fillColor:fillColor lineWidth:lineWidth];
+    [view.layer addSublayer:progressLayer];
+    return progressLayer;
+}
+
++(CAShapeLayer*) drawCircleProgress:(CGFloat)progress size:(CGSize)size strokeColor:(UIColor*)strokeColor fillColor:(UIColor*)fillColor lineWidth:(CGFloat)lineWidth
+{
+    CGFloat startAngle = - ((float)M_PI / 2); // 90 degrees
+    CGFloat endAngle = (2 * (float)M_PI) + startAngle;
+    
+    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
+    [bezierPath addArcWithCenter:CGPointMake(size.width/2,
+                                             size.width/2)
+                          radius:size.width/2
+                      startAngle:startAngle
+                        endAngle:endAngle
+                       clockwise:YES];
+    
+    CAShapeLayer *progressLayer = [[CAShapeLayer alloc] init];
+    [progressLayer setPath:bezierPath.CGPath];
+    [progressLayer setStrokeColor:strokeColor?strokeColor.CGColor:[UIColor grayColor].CGColor];
+    [progressLayer setFillColor:fillColor?fillColor.CGColor:[UIColor clearColor].CGColor];
+    [progressLayer setLineWidth:lineWidth<=0?5.0:lineWidth];
+    [progressLayer setStrokeEnd:progress];
+    
+    return progressLayer;
+}
+
 @end
 

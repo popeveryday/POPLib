@@ -223,23 +223,9 @@
                 propValue = [itemDic objectForKey:propKey];
                 if ([propValue.lowercaseString isEqualToString:@"auto"])
                 {
-                    NSString* tempstr = [itemDic objectForKey:@"superedge"];
-                    for (NSString* letter in [@"T,R,L,B,C,H,V,W,E,S" componentsSeparatedByString:@","] ) {
-                        tempstr = [tempstr stringByReplacingOccurrencesOfString:letter withString:[NSString stringWithFormat:@",%@",letter]];
-                    }
-                    
-                    for (NSString* item in [tempstr componentsSeparatedByString:@","]) {
-                        if(![item hasPrefix:@"W"] && ![item hasPrefix:@"S"]) continue;
-                        @try{
-                            view.layer.cornerRadius = [[[StringLib trim:item] substringFromIndex:1] floatValue] / 2;
-                        }@catch(NSException* exception)
-                        {
-                            NSString* error = [NSString stringWithFormat:@"Exception(%s): \n%@", __func__, exception];
-                            NSLog(@"%@", error);
-                        }
-                        
-                        break;
-                    }
+                    CGSize viewSize = [self getViewSizeWithItemDic:itemDic];
+                    CGFloat sideValue = viewSize.width > viewSize.height ? viewSize.height : viewSize.width;
+                    if(sideValue > 0) view.layer.cornerRadius = sideValue / 2;
                 }
                 else
                 {
@@ -319,6 +305,13 @@
             {
                 propValue = [itemDic objectForKey:propKey];
                 [self embedUIWithValue:propValue forView:view device:device genUIType:genUIType genUIModeKey:genUIModeKey];
+            }
+            
+            propKey = @"circleprogress";
+            if([itemDic.allKeys containsObject:propKey])
+            {
+                propValue = [itemDic objectForKey:propKey];
+                [self addCircleProgressWithView:view value:propValue itemDic:itemDic];
             }
             
             //TextField, TextView
@@ -423,6 +416,46 @@
                 if([view isKindOfClass:[UIImageView class]]) ((UIImageView*)view).image = [self imageObj:propValue];
             }
             
+            //UIProgressView
+            if ([view isKindOfClass:[UISlider class]])
+            {
+                propKey = @"progress";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UIProgressView*)view).progress = propValue.floatValue;
+                }
+                
+                propKey = @"progresscolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UIProgressView*)view).progressTintColor = [self colorObj:propValue];
+                }
+                
+                propKey = @"trackcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UIProgressView*)view).trackTintColor = [self colorObj:propValue];
+                }
+                
+                propKey = @"progressimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UIProgressView*)view).progressImage = [self imageObj:propValue];
+                }
+                
+                propKey = @"trackimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UIProgressView*)view).trackImage = [self imageObj:propValue];
+                }
+                
+            }
+            
             //UISlider
             if ([view isKindOfClass:[UISlider class]])
             {
@@ -433,6 +466,61 @@
                     ((UISlider*)view).value = propValue.floatValue;
                 }
                 
+                propKey = @"minvalue";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).minimumValue = propValue.floatValue;
+                }
+                
+                propKey = @"maxvalue";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).maximumValue = propValue.floatValue;
+                }
+                
+                propKey = @"minimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).minimumValueImage = [self imageObj:propValue];
+                }
+                
+                propKey = @"maximage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).maximumValueImage = [self imageObj:propValue];
+                }
+                
+                propKey = @"mintrackcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).minimumTrackTintColor = [self colorObj:propValue];
+                }
+                
+                propKey = @"maxtrackcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).maximumTrackTintColor = [self colorObj:propValue];
+                }
+                
+                propKey = @"thumbcolor";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    ((UISlider*)view).thumbTintColor = [self colorObj:propValue];
+                }
+                
+                propKey = @"thumbimage";
+                if([itemDic.allKeys containsObject:propKey])
+                {
+                    propValue = [itemDic objectForKey:propKey];
+                    [((UISlider*)view) setThumbImage:[self imageObj:propValue] forState:(UIControlStateNormal)];
+                }
             }
             
             //UIButton
@@ -892,6 +980,80 @@
     return CGSizeMake(width, height);
 }
 
++(CGSize) getViewSizeWithItemDic:(NSDictionary*)itemDic
+{
+    NSString* tempstr = [itemDic objectForKey:@"superedge"];
+    for (NSString* letter in [@"T,R,L,B,C,H,V,W,E,S" componentsSeparatedByString:@","] ) {
+        tempstr = [tempstr stringByReplacingOccurrencesOfString:letter withString:[NSString stringWithFormat:@",%@",letter]];
+    }
+    
+    CGFloat width = 0, height = 0, tempValue = 0;
+    for (NSString* item in [tempstr componentsSeparatedByString:@","])
+    {
+        @try{
+            
+            if(![item hasPrefix:@"E"] && ![item hasPrefix:@"W"] && ![item hasPrefix:@"S"]) continue;
+            tempValue = [[[StringLib trim:item] substringFromIndex:1] floatValue];
+            
+            if([item hasPrefix:@"W"]) width = tempValue;
+            if([item hasPrefix:@"E"]) height = tempValue;
+            if([item hasPrefix:@"S"]) width = height = tempValue;
+            
+            if(width > 0 && height > 0) break;
+            
+        }@catch(NSException* exception)
+        {
+            NSString* error = [NSString stringWithFormat:@"Exception(%s):cornerradius \n%@", __func__, exception];
+            NSLog(@"%@", error);
+        }
+    }
+    
+    return CGSizeMake(width, height);
+}
+
+
+//circleProgress = 0.9
+//circleProgress = false => not to draw
+//circleProgress = custom(progress, size, strokeColor, fillColor, lineWidth)
+//circleProgress = custom(0.9, 40;40 , red, clear, 5)
+//circleProgress = custom(0.9, 40 , red)
+//circleProgress = custom(0.9, , , , 5)
++(void) addCircleProgressWithView:(UIView*)view value:(NSString*)value itemDic:(NSDictionary*)itemDic
+{
+    value = [StringLib trim:value];
+    if([value.lowercaseString isEqualToString:@"false"]) return;
+    
+    CGSize size = [self getViewSizeWithItemDic:itemDic];
+    CGFloat progress = 0.0f, lineWidth = 0;
+    UIColor* strokeColor = nil, *fillColor = nil;
+    
+    
+    if ([value.lowercaseString hasPrefix:@"custom"]) {
+        NSString* options = [StringLib subStringBetween:value startStr:@"(" endStr:@")"];
+        if([StringLib isValid:options]){
+            NSArray* arr = [options componentsSeparatedByString:@","];
+            
+            NSString* _progress = arr.count > 0 ? arr[0] : nil;
+            NSString* _size = arr.count > 1 ? arr[1] : nil;
+            NSString* _strokeColor = arr.count > 2 ? arr[2] : nil;
+            NSString* _fillColor = arr.count > 3 ? arr[3] : nil;
+            NSString* _lineWidth = arr.count > 4 ? arr[4] : nil;
+            
+            if([StringLib isValid: _progress]) progress = [_progress floatValue];
+            if([StringLib isValid: _strokeColor]) strokeColor = [self colorObj:_strokeColor];
+            if([StringLib isValid: _fillColor]) fillColor = [self colorObj:_fillColor];
+            if([StringLib isValid: _lineWidth]) lineWidth = [_lineWidth floatValue];
+            if([StringLib isValid: _size]){
+                NSArray* locarr = [_size componentsSeparatedByString:@";"];
+                size = CGSizeMake([locarr[0] floatValue], locarr.count>1?[locarr[1] floatValue]:0);
+            }
+        }
+    }else{
+        progress = [value floatValue];
+    }
+    
+    [ViewLib drawCircleProgressWithView:view progress:progress size:size strokeColor:strokeColor fillColor:fillColor lineWidth:lineWidth];
+}
 
 //shadown = default or shadown = true
 //shadown = false
@@ -899,15 +1061,19 @@
 //ex: shadown with color = '#FFCC00', radius = 0.4f, offset = CGSizeMake(0, 2), opacity = 0.5f
 //    shadown = custom(#FFCC00, 0.4, 0;2 , 0.5)
 //ex: shadown with offset = CGPointMake(0, 2)
-//    shadown = custom(, , [0,2], )
+//    shadown = custom(, , 0;2, )
 +(void) applyShadownWithView:(UIView*)view value:(NSString*)value
 {
+    
+    value = [StringLib trim:value];
+    if([value.lowercaseString isEqualToString:@"false"]) return;
+    
     UIColor* color = [UIColor grayColor];
     CGFloat radius = 8.0f;
     CGSize offset = CGSizeMake(0, 2);
     CGFloat opacity = 0.5f;
     
-    value = [StringLib trim:value];
+    
     if ([value.lowercaseString hasPrefix:@"custom"]) {
         NSString* options = [StringLib subStringBetween:value startStr:@"(" endStr:@")"];
         if([StringLib isValid:options]){

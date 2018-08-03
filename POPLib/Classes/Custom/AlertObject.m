@@ -17,7 +17,11 @@
     if(self.callback != nil) self.callback([alertView buttonTitleAtIndex:buttonIndex], alertView.title);
 }
 
-+ (void)alertWithTitle:(NSString*) title message:(NSString*) message callback:(AlertViewCompletionBlock)callback cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles,...
++ (void)alertWithTitle:(NSString*) title message:(NSString*) message callback:(AlertViewCompletionBlock)callback cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles,...{
+    [self alertWithTitle:title message:message fromViewController:nil callback:callback cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
+}
+
++ (void)alertWithTitle:(NSString*) title message:(NSString*) message fromViewController:(UIViewController*)fromViewController callback:(AlertViewCompletionBlock)callback cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles,...
 {
     if (GC_Device_iOsVersion < 8.0f)
     {
@@ -25,10 +29,10 @@
         delegate.callback = callback;
         
         UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:delegate
-                                              cancelButtonTitle:cancelButtonTitle
-                                              otherButtonTitles:nil];
+                                                            message:message
+                                                           delegate:delegate
+                                                  cancelButtonTitle:cancelButtonTitle
+                                                  otherButtonTitles:nil];
         
         if (otherButtonTitles != nil)
         {
@@ -76,8 +80,9 @@
         
         [alertController addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:buttonHandler]];
         
+        if(!fromViewController) fromViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
         
-        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
+        [fromViewController presentViewController:alertController animated:YES completion:nil];
     }
 }
 

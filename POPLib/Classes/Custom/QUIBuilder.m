@@ -13,6 +13,7 @@
 #import "PageView.h"
 #import "CollectionView.h"
 #import <objc/runtime.h>
+#import <FontAwesomeKit/FontAwesomeKit.h>
 
 #define CONTROL_TYPES  @{@"label": @(ALControlTypeLabel),\
 @"image": @(ALControlTypeImage), \
@@ -1100,13 +1101,18 @@
     [ViewLib drawCircleProgressWithView:view progress:progress size:size strokeColor:strokeColor fillColor:fillColor lineWidth:lineWidth];
 }
 
+
+
+
 //shadown = default or shadown = true
 //shadown = false
 //shadown = custom(color, radius, offset, opacity)
 //ex: shadown with color = '#FFCC00', radius = 0.4f, offset = CGSizeMake(0, 2), opacity = 0.5f
 //    shadown = custom(#FFCC00, 0.4, 0;2 , 0.5)
+//ex: shadown with color = '#FFCC00' alpha 0.5, offset = CGSizeMake(0, 2)
+//    shadown = custom(#FFCC00;0.5,,0;2)
 //ex: shadown with offset = CGPointMake(0, 2)
-//    shadown = custom(, , 0;2, )
+//    shadown = custom(, , 0;2 )
 +(void) applyShadownWithView:(UIView*)view value:(NSString*)value
 {
     
@@ -1288,9 +1294,9 @@
 }
 
 
-//abc > [button setTitle:@"abc" forState:UIControlStateNormal]
-//abc;def > [button setTitle:@"abc" forState:UIControlStateNormal]
-//          [button setTitle:@"def" forState:UIControlStateHighlighted]
+//red > [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal]
+//blue;#ffcc00,0.5 > [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal]
+//          [button setTitleColor:Color2(@"#ffcc00", 0.5) forState:UIControlStateHighlighted]
 +(void)titleColorObj:(NSString*)value button:(UIButton*)button
 {
     if([value containsString:@";"])
@@ -1582,6 +1588,7 @@ NSString* equalStr = @"[EqL]";
 //red > [UIColor redColor]
 //ff00ff > Color(@"ff00ff")
 //ff00ff, 0.5 > Color2(@"ff00ff", 0.5)
+//ff00ff; 0.5 > Color2(@"ff00ff", 0.5)
 //image:IMAGE_VALUE_FOR >
 +(UIColor*) colorObj:(NSString*)value
 {
@@ -1618,6 +1625,11 @@ NSString* equalStr = @"[EqL]";
         return Color2([StringLib trim:arr[0]], [[StringLib trim:arr[1]] floatValue] );
     }
     
+    if([value1 containsString:@";"]){
+        NSArray* arr = [value1 componentsSeparatedByString:@";"];
+        return Color2([StringLib trim:arr[0]], [[StringLib trim:arr[1]] floatValue] );
+    }
+    
     return Color(value1);
 }
 
@@ -1629,6 +1641,7 @@ NSString* equalStr = @"[EqL]";
 //lib: abc > [UIImage imageWithContentsOfFile: [FileLib getLibraryPath:@"abc"]]
 //temp: abc > [UIImage imageWithContentsOfFile: [FileLib getTempPath:@"abc"]]
 //color: ffcc00 > [UIImage imageWithContentsOfFile: [FileLib getTempPath:@"abc"]]
+//icon: FAKFontAwesome,,red,30,40;40 ==> refer imageIconAwesome function
 +(UIImage*) imageObj:(NSString*)value
 {
     if([value containsString:@":"]){
@@ -1643,6 +1656,10 @@ NSString* equalStr = @"[EqL]";
         {
             return [ImageLib createCanvasImageWithColor:[self colorObj:data] size:CGSizeMake(1.0f, 1.0f) isTransparent:YES];
         }
+        if([prefix isEqualToString:@"icon"])
+        {
+            return [self imageIconAwesome:data];
+        }
         
         if([FileLib checkPathExisted:data])
             return [UIImage imageWithContentsOfFile:data];
@@ -1654,6 +1671,59 @@ NSString* equalStr = @"[EqL]";
     return [UIImage imageNamed:value];
 }
 
+//icon: FAKFontAwesome,,red,30,40;40
+//icon: fontawesome,,#ffccff;0.5,30
+//icon: fontawesome,,#ffccff;0.5,30,50
+//icon: awesome,
++(UIImage*)imageIconAwesome:(NSString*)value
+{
+    NSString* classname = nil;
+    NSString* character = nil;
+    UIColor* color = [UIColor redColor];
+    CGFloat fontSize = 30;
+    CGSize imageSize = CGSizeMake(30, 30);
+    
+    NSArray* arr = [value componentsSeparatedByString:@","];
+    
+    classname = arr[0];
+    if(arr.count > 1) character = arr[1];
+    if(arr.count > 2) color = [self colorObj:arr[2]];
+    if(arr.count > 3) fontSize = [arr[3] floatValue];
+    if(arr.count > 4)
+    {
+        arr = [arr[4] componentsSeparatedByString:@";"];
+        imageSize = CGSizeMake([arr[0] floatValue], [arr[arr.count>1?1:0] floatValue]);
+    }else{
+        imageSize = CGSizeMake(fontSize, fontSize);
+    }
+    
+    return [self iconAwesomeWithClassname:classname character:character color:color fontSize:fontSize imageSize:imageSize];
+}
+
++(UIImage*)iconAwesomeWithClassname:(NSString*)classname character:(NSString*)character color:(UIColor*)color fontSize:(CGFloat)fontSize imageSize:(CGSize)imageSize
+{
+    FAKIcon* icon;
+    classname = [StringLib trim:classname.lowercaseString];
+    
+    if([@[@"fakfontawesome",@"fontawesome",@"awesome"] containsObject:classname])
+        icon = [FAKFontAwesome iconWithCode:character size:fontSize];
+    else if([@[@"fakmaterialicons",@"materialicons",@"material"] containsObject:classname])
+        icon = [FAKMaterialIcons iconWithCode:character size:fontSize];
+    else if([@[@"fakocticons",@"octicons",@"oct"] containsObject:classname])
+        icon = [FAKOcticons iconWithCode:character size:fontSize];
+    else if([@[@"fakionicons",@"ionicons",@"ion"] containsObject:classname])
+        icon = [FAKIonIcons iconWithCode:character size:fontSize];
+    else if([@[@"fakzocial",@"zocial",@"social"] containsObject:classname])
+        icon = [FAKZocial iconWithCode:character size:fontSize];
+    else if([@[@"fakfoundationicons",@"foundationicons",@"foundation"] containsObject:classname])
+        icon = [FAKFoundationIcons iconWithCode:character size:fontSize];
+    else icon = [FAKFontAwesome iconWithCode:@"" size:30];
+    
+    if(!icon) return [UIImage new];
+    
+    [icon addAttribute:NSForegroundColorAttributeName value:color];
+    return [UIImage imageWithStackedIcons:@[icon] imageSize:imageSize];;
+}
 
 +(NSString*) pathObj:(NSString*)value
 {

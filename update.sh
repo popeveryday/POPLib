@@ -27,3 +27,11 @@ pod update
 echo .
 echo .
 echo .
+
+
+echo LIZKS MOBILE
+cd /Users/trungph/Dropbox/BitBucket/Lizks\ Mobile/lizks_mobile_v6.02/ios
+pod update
+echo .
+echo .
+echo .

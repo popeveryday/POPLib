@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name             = "POPLib"
-s.version          = "0.4.17"
+s.version          = "0.4.18"
 s.summary          = "POPLib is list of common functions for Object-c project."
 s.homepage         = "https://github.com/popeveryday/POPLib"
 s.license          = 'MIT'
@@ -11,4 +11,5 @@ s.requires_arc = true
 s.source_files = 'POPLib/Classes/**/*.{h,m,c}'
 s.dependency 'PureLayout'
 s.dependency 'MBProgressHUD', '~> 1.0'
+s.dependency 'FontAwesomeKit', '~> 2.2.0'
 end

@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		11C89A5DFE22C2C597FF7D71 /* Pods-POPLib_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-POPLib_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-POPLib_Tests/Pods-POPLib_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2FCE9EFF1FF39CEFF2148097 /* Pods-POPLib_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-POPLib_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example.release.xcconfig"; sourceTree = "<group>"; };
-		33211567815896263B932A37 /* POPLib.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = POPLib.podspec; path = ../POPLib.podspec; sourceTree = "<group>"; };
+		33211567815896263B932A37 /* POPLib.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = POPLib.podspec; path = ../POPLib.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6003F58A195388D20070C39A /* POPLib_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = POPLib_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -208,7 +208,6 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				53A4EEC63D39126CFEFABD96 /* [CP] Embed Pods Frameworks */,
-				9040AD02E8FB398FEBA27124 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -227,8 +226,6 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				9E452A8359832B837CF2A646 /* [CP] Embed Pods Frameworks */,
-				6700129B02FD4734C86174B8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -307,12 +304,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FontAwesomeKit/FontAwesomeKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/POPLib/POPLib.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesomeKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/POPLib.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
@@ -320,21 +319,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6700129B02FD4734C86174B8 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Tests/Pods-POPLib_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E4617CDDD5A04B1763D1EB0 /* [CP] Check Pods Manifest.lock */ = {
@@ -353,36 +337,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9040AD02E8FB398FEBA27124 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9E452A8359832B837CF2A646 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Tests/Pods-POPLib_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A41EAFD14423E563B58D94BD /* [CP] Check Pods Manifest.lock */ = {

@@ -143,10 +143,13 @@
     return [formatter stringFromDate:date];
 }
 
-+(NSString*)formatVideoDurationWithSeconds:(double) duration splitString:(NSString*)splitString{
++(NSString*)formatVideoDurationWithSeconds:(double) duration splitString:(NSString*)splitString
+{
+    BOOL isNegative = duration < 0;
+    if(duration < 0) duration = duration * -1;
     int minutes = duration/60;
     int seconds = duration - (minutes*60);
-    return [NSString stringWithFormat:@"%d%@%@%d",minutes, [StringLib isValid:splitString] ? splitString : @":" ,seconds>9?@"":@"0",seconds ];
+    return [NSString stringWithFormat:@"%@%d%@%@%d", isNegative?@"-":@"", minutes, [StringLib isValid:splitString] ? splitString : @":" ,seconds>9?@"":@"0",seconds ];
 }
 
 +(NSString*)formatTimeAgo:(NSDate*) date

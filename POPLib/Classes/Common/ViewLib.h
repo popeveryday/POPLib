@@ -13,6 +13,8 @@
 #import "CommonLib.h"
 #import <PureLayout/PureLayout.h>
 
+typedef void (^AlertViewCompletionBlock)(NSString* buttonTitle, NSString* alertTitle);
+
 enum DisplayStyle{
     DisplayStyleReplaceNavigationRootVC,
     DisplayStylePush,
@@ -121,6 +123,22 @@ enum ALControlType{
 +(CAShapeLayer*) drawCircleProgressWithView:(UIView*)view progress:(CGFloat)progress size:(CGSize)size strokeColor:(UIColor*)strokeColor fillColor:(UIColor*)fillColor lineWidth:(CGFloat)lineWidth;
 
 +(CAShapeLayer*) drawCircleProgress:(CGFloat)progress size:(CGSize)size strokeColor:(UIColor*)strokeColor fillColor:(UIColor*)fillColor lineWidth:(CGFloat)lineWidth;
+
++ (void)alertWithTitle:(NSString*) title message:(NSString*) message fromViewController:(UIViewController*)fromViewController callback:(AlertViewCompletionBlock)callback cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles,...;
+
++(BOOL)alertNetworkConnectionStatusWithTitle:(NSString*) title message:(NSString*)message fromViewController:(UIViewController*)vc;
+
++(BOOL)alertNetworkConnectionStatusFromViewController:(UIViewController*)vc;
+
++(NSArray*)alertUpgrageFeaturesWithContainer:(id)container isIncludeRestoreButton:(BOOL)isIncludeRestoreButton fromViewController:(UIViewController*)vc callback:(AlertViewCompletionBlock)callback;
+
++(NSArray*)alertUpgrageFeaturesUnlimitWithContainer:(id)container limitMessage:(NSString*)limitMessage isIncludeRestoreButton:(BOOL)isIncludeRestoreButton fromViewController:(UIViewController*)vc callback:(AlertViewCompletionBlock)callback;
+
++(NSArray*)alertUpgrageProVersionWithContainer:(id)container featuresMessage:(NSString*)featuresMessage isIncludeRestoreButton:(BOOL)isIncludeRestoreButton fromViewController:(UIViewController*)vc callback:(AlertViewCompletionBlock)callback;
+
++ (void)alertWithTitle:(NSString*)title message:(NSString*) message;
+
++ (void)alert:(NSString*) message;
 
 @end
 

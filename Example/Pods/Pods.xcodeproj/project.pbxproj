@@ -57,7 +57,6 @@
 		680A75C9AA5FD951D211BAF20CAC6619 /* CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7850ED2C34B645379FFAF5B6BA8A2C17 /* CollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6A72C8E44A0E2774C76D073F982E117F /* zocial-regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A229F8AD5DC8770E6A77FD75AC59F5E /* zocial-regular-webfont.ttf */; };
 		6B3C2778C40F244D98903E993A211EB5 /* FAKIonIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C96C9ED4AD2D82B92C279039932C8D /* FAKIonIcons.m */; };
-		6D1DA7CFF7A154DE0E476AC31BF86B50 /* AlertObject.h in Headers */ = {isa = PBXBuildFile; fileRef = A77EC0C510B69378F5C1AEF8FE3093A8 /* AlertObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E8574B54F38B48ADF1FE6F09953AA0B /* ALAssetsLibrary+CustomPhotoAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 5493D46249FE92340FD9A4F89E721AF8 /* ALAssetsLibrary+CustomPhotoAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F7BC6F6E49497EF3A4316A660E99792 /* CommonLib.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0318DAF70BFC09A5DEBA9495AFC4B3 /* CommonLib.m */; };
 		70644D2FAACDCB954D268086F220F534 /* FAKFoundationIcons.h in Headers */ = {isa = PBXBuildFile; fileRef = 20071C7C18FAB20D644F180D3CB3B2FB /* FAKFoundationIcons.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -109,7 +108,6 @@
 		E99245441FC77B98267FA6441C00E0D3 /* NSArray+PureLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E313CE2DEF9E4DAAC13436E3818358E /* NSArray+PureLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EFF00C12F5CBB6C4123B2AE334CB569A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46AA2488BC3BCBA7941BEEFB2F4C60C4 /* QuartzCore.framework */; };
 		F1A5159A15FD3F90C33CC25235D730FC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5119D03652157A647A5686D39AC25D1D /* Foundation.framework */; };
-		F1A9F20C469D9C2A1D14B22F97649B51 /* AlertObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E60E6A7991A6390D823991ECE8634E /* AlertObject.m */; };
 		F1BED134F4C48B0B33D775EE0F069B8D /* ReturnSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D0A4AA0EA043CB441B4EE99199DA5 /* ReturnSet.m */; };
 		F3B4670DBF8C58CF69E721B24FC6DE37 /* Hashtable.h in Headers */ = {isa = PBXBuildFile; fileRef = AC1517E88D2A4D2D68EBFB092B5F2AEF /* Hashtable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FDFB10982DFB0AE07FB9571456B05CC7 /* Material-Design-Iconic-Font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5EBA4B3BCF8E84304BB1C99F8911EFF /* Material-Design-Iconic-Font.ttf */; };
@@ -181,7 +179,7 @@
 		02BD7587C482D70B615719F30538E6E7 /* MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MBProgressHUD.xcconfig; sourceTree = "<group>"; };
 		030FB15DA46270932BB46C0466783316 /* GlobalConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GlobalConfig.h; path = POPLib/Classes/GlobalConfig.h; sourceTree = "<group>"; };
 		03703E533465D8DDD975D6697A6C6EAE /* Pods-POPLib_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-POPLib_Tests.modulemap"; sourceTree = "<group>"; };
-		04317FAE2BDF62C6C13DB42B8EC2279F /* Pods_POPLib_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_POPLib_Example.framework; path = "Pods-POPLib_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		04317FAE2BDF62C6C13DB42B8EC2279F /* Pods_POPLib_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POPLib_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04FE694FEA91B4291B503CF86F5DAC7F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		05CE2A38056E0379644B58F4873FBE74 /* PageView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = PageView.m; sourceTree = "<group>"; };
 		074C0162923A14BC0BC7EBCCBFA4D147 /* RTLabel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTLabel.h; sourceTree = "<group>"; };
@@ -189,7 +187,7 @@
 		0A5FC3F63A2D3EB535D3A26720D1A035 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D07FC476B25A3BBB671EB6DF5374885 /* Pods-POPLib_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-POPLib_Example-dummy.m"; sourceTree = "<group>"; };
 		0F169A7219FC9862309090A33E6E3E70 /* CoreData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
-		0FC3E711F0F0608251445DF154FF6A57 /* POPLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = POPLib.framework; path = POPLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FC3E711F0F0608251445DF154FF6A57 /* POPLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = POPLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FCD62062C60195D5EE494C2859914B0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FF118CF5F641D2A9406454F71DEE804 /* GameCenterLib2.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GameCenterLib2.m; sourceTree = "<group>"; };
 		151467BA0E64B2ECAC5023A7B2A3F971 /* Pods-POPLib_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-POPLib_Example-umbrella.h"; sourceTree = "<group>"; };
@@ -200,7 +198,7 @@
 		21EB4B97CE5FFDEB98E1E9BA29905653 /* RTLabel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTLabel.m; sourceTree = "<group>"; };
 		24D9C67CE6C80192893A4099A4D96815 /* StringLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = StringLib.h; sourceTree = "<group>"; };
 		28E6E1E74C44C9518BEEECDA8FDAECD7 /* POPLib.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = POPLib.xcconfig; sourceTree = "<group>"; };
-		2A229F8AD5DC8770E6A77FD75AC59F5E /* zocial-regular-webfont.ttf */ = {isa = PBXFileReference; includeInIndex = 1; name = "zocial-regular-webfont.ttf"; path = "FontAwesomeKit/zocial-regular-webfont.ttf"; sourceTree = "<group>"; };
+		2A229F8AD5DC8770E6A77FD75AC59F5E /* zocial-regular-webfont.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "zocial-regular-webfont.ttf"; path = "FontAwesomeKit/zocial-regular-webfont.ttf"; sourceTree = "<group>"; };
 		2A2C3EDD2C81438B7DFF5850B1CAA24A /* Pods-POPLib_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-POPLib_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2BF5C01436902E279A5DA21E4B338FD8 /* Pods-POPLib_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-POPLib_Example-frameworks.sh"; sourceTree = "<group>"; };
 		2E0F0D88A27707A121FE3AAC755C9773 /* QUIBuilder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = QUIBuilder.h; sourceTree = "<group>"; };
@@ -208,7 +206,7 @@
 		2EF06A7974197CD62904E8DA077DF6C6 /* POPLib-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "POPLib-dummy.m"; sourceTree = "<group>"; };
 		30E0635458E174129FF39EDBD10B3501 /* FontAwesomeKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FontAwesomeKit.modulemap; sourceTree = "<group>"; };
 		314DADF4D22B1337052592360BE41D0B /* Pods-POPLib_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-POPLib_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		31672D9C763BFFAC449AF61EE2168FA5 /* Pods_POPLib_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_POPLib_Tests.framework; path = "Pods-POPLib_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31672D9C763BFFAC449AF61EE2168FA5 /* Pods_POPLib_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POPLib_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33526C2DC42FEF1568D1ECA4A5A90AB7 /* FontAwesomeKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FontAwesomeKit-prefix.pch"; sourceTree = "<group>"; };
 		3376FAD1E37E1AE6ECC0731CC0D9556D /* CollectionView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CollectionView.m; sourceTree = "<group>"; };
 		344C84E5B267371C85408D76DCCD9F6F /* ALView+PureLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "ALView+PureLayout.h"; path = "PureLayout/PureLayout/ALView+PureLayout.h"; sourceTree = "<group>"; };
@@ -222,15 +220,15 @@
 		43CE22EE07B18011EF5FAFECDD6241FB /* DateObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DateObject.h; sourceTree = "<group>"; };
 		4495D5CEE142635B9FB4DD8FC23599D9 /* StringLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = StringLib.m; sourceTree = "<group>"; };
 		46AA2488BC3BCBA7941BEEFB2F4C60C4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
-		4A3000D7E87D9942A0E906C4BD87185E /* FontAwesome.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = FontAwesome.otf; path = FontAwesomeKit/FontAwesome.otf; sourceTree = "<group>"; };
+		4A3000D7E87D9942A0E906C4BD87185E /* FontAwesome.otf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = FontAwesome.otf; path = FontAwesomeKit/FontAwesome.otf; sourceTree = "<group>"; };
 		4FCF222B3EFDADBE4FA203DE8C1A3260 /* POPLib-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "POPLib-prefix.pch"; sourceTree = "<group>"; };
 		5119D03652157A647A5686D39AC25D1D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		5228B6D7E9696F4A4973DF870E807EF3 /* FAKZocial.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FAKZocial.m; path = FontAwesomeKit/FAKZocial.m; sourceTree = "<group>"; };
 		5493D46249FE92340FD9A4F89E721AF8 /* ALAssetsLibrary+CustomPhotoAlbum.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+CustomPhotoAlbum.h"; sourceTree = "<group>"; };
 		555E630F619FD638EFD3CD3737587F87 /* ReturnSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ReturnSet.h; sourceTree = "<group>"; };
 		582A4F1E998E95B3018E87114374F0A0 /* MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
-		5B906FA86D9B7B582269DB91793E740A /* PureLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PureLayout.framework; path = PureLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C71831ABF6CCD947B1DC0F7172F7D40 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		5B906FA86D9B7B582269DB91793E740A /* PureLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C71831ABF6CCD947B1DC0F7172F7D40 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		62D1E8E056937BA28AE6C17001CA9C9B /* InAppPurchaseLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseLib.h; sourceTree = "<group>"; };
 		63C003CC4CCDB0C7769FD944BC9FB141 /* PureLayout.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PureLayout.xcconfig; sourceTree = "<group>"; };
 		65534B5A78CB0D7D86E0644E95B8C641 /* PureLayout-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PureLayout-dummy.m"; sourceTree = "<group>"; };
@@ -240,7 +238,7 @@
 		6C8FCDD20DBB70A062EE80B44A40C784 /* PureLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D202E44F7D7DEF9B9A7CA7E0602228E /* FontAwesomeKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FontAwesomeKit.h; path = FontAwesomeKit/FontAwesomeKit.h; sourceTree = "<group>"; };
 		7114B82BAB6CE2B1C1C676A2E19A2442 /* POPLib-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "POPLib-umbrella.h"; sourceTree = "<group>"; };
-		723A6E385179E5521607B521812E5D9E /* octicons.ttf */ = {isa = PBXFileReference; includeInIndex = 1; name = octicons.ttf; path = FontAwesomeKit/octicons.ttf; sourceTree = "<group>"; };
+		723A6E385179E5521607B521812E5D9E /* octicons.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = octicons.ttf; path = FontAwesomeKit/octicons.ttf; sourceTree = "<group>"; };
 		7850ED2C34B645379FFAF5B6BA8A2C17 /* CollectionView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CollectionView.h; sourceTree = "<group>"; };
 		78E687F87E1996220B789FFC4F51C377 /* Pods-POPLib_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-POPLib_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		793B7D94EE922F0B49522F71992AF708 /* GameCenterLib2.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GameCenterLib2.h; sourceTree = "<group>"; };
@@ -255,12 +253,12 @@
 		85660546B30BCE6274F5089CFC36D0EB /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		8A27F722116EF8ABD6ED6FF303FBCAAF /* MBProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MBProgressHUD.modulemap; sourceTree = "<group>"; };
 		929BEE7073770773EA226F0615DABEF8 /* FAKOcticons.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FAKOcticons.h; path = FontAwesomeKit/FAKOcticons.h; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93EE36422A908CA82D84585E1104953C /* FontAwesomeKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FontAwesomeKit-dummy.m"; sourceTree = "<group>"; };
 		96E392C7531C652F4946DE48F23CA8CB /* FontAwesomeKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FontAwesomeKit.xcconfig; sourceTree = "<group>"; };
-		98EAA2E470ACFF9B3BF1DE3AAA02103E /* MBProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MBProgressHUD.framework; path = MBProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		98EAA2E470ACFF9B3BF1DE3AAA02103E /* MBProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MBProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99F65D50ABC2528023737B61A0CBEFC5 /* Pods-POPLib_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-POPLib_Tests-umbrella.h"; sourceTree = "<group>"; };
-		9BEE5F2347BA3DA24CD32775F5DB8FAA /* foundation-icons.ttf */ = {isa = PBXFileReference; includeInIndex = 1; name = "foundation-icons.ttf"; path = "FontAwesomeKit/foundation-icons.ttf"; sourceTree = "<group>"; };
+		9BEE5F2347BA3DA24CD32775F5DB8FAA /* foundation-icons.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "foundation-icons.ttf"; path = "FontAwesomeKit/foundation-icons.ttf"; sourceTree = "<group>"; };
 		9CF22591CFAAC9C6DEAAA2D1BA03DDDF /* ALView+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "ALView+PureLayout.m"; path = "PureLayout/PureLayout/ALView+PureLayout.m"; sourceTree = "<group>"; };
 		9DF2442D8372EA6B490AABD581DDE502 /* DateLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DateLib.h; sourceTree = "<group>"; };
 		9F24AEC94EBE1F4739F8D5855FA3FE8F /* Pods-POPLib_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-POPLib_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -268,18 +266,17 @@
 		A07BFFBC9391E17DA7388EE2991AD564 /* FileLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FileLib.h; sourceTree = "<group>"; };
 		A523EC1E8907112F80530A1A8AC9EF97 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A6A4307A9A15577F8229AD58F8B584E6 /* FAKIcon.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FAKIcon.m; path = FontAwesomeKit/FAKIcon.m; sourceTree = "<group>"; };
-		A77EC0C510B69378F5C1AEF8FE3093A8 /* AlertObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AlertObject.h; sourceTree = "<group>"; };
 		AC1517E88D2A4D2D68EBFB092B5F2AEF /* Hashtable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Hashtable.h; sourceTree = "<group>"; };
 		AE9E80AFDA62D3039D810E50248E1C00 /* NetLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = NetLib.m; sourceTree = "<group>"; };
 		AF73FCE89937E2829D9EF36F01BDE75B /* Pods-POPLib_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-POPLib_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		B1111AEAB488C10052F017376DC8DC43 /* ImageLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ImageLib.h; sourceTree = "<group>"; };
 		B5DBEB0684A94ACF01D81EA4967331B2 /* Pods-POPLib_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-POPLib_Tests-dummy.m"; sourceTree = "<group>"; };
 		B7549A79D091BDAAF4E384FC1A3FC90E /* FAKMaterialIcons.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FAKMaterialIcons.h; path = FontAwesomeKit/FAKMaterialIcons.h; sourceTree = "<group>"; };
-		B92ED2F4CDBDC42671C46F920DDA8BE1 /* ionicons.ttf */ = {isa = PBXFileReference; includeInIndex = 1; name = ionicons.ttf; path = FontAwesomeKit/ionicons.ttf; sourceTree = "<group>"; };
-		BA5BD7D603A25ECF3FFB18B8E5E5BE39 /* FontAwesomeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FontAwesomeKit.framework; path = FontAwesomeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B92ED2F4CDBDC42671C46F920DDA8BE1 /* ionicons.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = ionicons.ttf; path = FontAwesomeKit/ionicons.ttf; sourceTree = "<group>"; };
+		BA5BD7D603A25ECF3FFB18B8E5E5BE39 /* FontAwesomeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FontAwesomeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8D4823FEF1A75E5F5E0C041BF884D2 /* ObserverObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ObserverObject.m; sourceTree = "<group>"; };
 		BE1B3EA94C02D525BE18F3F5AE944521 /* ViewLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ViewLib.h; sourceTree = "<group>"; };
-		C101807F67B3FAFF92273E75CF47859E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		C101807F67B3FAFF92273E75CF47859E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		C45030DBA324BE231939E995ABAF4FB4 /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+PureLayout.m"; path = "PureLayout/PureLayout/NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
 		C5D3498CBAA367121A3F677F0217A620 /* DateObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DateObject.m; sourceTree = "<group>"; };
 		C643527972A445C48105304A4FA1938B /* Hashtable.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Hashtable.m; sourceTree = "<group>"; };
@@ -289,14 +286,13 @@
 		C97F2A1F0FA6C1942B2CFAFC5DA56702 /* NetServiceHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = NetServiceHelper.h; sourceTree = "<group>"; };
 		D2F95AF51FCFB73B2A7C0EC602745A24 /* Pods-POPLib_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-POPLib_Example.modulemap"; sourceTree = "<group>"; };
 		D50692B123F7B8881613E427564D70D0 /* FAKFoundationIcons.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FAKFoundationIcons.m; path = FontAwesomeKit/FAKFoundationIcons.m; sourceTree = "<group>"; };
-		D5EBA4B3BCF8E84304BB1C99F8911EFF /* Material-Design-Iconic-Font.ttf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Material-Design-Iconic-Font.ttf"; path = "FontAwesomeKit/Material-Design-Iconic-Font.ttf"; sourceTree = "<group>"; };
+		D5EBA4B3BCF8E84304BB1C99F8911EFF /* Material-Design-Iconic-Font.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "Material-Design-Iconic-Font.ttf"; path = "FontAwesomeKit/Material-Design-Iconic-Font.ttf"; sourceTree = "<group>"; };
 		D8FBB01C766C9700842071FB4A1F28F9 /* POPLib.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = POPLib.modulemap; sourceTree = "<group>"; };
 		D94993494816FE01626D5179358B73D0 /* Pods-POPLib_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-POPLib_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DB110429B7B3FAA8184978AF15199C9E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCFC6C5A5529E6A07B813E507C389D0A /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		DD17DBFB41507A8597322E5B9A30FE31 /* FontAwesomeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FontAwesomeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE201D3DF89539F5DED24BE876705E32 /* NSDate+NVTimeAgo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDate+NVTimeAgo.h"; sourceTree = "<group>"; };
-		E0E60E6A7991A6390D823991ECE8634E /* AlertObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AlertObject.m; sourceTree = "<group>"; };
 		E0FC20EB871B3A2D0BE9524F5D2A3F41 /* InAppPurchaseLib.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseLib.m; sourceTree = "<group>"; };
 		E208FB61FD9BE59037DE1DE06818BB52 /* FAKMaterialIcons.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FAKMaterialIcons.m; path = FontAwesomeKit/FAKMaterialIcons.m; sourceTree = "<group>"; };
 		E47A3DF84386CEB8FF1AF42224A3FC8B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -310,7 +306,7 @@
 		F29B29B18617557A8AB8A1D7E851E6AB /* SimplePing.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
 		F31415921331B54A2DC855BD0ED44D3E /* PageView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PageView.h; sourceTree = "<group>"; };
 		F33DE1F428C231B19EBD3CBA02299957 /* QUIBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = QUIBuilder.m; sourceTree = "<group>"; };
-		F5679AD99DF92D99A6D1AE9EF989FB0A /* POPLib.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = POPLib.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F5679AD99DF92D99A6D1AE9EF989FB0A /* POPLib.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = POPLib.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F56D0A4AA0EA043CB441B4EE99199DA5 /* ReturnSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ReturnSet.m; sourceTree = "<group>"; };
 		F7092AB4F7A397AB3C0721201CC7CD5D /* Pods-POPLib_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-POPLib_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		F8FCFB472C81FAFC92E8B05F403528BB /* ALAssetsLibrary+CustomPhotoAlbum.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+CustomPhotoAlbum.m"; sourceTree = "<group>"; };
@@ -476,8 +472,6 @@
 		36C73A355F084B8EC3BA7629FDF0A863 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
-				A77EC0C510B69378F5C1AEF8FE3093A8 /* AlertObject.h */,
-				E0E60E6A7991A6390D823991ECE8634E /* AlertObject.m */,
 				7850ED2C34B645379FFAF5B6BA8A2C17 /* CollectionView.h */,
 				3376FAD1E37E1AE6ECC0731CC0D9556D /* CollectionView.m */,
 				43CE22EE07B18011EF5FAFECDD6241FB /* DateObject.h */,
@@ -565,7 +559,6 @@
 				FE2488CB18D1FABF3A770C8BD181DFA6 /* PureLayoutDefines.h */,
 				A2F28961267D95B18B2D8EED0FCD467D /* Support Files */,
 			);
-			name = PureLayout;
 			path = PureLayout;
 			sourceTree = "<group>";
 		};
@@ -689,7 +682,6 @@
 				439F7221D273F9FADB8D0DAC4E8E86E1 /* MBProgressHUD.m */,
 				7DF2AF4B2B0AC5BFBFCD5A0F701FEF4E /* Support Files */,
 			);
-			name = MBProgressHUD;
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
@@ -776,7 +768,6 @@
 				D1F82496E1379125EAB7E46DBE3C5ADF /* Support Files */,
 				B31BC83CCE660F31EE0E2F00EB194668 /* Zocial */,
 			);
-			name = FontAwesomeKit;
 			path = FontAwesomeKit;
 			sourceTree = "<group>";
 		};
@@ -871,7 +862,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E8574B54F38B48ADF1FE6F09953AA0B /* ALAssetsLibrary+CustomPhotoAlbum.h in Headers */,
-				6D1DA7CFF7A154DE0E476AC31BF86B50 /* AlertObject.h in Headers */,
 				680A75C9AA5FD951D211BAF20CAC6619 /* CollectionView.h in Headers */,
 				61D39E30650456A7E5C93ECC43ECE25E /* CommonLib.h in Headers */,
 				3A396761A56930AD6586C020EC497224 /* CoreData.h in Headers */,
@@ -1109,7 +1099,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F98932BA669064EDFE547867720E8F7 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
-				F1A9F20C469D9C2A1D14B22F97649B51 /* AlertObject.m in Sources */,
 				01BCC197001FF0EB69AFBF8AD0F800EA /* CollectionView.m in Sources */,
 				6F7BC6F6E49497EF3A4316A660E99792 /* CommonLib.m in Sources */,
 				CDD936090257EC7768056B295E4A51AB /* CoreData.m in Sources */,

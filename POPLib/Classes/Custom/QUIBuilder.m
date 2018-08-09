@@ -419,7 +419,7 @@
             }
             
             //UIProgressView
-            if ([view isKindOfClass:[UISlider class]])
+            if ([view isKindOfClass:[UIProgressView class]])
             {
                 propKey = @"progress";
                 if([itemDic.allKeys containsObject:propKey])
@@ -1664,7 +1664,7 @@ NSString* equalStr = @"[EqL]";
         if([FileLib checkPathExisted:data])
             return [UIImage imageWithContentsOfFile:data];
         
-        [CommonLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
+        [ViewLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
         return nil;
     }
     
@@ -1739,7 +1739,7 @@ NSString* equalStr = @"[EqL]";
         if([FileLib checkPathExisted:data])
             return data;
         
-        [CommonLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
+        [ViewLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
         return nil;
     }
     
@@ -1747,7 +1747,7 @@ NSString* equalStr = @"[EqL]";
         return value;
     }
     
-    [CommonLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
+    [ViewLib alert:[NSString stringWithFormat:@"%s: %@ not found",__func__, value]];
     
     return nil;
 }

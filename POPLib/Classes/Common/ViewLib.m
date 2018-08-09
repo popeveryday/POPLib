@@ -760,5 +760,97 @@
     return progressLayer;
 }
 
++ (void)alertWithTitle:(NSString*) title message:(NSString*) message fromViewController:(UIViewController*)fromViewController callback:(AlertViewCompletionBlock)callback cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles,...
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    void (^buttonHandler)(UIAlertAction *action) = ^void(UIAlertAction *action) {
+        if(callback) callback(action.title, title);
+    };
+    
+    if (otherButtonTitles != nil)
+    {
+        [alertController addAction:[UIAlertAction actionWithTitle:otherButtonTitles style:UIAlertActionStyleDefault handler:buttonHandler]];
+        
+        va_list args;
+        va_start(args, otherButtonTitles);
+        NSString* name;
+        while ((name = va_arg(args, NSString*))) {
+            if ([StringLib isValid:name]) {
+                [alertController addAction:[UIAlertAction actionWithTitle:name style:UIAlertActionStyleDefault handler:buttonHandler]];
+            }
+        }
+        va_end(args);
+    }
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:buttonHandler]];
+    
+#ifndef POPLIB_APP_EXTENSIONS
+    if(!fromViewController) fromViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+#else
+    dang fix cho nay
+#endif
+    
+    if(fromViewController) [fromViewController presentViewController:alertController animated:YES completion:nil];
+    
+}
+
++(BOOL)alertNetworkConnectionStatusWithTitle:(NSString*) title message:(NSString*)message fromViewController:(UIViewController*)vc
+{
+    if (![NetLib isNetworkConnectionReady]) {
+        [self alertWithTitle:(!title ? LocalizedText(@"Connection error",nil) : title) message:(!message ? LocalizedText(@"Unable to connect with the server.\nCheck your internet connection and try again.",nil) : message) fromViewController:vc callback:nil cancelButtonTitle:LocalizedText(@"OK",nil) otherButtonTitles:nil];
+        return NO;
+    }
+    return YES;
+}
+
++(BOOL)alertNetworkConnectionStatusFromViewController:(UIViewController*)vc{
+    return [self alertNetworkConnectionStatusWithTitle:nil message:nil fromViewController:vc];
+}
+
++(NSArray*)alertUpgrageFeaturesWithContainer:(id)container isIncludeRestoreButton:(BOOL)isIncludeRestoreButton fromViewController:(UIViewController*)vc callback:(AlertViewCompletionBlock)callback
+{
+    [self alertWithTitle:LocalizedText( @"Upgrage Required" ,nil) message:LocalizedText( @"To unlock this feature you need to upgrade to pro version. Would you like to upgrade now?" ,nil) fromViewController:vc callback:callback cancelButtonTitle:LocalizedText( @"Later" ,nil) otherButtonTitles:LocalizedText( @"Yes, upgrade now" ,nil), isIncludeRestoreButton ? LocalizedText( @"Restore purchases" ,nil) : nil, nil];
+    
+    return @[LocalizedText( @"Yes, upgrade now" ,nil), LocalizedText( @"Restore purchases" ,nil)];
+}
+
++(NSArray*)alertUpgrageFeaturesUnlimitWithContainer:(id)container limitMessage:(NSString*)limitMessage isIncludeRestoreButton:(BOOL)isIncludeRestoreButton fromViewController:(UIViewController*)vc callback:(AlertViewCompletionBlock)callback
+{
+    NSString* message = LocalizedText(@"To use unlimited features you need to upgrade to pro version. Would you like to upgrade now?",nil);
+    if ( [StringLib isValid:limitMessage] ) {
+        message = [NSString stringWithFormat:@"%@\n%@",limitMessage, message];
+    }
+    
+    [self alertWithTitle:LocalizedText(@"Upgrage Required",nil) message:message fromViewController:vc callback:callback cancelButtonTitle:LocalizedText(@"Later",nil) otherButtonTitles:LocalizedText(@"Yes, upgrade now",nil), isIncludeRestoreButton ? LocalizedText(@"Restore purchases",nil) : nil, nil];
+    
+    return @[LocalizedText(@"Yes, upgrade now",nil), LocalizedText(@"Restore purchases",nil)];
+}
+
++(NSArray*)alertUpgrageProVersionWithContainer:(id)container featuresMessage:(NSString*)featuresMessage isIncludeRestoreButton:(BOOL)isIncludeRestoreButton fromViewController:(UIViewController*)vc callback:(AlertViewCompletionBlock)callback
+{
+    NSString* message = LocalizedText(@"Purchase to unlock following features?",nil);
+    
+    if ( [StringLib isValid:featuresMessage] ) {
+        message = [NSString stringWithFormat:@"%@\n%@", message, featuresMessage];
+    }else{
+        message = LocalizedText(@"Purchase to unlock full features?",nil);
+    }
+    
+    [self alertWithTitle:LocalizedText(@"Upgrage to Pro Version",nil) message:message fromViewController:vc callback:callback cancelButtonTitle:LocalizedText(@"Later",nil) otherButtonTitles:LocalizedText(@"Yes, upgrade now",nil), isIncludeRestoreButton ? LocalizedText(@"Restore purchases",nil) : nil, nil];
+    
+    return @[LocalizedText(@"Yes, upgrade now",nil), LocalizedText(@"Restore purchases",nil)];
+}
+
++ (void)alert:(NSString*) message
+{
+    [self alertWithTitle:nil message:message];
+}
+
++ (void)alertWithTitle:(NSString*)title message:(NSString*) message
+{
+    [self alertWithTitle:(title?title:LocalizedText(@"Message", nil)) message:message fromViewController:nil callback:nil cancelButtonTitle:LocalizedText(@"OK", nil) otherButtonTitles:nil];
+}
+
 @end
 

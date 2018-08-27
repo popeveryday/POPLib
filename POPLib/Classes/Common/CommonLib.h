@@ -56,6 +56,8 @@
 
 +(NSString*)deviceModelType;
 
++(NSString*)deviceModelTypeCode;
+
 +(NSString*)getDeviceByResolution;
 
 +(NSString*)localizedText:(NSString*)text languageCode:(NSString*)code;

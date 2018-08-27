@@ -127,13 +127,18 @@
     }
 }
 
-+(NSString*)deviceModelType
-{
++(NSString*)deviceModelTypeCode{
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *machine = malloc(size);
     sysctlbyname("hw.machine", machine, &size, NULL, 0);
     NSString *platform = [NSString stringWithCString:machine encoding:NSUTF8StringEncoding];
+    return platform;
+}
+
++(NSString*)deviceModelType
+{
+    NSString *platform = [self deviceModelTypeCode];
     
     if ([platform isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
     if ([platform isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
@@ -151,6 +156,17 @@
     if ([platform isEqualToString:@"iPhone7,1"])    return @"iPhone 6 Plus";
     if ([platform isEqualToString:@"iPhone8,1"])    return @"iPhone 6s";
     if ([platform isEqualToString:@"iPhone8,2"])    return @"iPhone 6s Plus";
+    if ([platform isEqualToString:@"iPhone8,4"])    return @"iPhone SE";
+    if ([platform isEqualToString:@"iPhone9,1"])    return @"iPhone 7 (CDMA)";
+    if ([platform isEqualToString:@"iPhone9,3"])    return @"iPhone 7 (GSM)";
+    if ([platform isEqualToString:@"iPhone9,2"])    return @"iPhone 7 Plus (CDMA)";
+    if ([platform isEqualToString:@"iPhone9,4"])    return @"iPhone 7 Plus (GSM)";
+    if ([platform isEqualToString:@"iPhone10,1"])    return @"iPhone 8 (CDMA)";
+    if ([platform isEqualToString:@"iPhone10,4"])    return @"iPhone 8 (GSM)";
+    if ([platform isEqualToString:@"iPhone10,2"])    return @"iPhone 8 Plus (CDMA)";
+    if ([platform isEqualToString:@"iPhone10,5"])    return @"iPhone 8 Plus (GSM)";
+    if ([platform isEqualToString:@"iPhone10,3"])    return @"iPhone X (CDMA)";
+    if ([platform isEqualToString:@"iPhone10,6"])    return @"iPhone X (GSM)";
     if ([platform isEqualToString:@"iPod1,1"])      return @"iPod Touch 1G";
     if ([platform isEqualToString:@"iPod2,1"])      return @"iPod Touch 2G";
     if ([platform isEqualToString:@"iPod3,1"])      return @"iPod Touch 3G";
@@ -181,6 +197,28 @@
     if ([platform isEqualToString:@"iPad4,9"])      return @"iPad Mini 3 (China)";
     if ([platform isEqualToString:@"iPad5,3"])      return @"iPad Air 2 (WiFi)";
     if ([platform isEqualToString:@"iPad5,4"])      return @"iPad Air 2 (Cellular)";
+    // iPad PRO 9.7"
+    if ([platform isEqualToString:@"iPad6,3"])      return @"iPad Pro 9.7 Wifi (model A1673)";
+    if ([platform isEqualToString:@"iPad6,4"])      return @"iPad Pro 9.7 Wifi + Cellular (model A1674)";
+    if ([platform isEqualToString:@"iPad6,4"])      return @"iPad Pro 9.7 Wifi + Cellular (model A1675)";
+    
+    //iPad PRO 12.9"
+    if ([platform isEqualToString:@"iPad6,7"])      return @"iPad Pro 12.9 Wifi (model A1584)";
+    if ([platform isEqualToString:@"iPad6,8"])      return @"iPad Pro 12.9 Wifi + Cellular (model A1652)";
+    
+    //iPad (5th generation)
+    if ([platform isEqualToString:@"iPad6,11"])      return @"iPad 2017 Wifi (model A1822)";
+    if ([platform isEqualToString:@"iPad6,12"])      return @"iPad 2017 Wifi + Cellular (model A1823)";
+    
+    //iPad PRO 12.9" (2nd Gen)
+    if ([platform isEqualToString:@"iPad7,1"])      return @"iPad Pro 12.9 Gen 2 Wifi (model A1670)";
+    if ([platform isEqualToString:@"iPad7,2"])      return @"iPad Pro 12.9 Gen 2 Wifi + Cellular (model A1671)";
+    if ([platform isEqualToString:@"iPad7,2"])      return @"iPad Pro 12.9 Gen 2 Wifi + Cellular (model A1821)";
+    
+    //iPad PRO 10.5"
+    if ([platform isEqualToString:@"iPad7,3"])      return @"iPad Pro 10.5 Wifi (model A1701)";
+    if ([platform isEqualToString:@"iPad7,4"])      return @"iPad Pro 10.5 Wifi + Cellular (model A1709)";
+    
     if ([platform isEqualToString:@"AppleTV2,1"])   return @"Apple TV 2G";
     if ([platform isEqualToString:@"AppleTV3,1"])   return @"Apple TV 3";
     if ([platform isEqualToString:@"AppleTV3,2"])   return @"Apple TV 3 (2013)";

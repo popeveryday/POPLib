@@ -53,6 +53,11 @@ enum QUIBuilderGenUIType
 
 +(double) valueByDeviceScale:(double)value withDevice:(enum QUIBuilderDeviceType)deviceType;
 
++(UIColor*) colorObj:(NSString*)value;
++(UIFont*) fontObj:(NSString*)value;
++(UIImage*) imageObj:(NSString*)value;
++(UIImage*)imageIconAwesome:(NSString*)value;
+
 @end
 
 

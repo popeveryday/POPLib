@@ -216,7 +216,12 @@
         if (heightFraction < 0.0) heightFraction = 0.0;
         else if (heightFraction > 1.0) heightFraction = 1.0;
         
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        
+        UIInterfaceOrientation orientation = UIInterfaceOrientationPortrait;
+#ifndef POPLIB_APP_EXTENSIONS
+        orientation = [[UIApplication sharedApplication] statusBarOrientation];
+#endif
+        
         CGFloat subviewHeight = (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) ? PORTRAIT_KEYBOARD_HEIGHT : LANDSCAPE_KEYBOARD_HEIGHT;
         
         //neu co inputview (picker, datepicker) subview height ko doi so voi portrait height
@@ -390,7 +395,9 @@
         [navbar setTitleTextAttributes:@{NSForegroundColorAttributeName : foregroundColor}];
     }
     
+#ifndef POPLIB_APP_EXTENSIONS
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+#endif
     
     //View controller-based status bar appearance -> NO (INFO.PLIST)
 }
@@ -449,7 +456,11 @@
             break;
         case DisplayStyleReplaceWindowRootVC:
             [nextViewController.view addSubview:snapshot];
+            
+#ifndef POPLIB_APP_EXTENSIONS
             [[UIApplication sharedApplication].keyWindow setRootViewController:nextViewController];
+#endif
+            
             currentViewController = nil;
             [UIView animateWithDuration:.25 delay:0.25 options:UIViewAnimationOptionCurveLinear animations:^{
                 snapshot.alpha = 0;
@@ -787,12 +798,9 @@
     
 #ifndef POPLIB_APP_EXTENSIONS
     if(!fromViewController) fromViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-#else
-    dang fix cho nay
 #endif
     
     if(fromViewController) [fromViewController presentViewController:alertController animated:YES completion:nil];
-    
 }
 
 +(BOOL)alertNetworkConnectionStatusWithTitle:(NSString*) title message:(NSString*)message fromViewController:(UIViewController*)vc

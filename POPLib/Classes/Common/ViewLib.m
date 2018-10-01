@@ -860,5 +860,27 @@
     [self alertWithTitle:(title?title:LocalizedText(@"Message", nil)) message:message fromViewController:nil callback:nil cancelButtonTitle:LocalizedText(@"OK", nil) otherButtonTitles:nil];
 }
 
++(NSLayoutConstraint*) getALConstraintOfView:(UIView*)view withKey:(NSString*)key
+{
+    for (NSLayoutConstraint* con in [self getALConstraintOfView:view])
+    {
+        if(![con.identifier hasPrefix:[NSString stringWithFormat:@"%@|",key]]) continue;
+        return con;
+    }
+    return nil;
+}
+
++(NSArray<NSLayoutConstraint*>*) getALConstraintOfView:(UIView*)view
+{
+    NSMutableArray* result = [NSMutableArray arrayWithArray:view.constraints];
+    if(!view.superview || !view.viewName) return result;
+    for (NSLayoutConstraint* con in view.superview.constraints)
+    {
+        if(![con.identifier hasSuffix: [NSString stringWithFormat:@"|%@",view.viewName]]) continue;
+        [result addObject:con];
+    }
+    return result;
+}
+
 @end
 

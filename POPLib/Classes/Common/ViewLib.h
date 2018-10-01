@@ -140,5 +140,9 @@ enum ALControlType{
 
 + (void)alert:(NSString*) message;
 
++(NSLayoutConstraint*) getALConstraintOfView:(UIView*)view withKey:(NSString*)key;
+
++(NSArray<NSLayoutConstraint*>*) getALConstraintOfView:(UIView*)view;
+
 @end
 

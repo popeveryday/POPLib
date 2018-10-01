@@ -58,6 +58,8 @@ enum QUIBuilderGenUIType
 +(UIImage*) imageObj:(NSString*)value;
 +(UIImage*)imageIconAwesome:(NSString*)value;
 
++(NSDictionary*) handleContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType;
+
 @end
 
 

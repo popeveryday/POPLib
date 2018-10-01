@@ -872,11 +872,15 @@
 
 +(NSArray<NSLayoutConstraint*>*) getALConstraintOfView:(UIView*)view
 {
-    NSMutableArray* result = [NSMutableArray arrayWithArray:view.constraints];
-    if(!view.superview || !view.viewName) return result;
-    for (NSLayoutConstraint* con in view.superview.constraints)
+    NSMutableArray* result = [NSMutableArray new];
+    NSMutableArray* temp = [NSMutableArray arrayWithArray:view.constraints];
+    
+    if(view.superview && view.viewName) [temp addObjectsFromArray:view.superview.constraints];
+    for (NSLayoutConstraint* con in temp)
     {
+        if(![StringLib isValid:con.identifier]) continue;
         if(![con.identifier hasSuffix: [NSString stringWithFormat:@"|%@",view.viewName]]) continue;
+        if(![con.identifier containsString:view.viewName]) continue;
         [result addObject:con];
     }
     return result;

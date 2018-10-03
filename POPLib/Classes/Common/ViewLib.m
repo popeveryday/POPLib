@@ -619,6 +619,27 @@
     return control;
 }
 
+
+/*
+ superEdge: L R T B W E V H C
+    L R T B: space between view and superview left, right, top, bott om
+    W: width of view
+    E: height of view
+    C: location center of parent (~ VH)
+    V: center vertical
+    H: center horizontal
+    Example: @"L T S100"  or @"VH W100 E10" or @"LR"
+ 
+ otherEdge: L R T B W E V H
+ Example: @{ @"L": obj, @"WW":obj2 }
+    L: align left of view to right of obj
+    LL: align left of view to left of obj
+    W: set width of view equal to width of obj
+    WW: set width of view equal to height of obj
+    E20: set height of view equal to width of obj + 20
+    H: algin center horizontal of view with center of obj
+ */
+
 +(void) updateLayoutForView:(ALView*)view superEdge:(NSString*)superEdge otherEdge:(NSDictionary*)otherEdge
 {
     
@@ -648,11 +669,15 @@
 +(NSString*) pinEdgeWithView:(UIView*)view edgeStr:(NSString*)edgeStr otherView:(UIView*)otherView
 {
     NSString* direction = [edgeStr substringToIndex:1];
+    NSString* subDirection = edgeStr.length > 1 ? [edgeStr substringWithRange: NSMakeRange(1, 1)] : nil;
+    if(subDirection && ![@"T,R,L,B,C,H,V,W,E,S" containsString:subDirection]) subDirection = nil;
+        
     NSLayoutConstraint* lct = nil;
     NSArray<NSLayoutConstraint*>* lctArr = nil;
     
     enum NSLayoutRelation relation = [StringLib contains:@">" inString:edgeStr] ? NSLayoutRelationGreaterThanOrEqual : [StringLib contains:@"<" inString:edgeStr] ? NSLayoutRelationLessThanOrEqual : NSLayoutRelationEqual;
     NSString* insetStr = [[[edgeStr substringFromIndex:1] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    if(subDirection) insetStr = [insetStr stringByReplacingOccurrencesOfString:subDirection withString:@""];
     
     if ([direction isEqualToString:@"C"])
     {
@@ -668,7 +693,9 @@
     
     if ([direction isEqualToString:@"H"])
     {
-        lct = [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        if (otherView) lct = [view autoAlignAxis:ALAxisHorizontal toSameAxisOfView:otherView];
+        else lct = [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        
         lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         if([StringLib isValid:insetStr]) lct.constant = [insetStr floatValue];
         return direction;
@@ -676,7 +703,9 @@
     
     if ([direction isEqualToString:@"V"])
     {
-        lct = [view autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        if (otherView) lct = [view autoAlignAxis:ALAxisVertical toSameAxisOfView:otherView];
+        else lct = [view autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        
         lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         if([StringLib isValid:insetStr]) lct.constant = [insetStr floatValue];
         return direction;
@@ -684,15 +713,37 @@
     
     
     
-    //Width: W100, Height: E100, Size: S100#100 or S100
-    if ( [StringLib contains:direction inString:@"WES"] ) {
-        if(![StringLib isValid:insetStr]) return direction;
+    //Width: W100, Height: E100, Size: S100#200 or S100 (with=height=100)
+    if ( [StringLib contains:direction inString:@"WES"] )
+    {
+        BOOL isValidInset = [StringLib isValid:insetStr];
+        if(!isValidInset && !otherView) return direction;
+        
+        CGFloat width = 0.0, height = 0.0;
+        if(isValidInset)
+        {
+            if([direction isEqualToString:@"S"]){
+                NSArray* sizeParts = [insetStr componentsSeparatedByString:@"#"];
+                width = [[sizeParts firstObject] floatValue];
+                height = sizeParts.count >= 2 ? [[sizeParts objectAtIndex:1] floatValue] : width;
+            }else if([direction isEqualToString:@"W"]) width = [insetStr floatValue];
+            else height = [insetStr floatValue];
+        }
+        
         
         if([direction isEqualToString:@"S"])
         {
-            NSArray* sizeParts = [insetStr componentsSeparatedByString:@"#"];
-            CGFloat width = [[sizeParts firstObject] floatValue];
-            CGFloat height = sizeParts.count >= 2 ? [[sizeParts objectAtIndex:1] floatValue] : width;
+            if (otherView) {
+                lct = [view autoMatchDimension:ALDimensionWidth toDimension: subDirection?ALDimensionHeight:ALDimensionWidth ofView:otherView];
+                lct.identifier = [NSString stringWithFormat:@"W|%@", [view valueForKey:@"viewName"]];
+                if(isValidInset) lct.constant = width;
+                
+                lct = [view autoMatchDimension:ALDimensionHeight toDimension:subDirection?ALDimensionWidth:ALDimensionHeight ofView:otherView];
+                lct.identifier = [NSString stringWithFormat:@"H|%@", [view valueForKey:@"viewName"]];
+                if(isValidInset) lct.constant = height;
+                return direction;
+            }
+            
             lctArr = [view autoSetDimensionsToSize:CGSizeMake(width, height)];
             for (NSLayoutConstraint* _lct in lctArr)
             {
@@ -701,13 +752,27 @@
         }
         else if([direction isEqualToString:@"W"])
         {
-            CGFloat width = [insetStr floatValue];
+            if(otherView)
+            {
+                lct = [view autoMatchDimension:ALDimensionWidth toDimension: subDirection?ALDimensionHeight:ALDimensionWidth ofView:otherView];
+                lct.identifier = [NSString stringWithFormat:@"W|%@", [view valueForKey:@"viewName"]];
+                if(isValidInset) lct.constant = width;
+                return direction;
+            }
+            
             lct = [view autoSetDimension:ALDimensionWidth toSize:width relation:relation];
             lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         }
         else
         {
-            CGFloat height = [insetStr floatValue];
+            if(otherView)
+            {
+                lct = [view autoMatchDimension:ALDimensionHeight toDimension:subDirection?ALDimensionWidth:ALDimensionHeight ofView:otherView];
+                lct.identifier = [NSString stringWithFormat:@"H|%@", [view valueForKey:@"viewName"]];
+                if(isValidInset) lct.constant = height;
+                return direction;
+            }
+            
             lct = [view autoSetDimension:ALDimensionHeight toSize:height relation:relation];
             lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
         }
@@ -727,6 +792,7 @@
         lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
     }else{
         enum ALEdge otheredge = [[@"02143" substringWithRange: NSMakeRange(edge, 1)] integerValue];
+        if(subDirection) otheredge = [[@"01234" substringWithRange: NSMakeRange(edge, 1)] integerValue];
         lct = [view autoPinEdge:edge toEdge:otheredge ofView:otherView withOffset:inset relation:relation];
         lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
     }

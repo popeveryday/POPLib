@@ -57,6 +57,7 @@ enum QUIBuilderGenUIType
 +(UIFont*) fontObj:(NSString*)value;
 +(UIImage*) imageObj:(NSString*)value;
 +(UIImage*)imageIconAwesome:(NSString*)value;
++(NSString*) textObj:(NSString*)value;
 
 +(NSDictionary*) handleContent:(NSString*)content withDevice:(enum QUIBuilderDeviceType)deviceType;
 

@@ -651,30 +651,38 @@
     NSLayoutConstraint* lct = nil;
     NSArray<NSLayoutConstraint*>* lctArr = nil;
     
-    if ([direction isEqualToString:@"C"]) {
+    enum NSLayoutRelation relation = [StringLib contains:@">" inString:edgeStr] ? NSLayoutRelationGreaterThanOrEqual : [StringLib contains:@"<" inString:edgeStr] ? NSLayoutRelationLessThanOrEqual : NSLayoutRelationEqual;
+    NSString* insetStr = [[[edgeStr substringFromIndex:1] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    
+    if ([direction isEqualToString:@"C"])
+    {
         lctArr = [view autoCenterInSuperview];
         for (NSLayoutConstraint* _lct in lctArr)
         {
             _lct.identifier = [NSString stringWithFormat:@"%@%@|%@", direction, @([lctArr indexOfObject:_lct]), [view valueForKey:@"viewName"] ];
+            if([StringLib isValid:insetStr]) _lct.constant = [insetStr floatValue];
         };
         
         return direction;
     }
     
-    if ([direction isEqualToString:@"H"]) {
+    if ([direction isEqualToString:@"H"])
+    {
         lct = [view autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
+        if([StringLib isValid:insetStr]) lct.constant = [insetStr floatValue];
         return direction;
     }
     
-    if ([direction isEqualToString:@"V"]) {
+    if ([direction isEqualToString:@"V"])
+    {
         lct = [view autoAlignAxisToSuperviewAxis:ALAxisVertical];
         lct.identifier = [NSString stringWithFormat:@"%@|%@",direction, [view valueForKey:@"viewName"]];
+        if([StringLib isValid:insetStr]) lct.constant = [insetStr floatValue];
         return direction;
     }
     
-    enum NSLayoutRelation relation = [StringLib contains:@">" inString:edgeStr] ? NSLayoutRelationGreaterThanOrEqual : [StringLib contains:@"<" inString:edgeStr] ? NSLayoutRelationLessThanOrEqual : NSLayoutRelationEqual;
-    NSString* insetStr = [[[edgeStr substringFromIndex:1] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    
     
     //Width: W100, Height: E100, Size: S100#100 or S100
     if ( [StringLib contains:direction inString:@"WES"] ) {

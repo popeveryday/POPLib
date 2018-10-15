@@ -76,6 +76,8 @@
 
 + (NSString*)sha256:(NSString*)input;
 
++ (NSString*)sha1:(NSString*)input;
+
 +(NSString*) replaceOneTimeWithContent:(NSString*)content original:(NSString*)original replacement:(NSString*)replacement;
 @end
 

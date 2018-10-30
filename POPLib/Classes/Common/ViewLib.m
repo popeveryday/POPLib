@@ -418,7 +418,7 @@
 +(void)presentViewWithStorboardName:(NSString*)storyboardName storyboardViewID:(NSString*)viewID currentViewController:(UIViewController*)viewController displayStyle:(enum DisplayStyle) displayStyle prepareBlock:(void(^)(UIViewController* destinationVC))prepareBlock completeBlock:(void(^)(void))completeBlock
 {
     UINavigationController* nav = (UINavigationController*) [viewController parentViewController];
-    UIViewController* currentViewController = [nav.viewControllers firstObject];
+    UIViewController* currentViewController = nav ? [nav.viewControllers firstObject] : viewController;
     
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     UIViewController* nextViewController = [storyboard instantiateViewControllerWithIdentifier: viewID];
@@ -437,22 +437,26 @@
     UINavigationController* nav = (UINavigationController*) [currentViewController parentViewController];
     switch (displayStyle) {
         case DisplayStyleReplaceNavigationRootVC:
-            [nav setViewControllers:@[ nextViewController ]];
-            [currentViewController.view removeFromSuperview];
-            currentViewController = nil;
-            if (completeBlock != nil) {
-                completeBlock();
-            }
+            if(nav){
+                [nav setViewControllers:@[ nextViewController ]];
+                [currentViewController.view removeFromSuperview];
+                currentViewController = nil;
+                if (completeBlock != nil) {
+                    completeBlock();
+                }
+            }else NSAssert(NO, @"Error navigation type not correct", nil);
             break;
         case DisplayStylePresent:
-            [nav presentViewController:nextViewController animated:YES completion:completeBlock];
+            if(nav) [nav presentViewController:nextViewController animated:YES completion:completeBlock];
+            else [currentViewController presentViewController:nextViewController animated:YES completion:completeBlock];
             break;
             
         case DisplayStylePush:
-            [nav pushViewController:nextViewController animated:YES];
-            if (completeBlock != nil) {
-                completeBlock();
-            }
+            if(nav){ [nav pushViewController:nextViewController animated:YES];
+                if (completeBlock != nil) {
+                    completeBlock();
+                }
+            }else NSAssert(NO, @"Error navigation type not correct", nil);
             break;
         case DisplayStyleReplaceWindowRootVC:
             [nextViewController.view addSubview:snapshot];

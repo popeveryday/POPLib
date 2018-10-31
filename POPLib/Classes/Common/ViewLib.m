@@ -218,9 +218,7 @@
         
         
         UIInterfaceOrientation orientation = UIInterfaceOrientationPortrait;
-#ifndef POPLIB_APP_EXTENSIONS
         orientation = [[UIApplication sharedApplication] statusBarOrientation];
-#endif
         
         CGFloat subviewHeight = (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) ? PORTRAIT_KEYBOARD_HEIGHT : LANDSCAPE_KEYBOARD_HEIGHT;
         
@@ -395,9 +393,7 @@
         [navbar setTitleTextAttributes:@{NSForegroundColorAttributeName : foregroundColor}];
     }
     
-#ifndef POPLIB_APP_EXTENSIONS
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-#endif
     
     //View controller-based status bar appearance -> NO (INFO.PLIST)
 }
@@ -461,9 +457,7 @@
         case DisplayStyleReplaceWindowRootVC:
             [nextViewController.view addSubview:snapshot];
             
-#ifndef POPLIB_APP_EXTENSIONS
             [[UIApplication sharedApplication].keyWindow setRootViewController:nextViewController];
-#endif
             
             currentViewController = nil;
             [UIView animateWithDuration:.25 delay:0.25 options:UIViewAnimationOptionCurveLinear animations:^{
@@ -874,9 +868,7 @@
     
     [alertController addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:buttonHandler]];
     
-#ifndef POPLIB_APP_EXTENSIONS
     if(!fromViewController) fromViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-#endif
     
     if(fromViewController) [fromViewController presentViewController:alertController animated:YES completion:nil];
 }

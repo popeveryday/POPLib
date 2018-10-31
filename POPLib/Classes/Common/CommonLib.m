@@ -288,7 +288,7 @@
 
 +(UIDeviceOrientation)deviceOrientation
 {
-#ifndef POPLIB_APP_EXTENSIONS
+
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     
     if( [[UIDevice currentDevice] orientation] == UIDeviceOrientationUnknown ){
@@ -303,7 +303,6 @@
         else if(orientation == UIInterfaceOrientationLandscapeRight)
             return UIDeviceOrientationLandscapeRight;
     }
-#endif
     
     return [[UIDevice currentDevice] orientation];
 }

@@ -915,7 +915,7 @@
         message = LocalizedText(@"Purchase to unlock full features?",nil);
     }
     
-    [self alertWithTitle:LocalizedText(@"Upgrage to Pro Version",nil) message:message fromViewController:vc callback:callback cancelButtonTitle:LocalizedText(@"Later",nil) otherButtonTitles:LocalizedText(@"Yes, upgrade now",nil), isIncludeRestoreButton ? LocalizedText(@"Restore purchases",nil) : nil, nil];
+    [self alertWithTitle:LocalizedText(@"Upgrade to Pro Version",nil) message:message fromViewController:vc callback:callback cancelButtonTitle:LocalizedText(@"Later",nil) otherButtonTitles:LocalizedText(@"Yes, upgrade now",nil), isIncludeRestoreButton ? LocalizedText(@"Restore purchases",nil) : nil, nil];
     
     return @[LocalizedText(@"Yes, upgrade now",nil), LocalizedText(@"Restore purchases",nil)];
 }

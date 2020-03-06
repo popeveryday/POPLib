@@ -86,7 +86,7 @@ enum ViewDesignStyle
 #define ImageViewWithImagename(name) [[UIImageView alloc] initWithImage:[UIImage imageNamed:name]]
 
 #define GC_MobileAds_Device [CommonLib getDeviceByResolution]
-#define GC_MobileAds_Url [NSString stringWithFormat:@"http://mad.chuaphuocan.com/?device=%@&appleid=[appleid]", GC_MobileAds_Device]
+#define GC_MobileAds_Url [NSString stringWithFormat:@"http://ads.poptato.com/?device=%@&appleid=[appleid]", GC_MobileAds_Device]
 
 #define GC_Path_Inbox [FileLib getDocumentPath:@"Inbox"]
 

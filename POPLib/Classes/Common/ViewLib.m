@@ -126,32 +126,6 @@
     }
 }
 
-+(void)showLoadingWhileExecuting:(SEL)method withObject:(id)object onTarget:(id)target displayOnView:(UIView*)uiview
-{
-    [self showLoadingWhileExecuting:method withObject:object onTarget:target title:nil detailText:nil displayOnView:uiview delegate:nil];
-}
-
-+(void)showLoadingWhileExecuting:(SEL)method withObject:(id)object onTargetAndViewController:(UIViewController*) controller
-{
-    [self showLoadingWhileExecuting:method withObject:object onTarget:controller title:nil detailText:nil displayOnView:controller.view delegate:nil];
-}
-
-+(void)showLoadingWhileExecuting:(SEL)method withObject:(id)object onTarget:(id)target title:(NSString*) title detailText:(NSString*)detailText displayOnView:(UIView*)uiview delegate:(id<MBProgressHUDDelegate>)delegate
-{
-    MBProgressHUD* loading = [[MBProgressHUD alloc] initWithView:uiview];
-    [uiview addSubview:loading];
-    
-    if (delegate != nil) {
-        loading.delegate = delegate;
-    }
-    
-    loading.label.text = title == nil ? LocalizedText(@"Loading",nil) : title;
-    loading.detailsLabel.text = detailText == nil ? LocalizedText(@"please wait",nil) : detailText;
-    loading.square = YES;
-    
-    [loading showWhileExecuting:method onTarget:target withObject:object animated:YES];
-}
-
 +(void)hideLoadingWithHUD:(MBProgressHUD*) loading{
     [loading hideAnimated:YES];
 }

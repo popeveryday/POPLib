@@ -303,7 +303,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FontAwesomeKit/FontAwesomeKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/POPLib/POPLib.framework",
@@ -318,7 +318,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-POPLib_Example/Pods-POPLib_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E4617CDDD5A04B1763D1EB0 /* [CP] Check Pods Manifest.lock */ = {

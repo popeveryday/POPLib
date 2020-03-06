@@ -60,12 +60,6 @@ enum ALControlType{
 
 +(void)hideInformBox:(UIView*) uiview afterDelay:(NSTimeInterval) delay;
 
-+(void)showLoadingWhileExecuting:(SEL)method withObject:(id)object onTarget:(id)target displayOnView:(UIView*)uiview;
-
-+(void)showLoadingWhileExecuting:(SEL)method withObject:(id)object onTargetAndViewController:(UIViewController*) controller;
-
-+(void)showLoadingWhileExecuting:(SEL)method withObject:(id)object onTarget:(id)target title:(NSString*) title detailText:(NSString*)detailText displayOnView:(UIView*)uiview delegate:(id<MBProgressHUDDelegate>)delegate;
-
 +(void)hideLoadingWithHUD:(MBProgressHUD*) loading;
 
 +(MBProgressHUD*)showLoadingWithTitle:(NSString*)title detailText:(NSString*)detailText uiview:(UIView*)uiview container:(id<MBProgressHUDDelegate>)container;
